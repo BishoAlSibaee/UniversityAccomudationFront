@@ -1,0 +1,76 @@
+/* Full-width inputs */
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 2px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 20px;
+  outline: none;
+}
+
+.mainLogo {
+  display: block;
+  width: 25%;
+  margin: 10px auto;
+  border-radius: 20px;
+  box-shadow: 4px 4px rgba(255, 255, 255, 0.973);
+}
+
+/* Set a style for all buttons */
+button {
+  padding: 10px 15px;
+  margin: 30px 0;
+  width: 100%;
+  background-color: inherit;
+  border: solid white 2px;
+  border-radius: 20px;
+  font-weight: bold;
+  color: white;
+  transition: all 0.5s ease-in-out;
+}
+
+
+/* Add a hover effect for buttons */
+button:hover {
+  color: #00A2B0;
+  background-color: white;
+}
+
+/* Center the avatar image inside this container */
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+/* Avatar image */
+img.avatar {
+  width: 40%;
+  border-radius: 50%;
+}
+
+/* Add padding to containers */
+.containerr {
+  padding: 30px;
+  width: 60%;
+  border-radius: 20xp;
+  border: 3px solid white;
+  transition: all 0.5s ease-in-out;
+  margin: auto;
+  margin-top: 10%;
+}
+
+.BackImage {
+  opacity: 0.2;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+}
+.loginLayout {
+  text-align: center;
+  margin-top: 100px;
+}

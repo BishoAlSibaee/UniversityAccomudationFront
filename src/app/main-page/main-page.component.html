@@ -1,0 +1,42 @@
+<div style=" width: 100%; height: 100%;">
+    <app-header></app-header>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div style=" width: 70%; height: 100%; margin: auto;" >
+        <div style="width:22%; height: 100%; position: fixed; left:0; top:70px; overflow-y:scroll; overflow-x:hidden; direction: rtl;" [ngStyle]="{'background-color':LightColor}">
+            <button mat-raised-button color="accent" style="margin: auto; width: 100%; margin-top: 50px;" (click)="students()">الطلاب</button>
+            <button mat-raised-button color="accent" style="margin: auto; width: 100%; margin-top: 50px;" (click)="rooms()">الغرف</button>
+        </div>
+
+        <div style="width: 78%; height: 100%; margin: auto; text-align: center;" *ngIf="roomsVisible">
+            <h2 style="margin: auto; display: block;">ادارة الغرف</h2>
+            <div style="width: 50%; float: left; height: 100%;">
+                
+            </div>
+            <div style="width: 50%; float: left; height: 100%;">
+                <button mat-raised-button color="accent">اضافة غرفة</button>
+            </div>
+        </div>
+
+        <div style="width: 78%; height: 100%; margin: auto; text-align: center;" *ngIf="studentsVisible">
+            <h2 style="margin: auto; display: block;">ادارة الطلاب</h2>
+            <div style="width: 50%; float: left; height: 100%;">
+                
+            </div>
+            <div style="width: 50%; float: left; height: 100%;">
+                <button mat-raised-button color="accent" (click)="goToAddStudent()">اضافة طالب جديد</button>
+                <br>
+                <br>
+                <br>
+                <button mat-raised-button color="accent" (click)="goToMakeReservation()">حجز غرفة لطالب</button>
+                <br>
+                <br>
+                <br>
+                <button mat-raised-button color="accent" (click)="goToShowStudents()">عرض الطلاب</button>
+            </div>
+        </div>
+    </div>
+</div>

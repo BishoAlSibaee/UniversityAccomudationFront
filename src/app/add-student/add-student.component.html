@@ -1,0 +1,62 @@
+<div style=" width: 100%; height: 100%; direction: rtl;">
+    <app-header></app-header>
+    <div style="width:22%; height: 100%; position: fixed; left:0; top:70px; overflow-y:scroll; overflow-x:hidden; direction: rtl;" [ngStyle]="{'background-color':LightColor}">
+        <button mat-raised-button color="accent" style="margin: auto; width: 100%; margin-top: 50px;" (click)="back()">العودة</button>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div style="width: 78%; height: 100%; margin: auto; text-align: center;">
+        <h2 style="margin: auto; display: block;">اضافة طالب</h2>
+        <div class="productForm">
+            <mat-form-field appearance="fill" class="formField">
+                <mat-label>الاسم</mat-label>
+                <input matInput [(ngModel)]="student.name" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="formField">
+                <mat-label>رقم الطالب</mat-label>
+                <input matInput [(ngModel)]="student.student_number"  required>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="formField">
+                <mat-label>رقم الجوال</mat-label>
+                <input matInput [(ngModel)]="student.mobile" maxlength="10" minlength="10" required>
+                <mat-error *ngIf="student.mobile.length < 10 || student.mobile.length > 10">ادخل رقم جوال صحيح</mat-error>
+            </mat-form-field>
+    
+            <mat-form-field appearance="fill" class="formField">
+                <mat-label>الكلية</mat-label>
+                <input matInput [(ngModel)]="student.college">
+            </mat-form-field>
+    
+            <mat-form-field appearance="fill" class="formField">
+                <mat-label>ايميل</mat-label>
+                <input matInput [(ngModel)]="student.email">
+            </mat-form-field>
+    
+            <mat-form-field appearance="fill" class="formField">
+                <mat-label>الجنسية</mat-label>
+                <input matInput [(ngModel)]="student.nationality">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="formField">
+                <mat-label>سنة الدراسة</mat-label>
+                <input matInput [(ngModel)]="student.study_year">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="formField">
+                <mat-label>الترم</mat-label>
+                <input matInput [(ngModel)]="student.term">
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" class="formField" (click)="addStudent()">حفظ</button>
+            <br>
+            <br>
+            <h3 style="color: red;">{{message}}</h3>
+            
+        </div>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+.productForm {
+    width: 50%;
+    margin: auto;
+    display: block;
+}
+
+.formField {
+    width: 100%;
+}

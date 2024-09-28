@@ -1,0 +1,88 @@
+<div style=" width: 100%; height: 100%; direction: rtl;">
+    <app-header></app-header>
+    <div style="width:22%; height: 100%; position: fixed; left:0; top:70px; overflow-y:scroll; overflow-x:hidden; direction: rtl;" [ngStyle]="{'background-color':LightColor}">
+        <button mat-raised-button color="accent" style="margin: auto; width: 100%; margin-top: 50px;" (click)="back()">العودة</button>
+    </div>
+    <br>
+    <br>
+    <div style="width: 78%; height: 100%; margin: auto; text-align: center;">
+        <h2 style="margin: auto; display: block;">حجز غرفة</h2>
+        <div class="productForm">
+            <mat-form-field appearance="fill" class="formField">
+                <mat-label>اسم الطالب</mat-label>
+                <input matInput [(ngModel)]="searchName" required>
+            </mat-form-field>
+            <button mat-raised-button color="primary" class="formField" (click)="search()">بحث</button>
+            <br>
+            <br>
+            <mat-form-field appearance="fill" class="formField">
+                <mat-label>نتائج البحث</mat-label>
+                <mat-select [(ngModel)]="student" name="food">
+                <mat-option *ngFor="let st of searchStudents" [value]="st">
+                    {{st.name}}
+                </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <br>
+            <mat-divider></mat-divider>
+            <br>
+            <mat-form-field appearance="fill" class="formField">
+                <mat-label>اختر المبنى</mat-label>
+                <mat-select [(ngModel)]="selectedBuilding" name="food">
+                <mat-option *ngFor="let bu of buildings" [value]="bu" (onSelectionChange)="setFloors(bu)">
+                    {{bu.number}}
+                </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="formField">
+                <mat-label>اختر الدور</mat-label>
+                <mat-select [(ngModel)]="selectedFloor" name="food">
+                <mat-option *ngFor="let fl of floorsForSelect" [value]="fl" (onSelectionChange)="setSuites(fl)">
+                    {{fl.number}}
+                </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="formField">
+                <mat-label>اختر الجناح</mat-label>
+                <mat-select [(ngModel)]="selectedSuite" name="food">
+                <mat-option *ngFor="let su of suitesForSelect" [value]="su"(onSelectionChange)="setRooms(su)">
+                    {{su.number}}
+                </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="formField">
+                <mat-label>اختر الغرفة</mat-label>
+                <mat-select [(ngModel)]="selectedRoom" name="food">
+                <mat-option *ngFor="let ro of roomsForSelect" [value]="ro">
+                    {{ro.number}}
+                </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+
+            <mat-form-field color="accent" appearance="fill" class="formField">
+                <mat-label>Select Start Date</mat-label>
+                <input matInput  [matDatepicker]="picker1" [(ngModel)]="startDate">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1 color="primary"></mat-datepicker>
+              </mat-form-field>
+        
+              <mat-form-field color="accent" appearance="fill" class="formField">
+                <mat-label >Select End Date</mat-label>
+                <input matInput [matDatepicker]="picker2" [(ngModel)]="expirDate">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2 color="primary"></mat-datepicker>
+              </mat-form-field>
+              <br>
+              <button mat-raised-button color="primary" class="formField" (click)="saveReservation()">حفظ</button>
+              <br>
+            <br>
+            <h3 style="color: red;">{{message}}</h3>
+
+        </div>
+    </div>
+</div>
