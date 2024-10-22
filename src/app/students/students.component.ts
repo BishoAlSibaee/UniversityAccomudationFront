@@ -11,24 +11,24 @@ import { Route, Router } from '@angular/router';
 })
 export class StudentsComponent {
 
-  students:Student[] = []
+  students: Student[] = []
   getStudentsUrl = AppComponent.AdminUrl + "getAllStudents"
   LightColor = "#3d2706"
 
 
   constructor(
-    private client:HttpClient,
-    private router:Router
+    private client: HttpClient,
+    private router: Router
   ) {
 
   }
 
   ngOnInit() {
     this.getStudents()
-  } 
+  }
 
   pageChangeEvent() {
-    
+
   }
 
   back() {
@@ -37,15 +37,17 @@ export class StudentsComponent {
 
   getStudents() {
     const h = new HttpHeaders({
-      Authorization: `Bearer ${AppComponent.token}`,
+      Authorization: `Bearer`,
     })
     let options = { headers: h }
-    this.client.get<Student[]>(this.getStudentsUrl,options).subscribe({next:(result)=>{
-      console.log(result)
-      this.students = result
-    },error:(error)=>{  
-      console.log(error)
-    }})
+    this.client.get<Student[]>(this.getStudentsUrl, options).subscribe({
+      next: (result) => {
+        console.log(result)
+        this.students = result
+      }, error: (error) => {
+        console.log(error)
+      }
+    })
   }
 
 }

@@ -1,11 +1,17 @@
-export class Building {
-    id:number
-    number:number
-    name:string
+import { Floor } from "./Floor";
 
-    constructor(id:number,number:number,name:string) {
-        this.id = id
-        this.name = name
-        this.number = number
-    }
+export class Building {
+  id: number
+  number: number
+  name: string
+  lock_id: string
+  floors: Floor[];
+
+  constructor(id: number, number: number, name: string, lock_id: string, floors: Floor[]) {
+    this.id = id
+    this.name = name
+    this.number = number
+    this.lock_id = lock_id
+    this.floors = floors;
+  }
 }

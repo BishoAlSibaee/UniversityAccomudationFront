@@ -1,0 +1,23 @@
+.room-in-suite {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-color: #31343b;
+  border-radius: 10px;
+  color: white;
+  padding: 10px;
+  margin: 0px 3px 0px 3px;
+  align-content: center;
+}
+
+.room-in-suite p {
+  text-align: center;
+}
+
+.room-in-suite.selected {
+  background-color: green;
+}
+
+.room-in-suite :hover {
+  cursor: pointer
+}

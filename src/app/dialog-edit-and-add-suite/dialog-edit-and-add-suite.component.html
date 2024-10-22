@@ -1,0 +1,43 @@
+<h1 mat-dialog-title>{{title}}</h1>
+<div mat-dialog-content class="dialog">
+  <!-- Choose Buildig -->
+  <mat-form-field *ngIf="showList()" class="choose-building">
+    <mat-label>Choose Building</mat-label>
+    <mat-select placeholder="Select Building" [(value)]="selectedBuildingName"
+      (selectionChange)="onBuildingChange($event.value)">
+      <mat-option *ngFor="let building of allBuilding" [value]="building">{{building.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <!-- Choose Floor -->
+  <mat-form-field *ngIf="showList()" class="choose-Floor">
+    <mat-label>Choose Floor</mat-label>
+    <mat-select placeholder="Select Floor" [(value)]="selectedFloorNumber"
+      (selectionChange)="onFloorChange($event.value)">
+      <mat-option *ngFor="let f of floor" [value]="f">{{f.number}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field color="accent" style="padding-left: 5px;">
+    <mat-label style="color: rgb(159, 158, 163);">Suite Number</mat-label>
+    <input matInput [(ngModel)]="suiteNumber" placeholder="Enter Suite Number">
+  </mat-form-field>
+  <div *ngIf="isUpdate">
+    <h2>Room In Suite</h2>
+    <div class="room-in-suite" *ngFor="let r of roomInSuite" [ngClass]="{'selected': selectedRoomIds.includes(r.id)}"
+      (click)="toggleRoomSelection(r.id , 'delete')">
+      <p>{{r.number}}</p>
+    </div>
+  </div>
+  <h2>Rooms</h2>
+  <div class="room-in-suite" *ngFor="let r of filteredRooms" [ngClass]="{'selected': selectedRoomIds.includes(r.id)}"
+    (click)="toggleRoomSelection(r.id,'add')">
+    <p>{{r.number}}</p>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button (click)="onClickCancel()" mat-button style="color: white;">
+    <mat-icon>cancel</mat-icon> Cancel
+  </button>
+  <button (click)="onClickOk()" mat-button color="warn" style="background-color: #087709bd; color: white;">
+    <mat-icon>check</mat-icon> {{nameBtn}}
+  </button>
+</div>

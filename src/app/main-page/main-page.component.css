@@ -1,0 +1,93 @@
+.top-bar {
+  background-color: #3f3f5f;
+  padding: 15px;
+  margin-left: 25%;
+  width: 75%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 50px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  justify-content: space-between;
+}
+
+.main-content {
+  display: flex;
+  /* margin-top: 50px; */
+  height: calc(100vh - 50px);
+}
+
+.sidebar {
+  width: 22%;
+  background-color: #305286;
+  padding: 20px;
+  height: 100%;
+  position: fixed;
+}
+
+.main-section {
+  margin-left: 25%;
+  width: 75%;
+  padding: 20px;
+  height: 100%;
+}
+
+.building-container {
+  margin-top: 80px;
+  background-color: rgb(146, 132, 132);
+}
+
+
+.rooms-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.suite {
+  border: 2px solid #3d2706;
+  border-radius: 10px;
+  padding: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.suite legend {
+  font-weight: bold;
+  padding: 0 5px;
+  color: #000;
+
+}
+
+.room-in-suite {
+  margin-bottom: 5px;
+}
+
+.single-room {
+  display: inline-block;
+  padding: 2px;
+  margin-bottom: 10px;
+}
+
+.suite-container {
+  margin-top: -5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+}
+
+.choose-building {
+  margin: 5px;
+}
+
+.choose-floor {
+  margin: 5px;
+}
+
+h1 {
+  color: cadetblue;
+  font-weight: bold;
+}

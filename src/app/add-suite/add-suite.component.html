@@ -1,0 +1,56 @@
+<div class="buildings-container">
+  <div class="header">
+    <h1>All Suites</h1>
+    <div class="button-container">
+      <button (click)="openDialogEditOrAdd(0,0,[] ,0 ,0) " class="add-button">
+        <mat-icon>add</mat-icon>
+        <span>Add</span>
+      </button>
+      <button class="back-button" routerLink="/mainPage">
+        <mat-icon>home</mat-icon>
+        <span>Back</span>
+      </button>
+      <div class="building-container">
+        <mat-form-field class="choose-building">
+          <mat-label>Choose Building</mat-label>
+          <mat-select [(value)]="selectedBuilding" (selectionChange)="onBuildingChange($event.value)">
+            <mat-option *ngFor="let building of allBuilding" [value]="building">{{building.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="choose-floor">
+          <mat-label>Choose Floor</mat-label>
+          <mat-select [(value)]="selectedFloorName" (selectionChange)="onFloorChange($event.value)">
+            <mat-option [value]="'all'">All</mat-option>
+            <mat-option *ngFor="let floor of selectedFloors" [value]="floor">{{floor.number}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <table class="buildings-table">
+    <thead>
+      <tr>
+        <th>Building Name</th>
+        <th>Floor Number</th>
+        <th>Suites Number</th>
+        <th>Total Rooms</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let suite of filteredSuites">
+        <td>{{ selectedBuilding?.name }}</td>
+        <td>{{ getNumberFloor(suite.floor_id)}}</td>
+        <td>{{ suite.number }}</td>
+        <td>{{ getCountRoomInSuite(suite) }}</td>
+        <td>
+          <button
+            (click)="openDialogEditOrAdd(suite.id , suite.number , suite.rooms , suite.building_id , suite.floor_id)"
+            class="action-button">Update</button>
+          <button (click)="openDeleteDialog(suite.id , suite.building_id ,suite.floor_id , 'Suite')"
+            class="delete-button">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

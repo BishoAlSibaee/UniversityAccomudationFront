@@ -1,0 +1,29 @@
+<h1 mat-dialog-title>{{title}}
+  <div mat-dialog-content class="dialog">
+    <mat-form-field color="accent" style="padding-left: 5px;">
+      <mat-label style="color: rgb(159, 158, 163);">Building Name</mat-label>
+      <input matInput [(ngModel)]="buildingName" placeholder="Enter Building Name">
+    </mat-form-field>
+    <mat-form-field color="accent" style="padding-left: 5px;">
+      <mat-label style="color: rgb(159, 158, 163);">Building Number</mat-label>
+      <input matInput [(ngModel)]="buildingNumber" placeholder="Enter Building Number">
+    </mat-form-field>
+    <div *ngIf="showFormFieldFloor()">
+      <mat-form-field color="accent" style="padding-left: 5px;">
+        <mat-label style="color: rgb(159, 158, 163);">Number Of Floor</mat-label>
+        <input matInput [(ngModel)]="numberOfFloor" placeholder="Enter Number Of Floor">
+      </mat-form-field>
+      <mat-form-field color="accent" style="padding-left: 5px;">
+        <mat-label style="color: rgb(159, 158, 163);">Floor Number</mat-label>
+        <input matInput [(ngModel)]="numberFloor" placeholder="Enter Floor Number">
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()" style="color: white;">
+      <mat-icon>cancel</mat-icon> Cancel
+    </button>
+    <button mat-button color="warn" (click)="onClickOk()" style="background-color: #087709bd; color: white;">
+      <mat-icon>check</mat-icon> {{nameBtn}}
+    </button>
+  </div>

@@ -13,18 +13,18 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class AddStudentComponent {
 
-  
+
   LightColor = "#3d2706"
-  student:Student
+  student: Student
   addStudentUrl = AppComponent.AdminUrl + "createStudent"
   message = ""
 
   constructor(
-    private router:Router,
-    private client:HttpClient,
-    private dialog:MatDialog
+    private router: Router,
+    private client: HttpClient,
+    private dialog: MatDialog
   ) {
-    this.student = new Student(0,"","","","","","","","")
+    this.student = new Student(0, "", "", "", "", "", "", "", "")
   }
 
   ngOnInit() {
@@ -60,59 +60,61 @@ export class AddStudentComponent {
     params.append("term", this.student.term)
 
     const h = new HttpHeaders({
-      Authorization: `Bearer ${AppComponent.token}`,
+      Authorization: `Bearer`,
     })
     let options = { headers: h }
 
-    this.client.post<any>(this.addStudentUrl, params, options).subscribe({next:(result)=>{
-      console.log(result)
-      if (result.code == 1) {
-        this.student = new Student(0,"","","","","","","","")
-        this.dialog.open(DialogMessageComponent, { data: { title: "تم الحفظ", theMessage: "تم حفظ الطالب بنجاح" } })
-      }
-      else {
-        if (typeof result.error == "object") {
-          this.message = AppComponent.handleError(result.error)
+    this.client.post<any>(this.addStudentUrl, params, options).subscribe({
+      next: (result) => {
+        console.log(result)
+        if (result.code == 1) {
+          this.student = new Student(0, "", "", "", "", "", "", "", "")
+          this.dialog.open(DialogMessageComponent, { data: { title: "تم الحفظ", theMessage: "تم حفظ الطالب بنجاح" } })
         }
         else {
-          this.message = result.error
+          if (typeof result.error == "object") {
+            this.message = AppComponent.handleError(result.error)
+          }
+          else {
+            this.message = result.error
+          }
+        }
+      }, error: (error) => {
+        console.log(error)
+        if (typeof error == "object") {
+          if (error.email != null) {
+            this.message = this.message + " " + error.email
+          }
+          if (error.name != null) {
+            this.message = this.message + " " + error.name
+          }
+          if (error.mobile != null) {
+            this.message = this.message + " " + error.mobile
+          }
+          if (error.student_number != null) {
+            this.message = this.message + " " + error.student_number
+          }
+          if (error.nationality != null) {
+            this.message = this.message + " " + error.nationality
+          }
+          if (error.college != null) {
+            this.message = this.message + " " + error.college
+          }
+          if (error.study_year != null) {
+            this.message = this.message + " " + error.study_year
+          }
+          if (error.term != null) {
+            this.message = this.message + " " + error.term
+          }
+          if (error.error != null) {
+            this.message = this.message + " " + error.error.message
+          }
+        }
+        else {
+          this.message = error
         }
       }
-    },error:(error)=>{
-      console.log(error)
-      if (typeof error == "object") {
-        if (error.email != null) {
-          this.message = this.message+" "+error.email
-        }
-        if (error.name != null) {
-          this.message = this.message+" "+error.name
-        }
-        if (error.mobile != null) {
-          this.message = this.message+" "+error.mobile
-        }
-        if (error.student_number != null) {
-          this.message = this.message+" "+error.student_number
-        }
-        if (error.nationality != null) {
-          this.message = this.message+" "+error.nationality
-        }
-        if (error.college != null) {
-          this.message = this.message+" "+error.college
-        }
-        if (error.study_year != null) {
-          this.message = this.message+" "+error.study_year
-        }
-        if (error.term != null) {
-          this.message = this.message+" "+error.term
-        }
-        if (error.error != null) {
-          this.message = this.message+" "+error.error.message
-        }
-      }
-      else {
-        this.message = error
-      }
-    }})
+    })
   }
 
 }

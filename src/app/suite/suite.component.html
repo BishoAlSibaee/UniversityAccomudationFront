@@ -1,0 +1,12 @@
+<div class="suite" [ngClass]="{'selected': isSelected}">
+  <div class="suite-info">
+    <p>B {{suiteData.building_id}} | F {{suiteData.floor_id}} | N {{suiteData.number}}</p>
+  </div>
+  <div class="rooms-container">
+    <div *ngFor="let room of roomsOfSuite; let j = index" class="rooms-of-suite"
+      [ngClass]="{'selected': selectedRoomIndex === j}" (click)="selectRoom(j)">
+      <p>{{room.number}}</p>
+    </div>
+  </div>
+
+</div>

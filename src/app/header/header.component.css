@@ -1,63 +1,77 @@
 #intro {
-    width: 100%;
-    height: 70px;
-    padding: 0px;
-    margin: 0px;
-    padding: 0;
-    background-color: white;
-  }
-  
-  h4 {
-    margin: auto;
-    text-align: center;
-  }
-  h5 {
-    margin: auto;
-    text-align: center;
-  }
-  .appLogo {
-    width: 25%;
-    height: 70px;
-    float: left;
-    padding-top: 12px;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .hotelLogo {
-    width: 75%;
-    height: 120px;
-    display: inline;
-    float: left;
-    display: flex;
-    justify-content: center;
-  }
-  .time {
-    width: 25%;
-    height: 70px;
-    float: right;
-    padding-top: 10px;
-    color: black;
-    display: flex;
-    justify-content: center;
-  }
-  .time p {
-    padding: 0mm;
-    margin: 0mm;
-    text-align: center;
-  }
-  #LOGO {
-    width: 100%;
-    height: 100px;
-    text-align: center;
-    margin-left: 20px;
-    margin-right: 20px;
-  }
-  .icon {
-    margin-right: 5px;
-    width: 20px;
-    height: 20px;
-  }
-  
-  /**/
-  
+  width: 100%;
+  height: 70px;
+  padding: 0px;
+  margin: 0px;
+  padding: 0;
+  background-color: white;
+}
+
+h4 {
+  margin: auto;
+  text-align: center;
+}
+
+h5 {
+  margin: auto;
+  text-align: center;
+}
+
+.appLogo {
+  width: 25%;
+  height: 70px;
+  float: left;
+  padding-top: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.hotelLogo {
+  width: 75%;
+  height: 120px;
+  display: inline;
+  float: left;
+  display: flex;
+  justify-content: center;
+}
+
+.time {
+  width: 25%;
+  height: 70px;
+  float: right;
+  padding-top: 10px;
+  color: black;
+  display: flex;
+  justify-content: center;
+}
+.time-date {
+  margin-right: 30px;
+  padding-top: 10px;
+}
+
+.time-date p {
+padding: 5px;
+}
+
+.time p {
+  padding: 0mm;
+  margin: 0mm;
+  text-align: center;}
+
+#LOGO {
+  width: 100%;
+  height: 100px;
+  text-align: center;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.icon {
+  margin-right: 5px;
+  width: 20px;
+  height: 20px;
+}
+
+
+
+/**/

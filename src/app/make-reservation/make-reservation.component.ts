@@ -20,8 +20,8 @@ export class MakeReservationComponent {
 
   searchName = ""
   LightColor = "#3d2706"
-  student:Student
-  searchStudents:Student[] = []
+  student: Student
+  searchStudents: Student[] = []
   message = ""
   searchStudent = AppComponent.AdminUrl + "searchStudentByName"
   getBuildingsUrl = AppComponent.AdminUrl + "getBuildings"
@@ -29,26 +29,26 @@ export class MakeReservationComponent {
   getSuitesUrl = AppComponent.AdminUrl + "getSuites"
   getRoomsUrl = AppComponent.AdminUrl + "getRooms"
   makeReservationUrl = AppComponent.AdminUrl + "makeReservation"
-  selectedBuilding:Building
-  buildings:Building[] =[]
-  selectedFloor:Floor|any
-  floors:Floor[] = []
-  floorsForSelect:Floor[] = []
-  selectedSuite:Suite|any
-  suites:Suite[] = []
-  suitesForSelect:Suite[] = []
-  selectedRoom:Room|any
-  rooms:Room[] = []
-  roomsForSelect:Room[] = []
-  expirDate:any
-  startDate:any
+  selectedBuilding: Building
+  buildings: Building[] = []
+  selectedFloor: Floor | any
+  floors: Floor[] = []
+  floorsForSelect: Floor[] = []
+  selectedSuite: Suite | any
+  suites: Suite[] = []
+  suitesForSelect: Suite[] = []
+  selectedRoom: Room | any
+  rooms: Room[] = []
+  roomsForSelect: Room[] = []
+  expirDate: any
+  startDate: any
 
   constructor(
-    private router:Router,
-    private client:HttpClient,
-    private dialog:MatDialog
+    private router: Router,
+    private client: HttpClient,
+    private dialog: MatDialog
   ) {
-    this.student = new Student(0,"","","","","","","","")
+    this.student = new Student(0, "", "", "", "", "", "", "", "")
     this.selectedBuilding = this.buildings[0]
   }
 
@@ -64,99 +64,109 @@ export class MakeReservationComponent {
     let params = new FormData()
     params.append("student_name", this.searchName)
     const h = new HttpHeaders({
-      Authorization: `Bearer ${AppComponent.token}`,
+      Authorization: `Bearer`,
     })
     let options = { headers: h }
     this.dialog.open(LoadingDialogComponent)
-    this.client.post<any>(this.searchStudent,params,options).subscribe({next:(result)=>{
-      this.dialog.closeAll()
-      console.log(result)
-      if (result.code == 1) {
-        this.searchStudents = result.students
+    this.client.post<any>(this.searchStudent, params, options).subscribe({
+      next: (result) => {
+        this.dialog.closeAll()
+        console.log(result)
+        if (result.code == 1) {
+          this.searchStudents = result.students
+        }
+      }, error: (error) => {
+        this.dialog.closeAll()
+        console.log(error)
+        this.dialog.open(DialogMessageComponent, { data: { title: "خطأ", theMessage: "حدث خطأ \n " + error } })
       }
-    },error:(error)=>{
-      this.dialog.closeAll()
-      console.log(error)
-      this.dialog.open(DialogMessageComponent, { data: { title: "خطأ", theMessage: "حدث خطأ \n "+error } })
-    }})
+    })
   }
 
   getBuildings() {
     const h = new HttpHeaders({
-      Authorization: `Bearer ${AppComponent.token}`,
+      Authorization: `Bearer`,
     })
     let options = { headers: h }
-    this.client.get<any>(this.getBuildingsUrl,options).subscribe({next:(result)=>{
-      console.log(result)
-      this.buildings = result
-      this.getFloors()
-    },error:(error)=>{
-      console.log(error)
-    }})
+    this.client.get<any>(this.getBuildingsUrl, options).subscribe({
+      next: (result) => {
+        console.log(result)
+        this.buildings = result
+        this.getFloors()
+      }, error: (error) => {
+        console.log(error)
+      }
+    })
   }
 
   getFloors() {
     const h = new HttpHeaders({
-      Authorization: `Bearer ${AppComponent.token}`,
+      Authorization: `Bearer`,
     })
     let options = { headers: h }
-    this.client.get<any>(this.getFloorsUrl,options).subscribe({next:(result)=>{
-      console.log(result)
-      this.floors = result
-      this.getSuites()
-    },error:(error)=>{
-      console.log(error)
-    }})
+    this.client.get<any>(this.getFloorsUrl, options).subscribe({
+      next: (result) => {
+        console.log(result)
+        this.floors = result
+        this.getSuites()
+      }, error: (error) => {
+        console.log(error)
+      }
+    })
   }
 
   getSuites() {
     const h = new HttpHeaders({
-      Authorization: `Bearer ${AppComponent.token}`,
+      Authorization: `Bearer`,
     })
     let options = { headers: h }
-    this.client.get<any>(this.getSuitesUrl,options).subscribe({next:(result)=>{
-      console.log(result)
-      this.suites = result
-      this.getRooms()
-    },error:(error)=>{
-      console.log(error)
-    }})
+    this.client.get<any>(this.getSuitesUrl, options).subscribe({
+      next: (result) => {
+        console.log(result)
+        this.suites = result
+        this.getRooms()
+      }, error: (error) => {
+        console.log(error)
+      }
+    })
   }
 
   getRooms() {
     const h = new HttpHeaders({
-      Authorization: `Bearer ${AppComponent.token}`,
+      Authorization: `Bearer `,
     })
     let options = { headers: h }
-    this.client.get<any>(this.getRoomsUrl,options).subscribe({next:(result)=>{
-      console.log(result)
-      this.rooms = result
-    },error:(error)=>{
-      console.log(error)
-    }})
+    this.client.get<any>(this.getRoomsUrl, options).subscribe({
+      next: (result) => {
+        console.log(result)
+        this.rooms = result
+      }, error: (error) => {
+        console.log(error)
+      }
+    })
   }
 
-  setFloors(bu:Building) {
+  setFloors(bu: Building) {
     this.floorsForSelect = []
-    for (let i=0;i<this.floors.length;i++) {
+    for (let i = 0; i < this.floors.length; i++) {
       if (this.floors[i].building_id == bu.id) {
         this.floorsForSelect.push(this.floors[i])
       }
     }
   }
 
-  setSuites(fl:Floor) {
+  setSuites(fl: Floor) {
     this.suitesForSelect = []
-    for (let i=0;i<this.suites.length;i++) {
+    for (let i = 0; i < this.suites.length; i++) {
       if (this.suites[i].building_id == fl.id) {
         this.suitesForSelect.push(this.suites[i])
       }
     }
   }
 
-  setRooms(su:Suite) {
+  setRooms(su: Suite) {
     this.roomsForSelect = []
-    for (let i=0;i<this.rooms.length;i++) {
+    for (let i = 0; i < this.rooms.length; i++) {
       if (this.rooms[i].building_id == su.id) {
         this.roomsForSelect.push(this.rooms[i])
       }
@@ -203,7 +213,7 @@ export class MakeReservationComponent {
     let Start = StartDate.getFullYear() + "-" + (StartDate.getMonth() + 1) + "-" + StartDate.getDate()
     let Expire = ExpireDate.getFullYear() + "-" + (ExpireDate.getMonth() + 1) + "-" + ExpireDate.getDate()
     const h = new HttpHeaders({
-      Authorization: `Bearer ${AppComponent.token}`,
+      Authorization: `Bearer `,
     })
     let options = { headers: h }
     let params = new FormData()
@@ -214,27 +224,28 @@ export class MakeReservationComponent {
     params.append("start_date", Start)
     params.append("expire_date", Expire)
 
-    this.client.post<any>(this.makeReservationUrl,params, options).subscribe({next:(result)=>{
-      console.log(result)
-      if (result.code == 1) {
-        this.dialog.open(DialogMessageComponent, { data: { title: "تم الحفظ", theMessage: "تم حفظ الحجز بنجاح" } });
-      }
-      else {
-        if (typeof result.error == "object") {
-          this.message = AppComponent.handleError(result.error)
+    this.client.post<any>(this.makeReservationUrl, params, options).subscribe({
+      next: (result) => {
+        console.log(result)
+        if (result.code == 1) {
+          this.dialog.open(DialogMessageComponent, { data: { title: "تم الحفظ", theMessage: "تم حفظ الحجز بنجاح" } });
         }
         else {
-          this.message = result.error
+          if (typeof result.error == "object") {
+            this.message = AppComponent.handleError(result.error)
+          }
+          else {
+            this.message = result.error
+          }
+        }
+      }, error: (error) => {
+        if (typeof error == "object") {
+          this.message = AppComponent.handleError(error)
+        }
+        else {
+          this.message = error
         }
       }
-    },error:(error)=>{
-      if (typeof error == "object") {
-        this.message = AppComponent.handleError(error)
-      }
-      else {
-        this.message = error
-      }
-    }}) 
+    })
   }
-
 }

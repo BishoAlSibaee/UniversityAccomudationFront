@@ -1,0 +1,41 @@
+<div class="buildings-container">
+  <div class="header">
+    <h1>All Buildings</h1>
+    <div class="button-container">
+      <button class="add-button" (click)="openDialog(0,null, 0)">
+        <mat-icon>add</mat-icon>
+        <span>Add</span>
+      </button>
+      <button class="back-button" routerLink="/mainPage">
+        <mat-icon>home</mat-icon>
+        <span>Back</span>
+      </button>
+    </div>
+  </div>
+  <table class="buildings-table">
+    <thead>
+      <tr>
+        <th>Building Name</th>
+        <th>Building Number</th>
+        <th>Total Floors</th>
+        <th>Total Suites</th>
+        <th>Total Rooms</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let building of buildings">
+        <td>{{ building.name }}</td>
+        <td>{{ building.number }}</td>
+        <td>{{ building.floors.length }}</td>
+        <td>{{ getTotalSuite(building) }}</td>
+        <td>{{getTotalRooms(building.id)}}</td>
+        <td>
+          <button class="action-button"
+            (click)="openDialog(building.id,building.name , building.number)">Update</button>
+          <button class="delete-button" (click)="openDeleteDialog(building.id , 0 , 0 , 'Building')">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

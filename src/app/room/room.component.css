@@ -1,0 +1,20 @@
+.room {
+  background-color: rgb(164, 174, 187);
+  width: 150px;
+  height: 100px;
+  border-radius: 10px;
+  cursor: pointer;
+
+}
+
+.numper-room {
+  padding: 10px;
+}
+
+.room.selected {
+  box-shadow: rgba(14, 34, 59, 0.8) 0px 0px 4px 4px;
+}
+
+.room:hover {
+  opacity: 0.8;
+}

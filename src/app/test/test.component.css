@@ -1,0 +1,44 @@
+/* body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+} */
+
+.top-bar {
+  background-color: #3f3f5f;
+  padding: 15px;
+  margin-left: 25%;
+  width: 75%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 50px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  justify-content: space-between;
+}
+
+.main-content {
+  display: flex;
+  margin-top: 50px;
+  height: calc(100vh - 50px);
+}
+
+.sidebar {
+  width: 22%;
+  background-color: #305286;
+  padding: 20px;
+  height: 100%;
+  position: fixed;
+}
+
+.main-section {
+  margin-left: 25%;
+  width: 75%;
+  background-color: #59728a;
+  padding: 20px;
+  height: 100%;
+}
