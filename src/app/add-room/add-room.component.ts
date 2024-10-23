@@ -21,18 +21,20 @@ export class AddRoomComponent {
   selectedFloor: Floor | null = null;
   selectedFloorName: string | Floor = 'all';
   filteredRooms: Room[] = [];
+  roomInSuite: Room[] = [];
 
   constructor(public dialog: MatDialog, private roomService: RoomService) { }
 
   ngOnInit() {
     this.allBuilding = AppComponent.buildings;
     this.allRoom = AppComponent.rooms;
+
     if (this.allBuilding.length > 0) {
       this.selectedBuilding = this.allBuilding[0];
       this.onBuildingChange(this.selectedBuilding);
     }
     this.roomService.roomListUpdated$.subscribe(() => {
-      console.log("هون لازم يعمل رفرش للغرف")
+      // console.log("هون لازم يعمل رفرش للغرف")
       this.refreshRoomList();
     });
   }
@@ -49,15 +51,25 @@ export class AddRoomComponent {
   }
 
   filterRooms() {
+    this.filteredRooms = [];
     if (this.selectedBuilding) {
       if (this.selectedFloor === null) {
         this.filteredRooms = this.allRoom.filter(room => room.building_id === this.selectedBuilding?.id);
       } else {
-        this.filteredRooms = this.allRoom.filter(room =>
-          room.building_id === this.selectedBuilding?.id && room.floor_id === this.selectedFloor?.id);
+        this.filteredRooms = this.allRoom.filter(room => room.building_id === this.selectedBuilding?.id && room.floor_id === this.selectedFloor?.id);
       }
+      this.selectedBuilding.floors.forEach(floor => {
+        if (this.selectedFloor === null || floor.id === this.selectedFloor?.id) {
+          floor.suites.forEach(suite => {
+            this.filteredRooms.push(...suite.rooms);
+          });
+        }
+      });
+      this.filteredRooms.sort((a, b) => a.number - b.number);
+
     }
   }
+
 
   openDialogEditOrAdd(roomId: number, roomNumber: number, roomType: string, roomCapacity: number) {
     if (roomId !== 0 && roomNumber !== 0 && roomType !== "" && roomCapacity !== 0) {
@@ -108,7 +120,6 @@ export class AddRoomComponent {
   }
 
   refreshRoomList() {
-    console.log("Enter Function RefreshRoomList")
     this.allRoom = AppComponent.rooms;
     this.filterRooms();
   }
