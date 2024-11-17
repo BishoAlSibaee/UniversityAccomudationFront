@@ -6,9 +6,9 @@ export class Room {
   suite_id: number
   capacity: number
   lock_id: string
-  type_room: string
+  room_types_id: number
 
-  constructor(id: number, building_id: number, floor_id: number, suite_id: number, number: number, capacity: number, lock_id: string, type_room: string) {
+  constructor(id: number, building_id: number, floor_id: number, suite_id: number, number: number, capacity: number, lock_id: string, room_types_id: number) {
     this.id = id
     this.building_id = building_id
     this.floor_id = floor_id
@@ -16,6 +16,6 @@ export class Room {
     this.number = number
     this.capacity = capacity
     this.lock_id = lock_id
-    this.type_room = type_room
+    this.room_types_id = room_types_id
   }
 }

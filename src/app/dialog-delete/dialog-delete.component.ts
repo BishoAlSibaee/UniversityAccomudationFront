@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiLinks } from '../ApiLinks';
 import { AppComponent } from '../app.component';
 import { RoomService } from '../room.service';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-dialog-delete',
@@ -19,7 +20,7 @@ export class DialogDeleteComponent {
   private _snackBar = inject(MatSnackBar);
   @Output() refreshListRoom = new EventEmitter<void>();
 
-  constructor(public dialogRef: MatDialogRef<DialogDeleteComponent>, private roomService: RoomService, private client: HttpClient, @Inject(MAT_DIALOG_DATA) public data: any,) { }
+  constructor(public dialogRef: MatDialogRef<DialogDeleteComponent>, private roomService: RoomService, private userService: UserService, private client: HttpClient, @Inject(MAT_DIALOG_DATA) public data: any,) { }
 
   ngOnInit() {
     this.id = this.data.id;
@@ -45,6 +46,12 @@ export class DialogDeleteComponent {
     }
     if (this.name === "Suite") {
       this.deleteSuite()
+    }
+    if (this.name === "admin") {
+      this.deleteAdmin()
+    }
+    if (this.name === "student") {
+      this.deleteStudent()
     }
   }
 
@@ -187,11 +194,68 @@ export class DialogDeleteComponent {
     });
   }
 
+  deleteAdmin() {
+    console.log("NAME IS = " + this.name)
+    let params = new FormData();
+    params.append("id", this.data.id.toString());
+    const token = localStorage.getItem("token")
+    const h = new HttpHeaders({
+      Authorization: "Bearer " + token,
+    });
+    let options = { headers: h };
+    this.client.post<any>(ApiLinks.inActiveAdmin, params, options).subscribe({
+      next: (result) => {
+        console.log(result);
+        if (result.code == 1) {
+          const adminIndex = AppComponent.admin.findIndex(a => a.id === this.data.id)
+          if (adminIndex !== -1) {
+            AppComponent.admin.splice(adminIndex, 1);
+            this.userService.refreshUserList();
+            this.openSnackBar("Delete Done", "Ok");
+          }
+        } else {
+          this.openSnackBar("Not deleted try again", "Ok");
+          console.log("Warning");
+        }
+      }, error: (error) => {
+        console.log("Error" + error);
+      }
+    });
+  }
+
+  deleteStudent() {
+    console.log("NAME IS = " + this.name)
+    let params = new FormData();
+    params.append("id", this.data.id.toString());
+    const token = localStorage.getItem("token")
+    const h = new HttpHeaders({
+      Authorization: "Bearer " + token,
+    });
+    let options = { headers: h };
+    this.client.post<any>(ApiLinks.deleteStudent, params, options).subscribe({
+      next: (result) => {
+        console.log(result);
+        if (result.code == 1) {
+          const studentIndex = AppComponent.students.findIndex(s => s.id === this.data.id)
+          if (studentIndex !== -1) {
+            AppComponent.students.splice(studentIndex, 1);
+            this.userService.refreshStudentList();
+            this.openSnackBar("Delete Done", "Ok");
+          }
+        } else {
+          this.openSnackBar("Not deleted try again", "Ok");
+          console.log("Warning");
+        }
+      }, error: (error) => {
+        console.log("Error" + error);
+      }
+    });
+  }
+
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
       duration: 6000,
       panelClass: ['custom-snackbar']
     });
   }
-
 }

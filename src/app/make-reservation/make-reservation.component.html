@@ -1,88 +1,122 @@
-<div style=" width: 100%; height: 100%; direction: rtl;">
-    <app-header></app-header>
-    <div style="width:22%; height: 100%; position: fixed; left:0; top:70px; overflow-y:scroll; overflow-x:hidden; direction: rtl;" [ngStyle]="{'background-color':LightColor}">
-        <button mat-raised-button color="accent" style="margin: auto; width: 100%; margin-top: 50px;" (click)="back()">العودة</button>
+<div dir="rtl" class="filter-container">
+  <div class="filter-options">
+    <mat-form-field color="accent" appearance="outline" class="filter-field">
+      <mat-label>اختر المبنى</mat-label>
+      <mat-select [(value)]="selectedBuildingId" (selectionChange)="onBuildingChange($event.value)">
+        <mat-option *ngFor="let building of buildings" [value]="building.id">{{ building.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field color="accent" appearance="outline" class="filter-field">
+      <mat-label>Select Start Date</mat-label>
+      <input matInput [matDatepicker]="picker1" [(ngModel)]="startDate">
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1 color="accent"></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field color="accent" appearance="outline" class="filter-field">
+      <mat-label>Select End Date</mat-label>
+      <input matInput [matDatepicker]="picker2" [(ngModel)]="expirDate">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2 color="accent"></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div class="radio-group">
+    <!-- 1->empty | 2->available | 3->allEmpty | 4->allAvailable  -->
+    <mat-radio-group [(ngModel)]="selectedOption">
+      <mat-radio-button class="radio-option" value="1">غرفة فارغة</mat-radio-button>
+      <mat-radio-button class="radio-option" value="2">غرفة متاحة</mat-radio-button>
+      <mat-radio-button class="radio-option" value="3">جميع الغرف الفارغة</mat-radio-button>
+      <mat-radio-button class="radio-option" value="4">جميع الغرف المتاحة</mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+  <div class="additional-options-container">
+    <button mat-button class="toggle-options-btn" (click)="toggleOptions()">
+      خيارات إضافية
+      <mat-icon>{{ showOptions ? 'expand_less' : 'expand_more' }}</mat-icon>
+    </button>
+
+    <div class="more-filter-options" *ngIf="showOptions" [@slideToggle]>
+      <mat-form-field color="accent" appearance="outline" class="filter-field">
+        <mat-label>اختر الدور</mat-label>
+        <mat-select [(value)]="selectedFloorId" (selectionChange)="onFloorChange($event.value)">
+          <mat-option [value]="'all'">All</mat-option>
+          <mat-option *ngFor="let floor of filteredFloors" [value]="floor.id">{{ floor.number }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field color="accent" appearance="outline" class="filter-field">
+        <mat-label>اختر سعة الغرفة</mat-label>
+        <mat-select [(value)]="selectedCapacity">
+          <mat-option [value]="'all'">All</mat-option>
+          <mat-option *ngFor="let capacity of capacities" [value]="capacity">{{ capacity }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field color="accent" appearance="outline" class="filter-field">
+        <mat-label>اختر نوع الغرفة</mat-label>
+        <mat-select [(value)]="selectedRoomTypeId" (selectionChange)="onRoomTypeChange($event.value)">
+          <mat-option [value]="'all'">All</mat-option>
+          <mat-option *ngFor="let roomType of roomTypes" [value]="roomType.id">{{ roomType.name_ar }}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
-    <br>
-    <br>
-    <div style="width: 78%; height: 100%; margin: auto; text-align: center;">
-        <h2 style="margin: auto; display: block;">حجز غرفة</h2>
-        <div class="productForm">
-            <mat-form-field appearance="fill" class="formField">
-                <mat-label>اسم الطالب</mat-label>
-                <input matInput [(ngModel)]="searchName" required>
-            </mat-form-field>
-            <button mat-raised-button color="primary" class="formField" (click)="search()">بحث</button>
-            <br>
-            <br>
-            <mat-form-field appearance="fill" class="formField">
-                <mat-label>نتائج البحث</mat-label>
-                <mat-select [(ngModel)]="student" name="food">
-                <mat-option *ngFor="let st of searchStudents" [value]="st">
-                    {{st.name}}
-                </mat-option>
-                </mat-select>
-            </mat-form-field>
+  </div>
 
-            <br>
-            <mat-divider></mat-divider>
-            <br>
-            <mat-form-field appearance="fill" class="formField">
-                <mat-label>اختر المبنى</mat-label>
-                <mat-select [(ngModel)]="selectedBuilding" name="food">
-                <mat-option *ngFor="let bu of buildings" [value]="bu" (onSelectionChange)="setFloors(bu)">
-                    {{bu.number}}
-                </mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="formField">
-                <mat-label>اختر الدور</mat-label>
-                <mat-select [(ngModel)]="selectedFloor" name="food">
-                <mat-option *ngFor="let fl of floorsForSelect" [value]="fl" (onSelectionChange)="setSuites(fl)">
-                    {{fl.number}}
-                </mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="formField">
-                <mat-label>اختر الجناح</mat-label>
-                <mat-select [(ngModel)]="selectedSuite" name="food">
-                <mat-option *ngFor="let su of suitesForSelect" [value]="su"(onSelectionChange)="setRooms(su)">
-                    {{su.number}}
-                </mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="formField">
-                <mat-label>اختر الغرفة</mat-label>
-                <mat-select [(ngModel)]="selectedRoom" name="food">
-                <mat-option *ngFor="let ro of roomsForSelect" [value]="ro">
-                    {{ro.number}}
-                </mat-option>
-                </mat-select>
-            </mat-form-field>
-
-
-            <mat-form-field color="accent" appearance="fill" class="formField">
-                <mat-label>Select Start Date</mat-label>
-                <input matInput  [matDatepicker]="picker1" [(ngModel)]="startDate">
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1 color="primary"></mat-datepicker>
-              </mat-form-field>
-        
-              <mat-form-field color="accent" appearance="fill" class="formField">
-                <mat-label >Select End Date</mat-label>
-                <input matInput [matDatepicker]="picker2" [(ngModel)]="expirDate">
-                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                <mat-datepicker #picker2 color="primary"></mat-datepicker>
-              </mat-form-field>
-              <br>
-              <button mat-raised-button color="primary" class="formField" (click)="saveReservation()">حفظ</button>
-              <br>
-            <br>
-            <h3 style="color: red;">{{message}}</h3>
-
+  <hr style="border: 1px solid #626486; width: 100%;">
+  <button mat-raised-button color="primary" (click)="checkReservation()">عرض النتائج</button>
+</div>
+<div dir="rtl" class="results-container">
+  <div class="room-numbers">
+    <button *ngFor="let r of availableRooms" class="room-number" (click)="selectRoom(r)"
+      [ngClass]="{'active-room': r.number === selectedRoomNumber}">
+      {{ r.number }}
+    </button>
+  </div>
+  <div class="room-details" *ngIf="selectedRoom">
+    <div class="checkin-room">
+      <h3>غرفة رقم: {{ selectedRoom.number }}</h3>
+      <h3>سعه الغرفة : {{ selectedRoom.availableCapacity }}</h3>
+      <button mat-raised-button color="primary"
+        (click)="openReservationComponent(selectedRoom.id , selectedRoom.number ,Start , Expire, selectedRoom.availableCapacity )">
+        <mat-icon>add</mat-icon>
+        <span>اضافة طالب</span>
+      </button>
+    </div>
+    <hr style="border: 1px solid #626486; width: 100%;">
+    <p>المستأجرين الحاليين</p>
+    <div class="occupants-container">
+      <div *ngIf="selectedRoom.reservations && selectedRoom.reservations.length > 0">
+        <div class="info">
+          <div *ngFor="let res of selectedRoom.reservations" class="occupant-info">
+            <p><strong>الاسم:</strong> {{ res.student_name }}</p>
+            <p><strong>تاريخ بداية الحجز:</strong> {{ res.start_date }}</p>
+            <p><strong>تاريخ نهاية الحجز:</strong> {{ res.expire_date }}</p>
+          </div>
         </div>
+      </div>
+      <div *ngIf="selectedRoom.reservations.length === 0">
+        <p>لا يوجد مستأجرين ضمن المدة المدخلة في هذه الغرفة.</p>
+      </div>
     </div>
+    <div *ngIf="userReservations.length > 0">
+      <hr style="border: 1px solid #626486; width: 100%;">
+      <p>المستأجرين المضافين</p>
+    </div>
+    <div *ngIf="userReservations.length > 0" class="info">
+      <div *ngFor="let res of userReservations; let i = index" class="occupant-info">
+        <p><strong>الاسم:</strong> {{ res.student_name }}</p>
+        <p><strong>تاريخ بداية الحجز:</strong> {{ res.start_date }}</p>
+        <p><strong>تاريخ نهاية الحجز:</strong> {{ res.expire_date }}</p>
+        <button mat-button color="warn" (click)="deleteReservation(i)">
+          <mat-icon>delete-button</mat-icon>
+          <span>حذف</span>
+        </button>
+      </div>
+    </div>
+    <button *ngIf="userReservations.length > 0" (click)="makeReservation()" mat-raised-button color="primary">تنفيذ
+      الحجز</button>
+  </div>
 </div>

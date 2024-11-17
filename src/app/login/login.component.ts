@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { AppComponent } from '../app.component';
 import { Router } from '@angular/router';
-import { MainPageComponent } from '../main-page/main-page.component';
 import { ApiLinks } from '../ApiLinks';
 
 @Component({
@@ -10,19 +8,13 @@ import { ApiLinks } from '../ApiLinks';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-
   message = ""
   DarkColor = "#015095"
   LightColor = "#3d2706"
   // loginUrl = AppComponent.AdminUrl + "login"
   user = ""
   password = ""
-
-  constructor(
-    private router: Router
-  ) {
-
-  }
+  constructor(private router: Router) {}
 
   ngOnInit() {
     localStorage.removeItem('token');
@@ -38,7 +30,6 @@ export class LoginComponent {
     console.log(result)
     if (result.code == 1) {
       console.log("login done")
-      // AppComponent.token = result.token
       localStorage.setItem('token', result.token);
       this.router.navigate(['mainPage'])
     } else {

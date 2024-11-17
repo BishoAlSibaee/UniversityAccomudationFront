@@ -1,9 +1,57 @@
-.productForm {
-    width: 50%;
-    margin: auto;
-    display: block;
+.register-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  box-shadow: 0px 0px 11px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  max-width: 800px;
+  margin: auto;
 }
 
-.formField {
-    width: 100%;
+h2 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
 }
+
+.register-form {
+  width: 100%;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+mat-form-field {
+  width: 32%;
+}
+
+.form-row.full-width {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.full-width mat-form-field {
+  width: 48%;
+}
+
+button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+  color: #fff;
+}
+
+.mat-mdc-raised-button.mat-primary {
+  --mdc-protected-button-container-color: #267e7bfb;
+  --mdc-protected-button-label-text-color: #fff;
+}
+

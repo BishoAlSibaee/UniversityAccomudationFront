@@ -6,23 +6,25 @@
 <div class="main-content">
   <!-- البار الي ع اليمين-->
   <div class="sidebar">
-    <button mat-raised-button color="accent" style="margin: auto; width: 100%; margin-top: 50px;">الطلاب</button>
-    <button mat-raised-button color="accent" style="margin: auto; width: 100%; margin-top: 20px;">الغرف</button>
-    <button mat-raised-button color="accent" (click)="goToPage('addBuilding')"
-      style="margin: auto; width: 100%; margin-top: 20px;">اضافة غرف</button>
-    <button mat-raised-button color="accent" (click)="goBuildingManagement('BuildingsManagement')"
-      style="margin: auto; width: 100%; margin-top: 20px;">ادارة المباني</button>
+    <P>{{selectedRoomNumber}} {{selectedRoomId}}</P>
+    <button (click)="goToPage('makeReservation')" mat-raised-button color="accent">حجز غرفة</button>
   </div>
   <!-- باقي الصفحة محل الغرف الي رح تكون -->
   <div class="main-section">
+    <div class="action">
+      <button (click)="goToPage('UsersManagement')" mat-raised-button color="accent">إدارة المستخدمين</button>
+      <button (click)="goToPage('StudentManagement')" mat-raised-button color="accent">إدارة الطلاب</button>
+      <button mat-raised-button color="accent" (click)="goBuildingManagement('BuildingsManagement')">ادارة
+        المباني</button>
+    </div>
     <div class="building-container">
-      <mat-form-field class="choose-building">
+      <mat-form-field color="accent" class="choose-building">
         <mat-label>Choose Building</mat-label>
         <mat-select [(value)]="selectedBuildingName" (selectionChange)="onBuildingChange($event.value)">
           <mat-option *ngFor="let building of listBuilding" [value]="building">{{building.name}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="choose-floor">
+      <mat-form-field color="accent" class="choose-floor">
         <mat-label>Choose Floor</mat-label>
         <mat-select [(value)]="selectedFloorName" (selectionChange)="onFloorChange($event.value)">
           <mat-option [value]="'all'">All</mat-option>
@@ -36,16 +38,16 @@
       <fieldset *ngFor="let suite of filteredSuites" class="suite">
         <legend>Building {{getBuildingName(suite.building_id)}} Suite {{ suite.number }}</legend>
         <div *ngFor="let room of listRoomsOfSuite[suite.id]" class="room-in-suite">
-          <app-room [roomData]="room" [isSelected]="selectedRoomIndex === room.id" (click)="selectRoom(room.id)">
+          <app-room [roomData]="room" [isSelected]="selectedRoomId === room.id"
+            (click)="selectRoom(room.id, room.number,room.capacity)">
           </app-room>
         </div>
       </fieldset>
       <!-- غرف المستقلة -->
       <ng-container *ngFor="let room of filteredRooms">
-        <div *ngIf="room.suite_id === 0" class="single-room">
-          <app-room [roomData]="room" [isSelected]="selectedRoomIndex === room.id"
-            (click)="selectRoom(room.id)"></app-room>
-        </div>
+        <div *ngIf="room.suite_id === 0" class="single-room"> <app-room [roomData]="room"
+            [isSelected]="selectedRoomId === room.id"
+            (click)="selectRoom(room.id , room.number , room.capacity)"></app-room></div>
       </ng-container>
     </div>
   </div>

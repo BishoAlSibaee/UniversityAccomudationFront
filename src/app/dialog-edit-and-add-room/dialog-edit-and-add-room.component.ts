@@ -7,6 +7,7 @@ import { AppComponent } from '../app.component';
 import { Building } from '../Building';
 import { Floor } from '../Floor';
 import { Room } from '../Room';
+import { RoomType } from '../RoomType';
 
 @Component({
   selector: 'app-dialog-edit-and-add-room',
@@ -21,12 +22,14 @@ export class DialogEditAndAddRoomComponent {
   roomId: number = 0
   roomNumber: number = 0;
   capacityRoom: number = 0;
-  typeRoom: string = "";
+  typeRoom: number = 0;
   title: string = "Add New Room"
   nameBtn: string = "Add"
   allBuilding: Building[] = []
   floor: Floor[] = []
   rooms: Room[] = []
+  roomType: RoomType[] = []
+  selectedCapacity: string = ''
   selectedBuildingName: any;
   selectedFloorNumber: any;
   @Output() roomAdded = new EventEmitter<void>();
@@ -36,7 +39,7 @@ export class DialogEditAndAddRoomComponent {
       this.roomId = data.roomId || 0;
       this.roomNumber = data.roomNumber || 0;
       this.capacityRoom = data.roomCapacity || 0;
-      this.typeRoom = data.roomType || "";
+      this.typeRoom = data.roomType || 0;
       this.title = "Update Room"
       this.nameBtn = "Update"
     }
@@ -45,6 +48,7 @@ export class DialogEditAndAddRoomComponent {
   ngOnInit() {
     this.allBuilding = AppComponent.buildings;
     this.rooms = AppComponent.rooms;
+    this.roomType = AppComponent.roomType
   }
 
   onBuildingChange(selectedBuilding: Building) {
@@ -83,7 +87,7 @@ export class DialogEditAndAddRoomComponent {
   }
 
   addRoom() {
-    if (this.buildingId === 0 && this.floorNumber === 0 && this.floorId === 0 && this.typeRoom == "" && this.capacityRoom === 0) {
+    if (this.buildingId === 0 && this.floorNumber === 0 && this.floorId === 0 && this.typeRoom == 0 && this.capacityRoom === 0) {
       return this.openSnackBar("All Required", "Ok");
     }
     let params = new FormData();
@@ -91,7 +95,7 @@ export class DialogEditAndAddRoomComponent {
     params.append("floor_id", this.floorId.toString());
     params.append("suite_id", "0");
     params.append("number", this.roomNumber.toString());
-    params.append("type_room", this.typeRoom);
+    params.append("type_room", this.typeRoom.toString());
     params.append("capacity", this.capacityRoom.toString());
     const token = localStorage.getItem("token")
     const h = new HttpHeaders({ Authorization: "Bearer " + token, });
@@ -101,13 +105,13 @@ export class DialogEditAndAddRoomComponent {
         console.log(result)
         if (result.code == 1) {
           console.log("success");
-          const newRoom = new Room(0, 0, 0, 0, 0, 0, "", "");
+          const newRoom = new Room(0, 0, 0, 0, 0, 0, "", 0);
           newRoom.id = result.room.id
           newRoom.building_id = Number(result.room.building_id)
           newRoom.floor_id = Number(result.room.floor_id)
           newRoom.suite_id = Number(result.room.suite_id)
           newRoom.number = Number(result.room.number);
-          newRoom.type_room = result.room.type_room;
+          newRoom.room_types_id = result.room.type_room;
           newRoom.capacity = result.room.capacity
           AppComponent.rooms = [...AppComponent.rooms, newRoom];
           this.roomAdded.emit();
@@ -135,7 +139,7 @@ export class DialogEditAndAddRoomComponent {
   }
 
   updateRoom() {
-    if (this.roomId === 0 && this.roomNumber === 0 && this.floorId === 0 && this.typeRoom == "" && this.capacityRoom === 0) {
+    if (this.roomId === 0 || this.roomNumber === 0 || this.floorId === 0 || this.typeRoom == 0 || this.capacityRoom === 0) {
       return this.openSnackBar("All Required", "Ok");
     }
     let params = new FormData();
@@ -155,7 +159,7 @@ export class DialogEditAndAddRoomComponent {
           const room = AppComponent.rooms.find(r => r.id === this.roomId)
           if (room) {
             room.number = this.roomNumber;
-            room.type_room = this.typeRoom;
+            room.room_types_id = this.typeRoom;
             room.capacity = this.capacityRoom;
           }
           this.dialogRef.close();

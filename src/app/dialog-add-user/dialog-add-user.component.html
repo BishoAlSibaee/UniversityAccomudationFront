@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>Add User</h1>
+<div mat-dialog-content class="dialog">
+  <mat-form-field color="accent" style="padding-left: 5px;">
+    <mat-label style="color: rgb(159, 158, 163);">Name</mat-label>
+    <input matInput [(ngModel)]="name" placeholder="Enter Name">
+  </mat-form-field>
+  <mat-form-field color="accent" style="padding-left: 5px;">
+    <mat-label style="color: rgb(159, 158, 163);">Mobile</mat-label>
+    <input matInput [(ngModel)]="mobile" placeholder="Enter Mobile">
+  </mat-form-field>
+  <div>
+    <mat-form-field color="accent" style="padding-left: 5px;">
+      <mat-label style="color: rgb(159, 158, 163);">Email</mat-label>
+      <input matInput [(ngModel)]="email" placeholder="Enter Email">
+    </mat-form-field>
+    <mat-form-field style="padding-left: 5px;">
+      <mat-label>Choose User permission</mat-label>
+      <mat-select placeholder="User permission" [(ngModel)]="isAdmin">
+        <mat-option [value]="1">User</mat-option>
+        <mat-option [value]="0">Admin</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div *ngIf="isAdd()">
+    <mat-form-field color="accent" style="padding-left: 5px;">
+      <mat-label style="color: rgb(159, 158, 163);">Password</mat-label>
+      <input matInput [(ngModel)]="password" placeholder="Enter Password">
+    </mat-form-field>
+    <mat-form-field color="accent" style="padding-left: 5px;">
+      <mat-label style="color: rgb(159, 158, 163);">Password Confirmation</mat-label>
+      <input matInput [(ngModel)]="password_confirmation" placeholder="Enter Password Confirmation">
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()" style="color: white;">
+    <mat-icon>cancel</mat-icon> Cancel
+  </button>
+  <button mat-button color="warn" (click)="onClickOk()" style="background-color: #087709bd; color: white;">
+    <mat-icon>check</mat-icon> {{nameBtn}}
+  </button>
+</div>

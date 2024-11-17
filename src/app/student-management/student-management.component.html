@@ -1,0 +1,53 @@
+<!-- <div class="student-container">
+  <div class="header">
+    <h1>All Student</h1>
+    <div class="button-container">
+      <button (click)="openDialogEditOrAdd(0,'','','','Add')" class=" add-button">
+        <mat-icon>add</mat-icon>
+        <span>Add</span>
+      </button>
+      <button class="back-button" routerLink="/mainPage">
+        <mat-icon>home</mat-icon>
+        <span>Back</span>
+      </button>
+    </div>
+  </div>
+  <table class="student-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Student Number</th>
+        <th>Mobile</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let student of students">
+        <td>{{student.name}}</td>
+        <td>{{student.student_number}}</td>
+        <td>{{student.mobile}}</td>
+        <td>
+          <button
+            (click)="openDialogEditOrAdd(student.id , student.name , student.mobile , student.student_number , 'Update')"
+            class="action-button">Update</button>
+          <button (click)="openDeleteDialog(student.id , 'student')" class="delete-button">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div> -->
+
+<div class="main-container">
+  <h1>Student Management</h1>
+  <mat-tab-group mat-stretch-tabs backgroundColor="accent">
+    <mat-tab label="Search Student" aria-label="primary">
+      <div class="building-container"><app-search-student></app-search-student></div>
+    </mat-tab>
+    <mat-tab label="Custom Student Search" aria-label="primary">
+      <div class="floor-container"><app-custom-student-search></app-custom-student-search></div>
+    </mat-tab>
+    <mat-tab label="Add Student" aria-label="primary">
+      <div class="room-container"><app-add-student></app-add-student></div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

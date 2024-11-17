@@ -1,0 +1,50 @@
+<h1 mat-dialog-title>Make Reservation</h1>
+<div class="info-reservation">
+  <h5>Room Number :{{data.roomNumber}} </h5>
+  <h5>Start Date : {{data.startDate}} </h5>
+  <h5>End Date : {{data.endDate}}</h5>
+</div>
+<div mat-dialog-content class="dialog">
+
+  <div>
+    <h5>Select Search Type</h5>
+    <mat-radio-group [(ngModel)]="by" aria-label="Select an option">
+      <mat-radio-button value="name">Student Name</mat-radio-button>
+      <mat-radio-button value="student_number">Student Number</mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div>
+    <mat-form-field color="accent" style="padding-left: 5px;">
+      <mat-label style="color: rgb(159, 158, 163);">Word Search</mat-label>
+      <input [(ngModel)]="value" matInput placeholder="Enter Word Search">
+    </mat-form-field>
+    <button (click)="serachStudentBy()" mat-button style="color: white;">
+      <mat-icon>search</mat-icon> Search
+    </button>
+  </div>
+  <div>
+    <mat-form-field style="width:100%" color="accent" class="choose-building">
+      <mat-label>Choose Student</mat-label>
+      <mat-select (selectionChange)="onStudentChange($event.value)">
+        <!-- <mat-select> -->
+        <mat-option *ngFor="let s of students" [value]="s">Student Name : {{s.name}} | Student Number :
+          {{s.student_number}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div>
+    <ngx-timepicker-field style="color: black;" [format]="24" [defaultTime]="'14:00'" #picker [(ngModel)]="startTime"
+      (ngModelChange)="onTimeChange()"></ngx-timepicker-field>
+
+    <ngx-timepicker-field style="color: black;" [format]="24" [defaultTime]="'14:00'" #picker [(ngModel)]="expirTime"
+      (ngModelChange)="onTimeChange()"></ngx-timepicker-field>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button (click)="cancelDialog()" mat-button style="color: white;">
+    <mat-icon>cancel</mat-icon> Cancel
+  </button>
+  <button (click)="addUserReservation()" mat-button color="warn" style="background-color: #087709bd; color: white;">
+    <mat-icon>check</mat-icon> Save
+  </button>
+</div>

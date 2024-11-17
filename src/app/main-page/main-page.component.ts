@@ -7,6 +7,12 @@ import { Floor } from '../Floor';
 import { Suite } from '../Suite';
 import { ApiLinks } from '../ApiLinks';
 import { AppComponent } from '../app.component';
+import { LoadingDialogComponent } from '../loading-dialog/loading-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { College } from '../College';
+import { DialogReservationComponent } from '../dialog-reservation/dialog-reservation.component';
+import { Reservation } from '../Reservation';
+import { RoomType } from '../RoomType';
 
 @Component({
   selector: 'app-main-page',
@@ -25,27 +31,30 @@ export class MainPageComponent {
   listRoomsOfSuite: { [key: number]: Room[] } = {};
   filteredFloors: Floor[] = [];
   filteredSuites: Suite[] = [];
-  selectedRoomIndex: number | null = null;
+  listReservation: Reservation[] = []
+  selectedRoomId: number | null = null;
+  selectedRoomNumber: number | null = null;
+  selectedRoomCapacity: number | null = null;
   selectedSuiteIndex: number | null = null;
   selectedBuildingName: any;
   selectedFloorName: string | Floor = 'all';
   static isAddingMode: boolean = false;
 
 
-  constructor(private client: HttpClient, private router: Router,) {
+  constructor(private client: HttpClient, private router: Router, public dialog: MatDialog) {
     this.studentsVisible = true
     this.roomsVisible = false
   }
 
   ngOnInit() {
     this.getBuildingData();
+    this.getReservation();
+    this.getAllRoomType()
   }
 
   getBuildingData() {
-    console.log("Checking buildings:", AppComponent.buildings);
-
     if (AppComponent.buildings.length === 0) {
-      console.log(AppComponent.buildings);
+      const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
       let params = new FormData();
       const token = localStorage.getItem("token")
 
@@ -65,6 +74,9 @@ export class MainPageComponent {
         error: (error) => {
           console.log("Error");
           console.log(error);
+        },
+        complete: () => {
+          dialogRef.close();
         }
       });
     } else {
@@ -145,10 +157,6 @@ export class MainPageComponent {
     this.roomsVisible = true
   }
 
-  goToAddStudent() {
-    this.router.navigate(['addStudent'])
-  }
-
   goToShowStudents() {
     this.router.navigate(['students'])
   }
@@ -161,9 +169,11 @@ export class MainPageComponent {
     this.router.navigate([namePage]);
   }
 
-  selectRoom(roomId: number) {
+  selectRoom(roomId: number, roomNumber: number, roomCapacity: number) {
     console.log("Room ID = " + roomId)
-    this.selectedRoomIndex = roomId;
+    this.selectedRoomId = roomId;
+    this.selectedRoomNumber = roomNumber;
+    this.selectedRoomCapacity = roomCapacity
   }
 
   selectSuite(index: number) {
@@ -225,6 +235,50 @@ export class MainPageComponent {
   goBuildingManagement(page: string) {
     MainPageComponent.isAddingMode = (page === 'BuildingsManagement');
     this.router.navigate([page]);
+  }
+
+  // openDialogReservaion(): void {
+  //   this.dialog.open(DialogReservationComponent, {
+  //     data: { roomId: this.selectedRoomId, roomNumber: this.selectedRoomNumber, roomCapacity: this.selectedRoomCapacity }
+  //   });
+  // }
+
+
+  getReservation() {
+    const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
+    const token = localStorage.getItem("token")
+    const h = new HttpHeaders({ Authorization: "Bearer " + token, });
+    let options = { headers: h }
+    this.client.get<Reservation[]>(ApiLinks.getReservation, options).subscribe({
+      next: (result) => {
+        this.listReservation = result
+        console.log("Result = " + this.listReservation)
+        console.log("Result length = " + this.listReservation.length)
+        console.log("Result = " + result)
+      }, error: (error) => {
+        console.log(error)
+      },
+      complete: () => {
+        dialogRef.close();
+      }
+    })
+  }
+
+  getAllRoomType() {
+    const token = localStorage.getItem("token")
+    const h = new HttpHeaders({
+      Authorization: "Bearer " + token,
+    });
+    let options = { headers: h };
+    this.client.get<RoomType[]>(ApiLinks.getAllRoomType, options).subscribe({
+      next: (result) => {
+        AppComponent.roomType = result
+      },
+      error: (error) => {
+        console.log("Error");
+        console.log(error);
+      },
+    });
   }
 }
 

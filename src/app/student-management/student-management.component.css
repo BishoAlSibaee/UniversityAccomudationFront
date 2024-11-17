@@ -1,0 +1,161 @@
+.student-container {
+  max-width: 900px;
+  margin: 0 auto;
+  margin-top: 20px;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  border-radius: 8px;
+  box-shadow: 0px 0px 11px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.add-button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  background-color: #45a049;
+}
+
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.student-table th,
+.student-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.student-table th {
+  background-color: #f2f2f2;
+}
+
+.action-button {
+  padding: 6px 12px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.delete-button {
+  padding: 6px 12px;
+  background-color: #f34421;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.action-button:hover {
+  background-color: #1E88E5;
+}
+
+.student-form mat-form-field {
+  padding: 10px;
+}
+
+.back-button {
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 100%;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.back-button:hover {
+  background-color: #0056b3;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+}
+
+.add-button,
+.back-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 30%;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.back-button {
+  background-color: #007BFF;
+}
+
+.add-button:hover {
+  background-color: #45a049;
+}
+
+.back-button:hover {
+  background-color: #0056b3;
+}
+
+.mat-icon {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+/* ==================================================== */
+
+.main-container {
+  padding: 20px;
+  margin: 20px;
+  /* background-color: rgba(207, 201, 201, 0.384); */
+}
+h1 {
+  padding-right: 25px;
+  padding-left: 25px;
+  font-weight: bold;
+}
+
+.building-container {
+  padding: 30px;
+}
+
+.floor-container {
+  padding: 30px;
+}
+
+.room-container {
+  padding: 30px;
+}
+
+[aria-label=accent] {
+  background-color: rgb(92, 95, 114);
+  font-weight: 700;
+}

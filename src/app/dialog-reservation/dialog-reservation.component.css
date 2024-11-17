@@ -1,0 +1,36 @@
+h4 {
+  color: white;
+  font-weight: bold;
+  padding: 0px 10px 0 10px;
+  margin: auto;
+}
+
+.available-room {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-color: #31343b;
+  border-radius: 10px;
+  color: white;
+  padding: 10px;
+  margin: 0px 3px 0px 3px;
+  align-content: center;
+}
+
+.available-room p {
+  text-align: center;
+}
+
+.available-room.selected {
+  background-color: green;
+}
+
+.available-room :hover {
+  cursor: pointer
+}
+
+.info-reservation {
+  display: flex;
+  justify-content: space-evenly;
+  color: white
+}

@@ -24,7 +24,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
-import { StudentsComponent } from './students/students.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MakeReservationComponent } from './make-reservation/make-reservation.component';
@@ -48,7 +47,17 @@ import { DialogDeleteComponent } from './dialog-delete/dialog-delete.component';
 import { AddSuiteComponent } from './add-suite/add-suite.component';
 import { DialogEditAndAddSuiteComponent } from './dialog-edit-and-add-suite/dialog-edit-and-add-suite.component';
 import { DialogAddMultiRoomComponent } from './dialog-add-multi-room/dialog-add-multi-room.component';
-
+import { UserManagementComponent } from './user-management/user-management.component';
+import { StudentManagementComponent } from './student-management/student-management.component';
+import { DialogAddUserComponent } from './dialog-add-user/dialog-add-user.component';
+import { DialogEditAndAddStudentComponent } from './dialog-edit-and-add-student/dialog-edit-and-add-student.component';
+import { SearchStudentComponent } from './search-student/search-student.component';
+import { CustomStudentSearchComponent } from './custom-student-search/custom-student-search.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ReactiveFormsModule } from '@angular/forms';
+import { DialogReservationComponent } from './dialog-reservation/dialog-reservation.component';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 @NgModule({
   declarations: [
@@ -57,7 +66,6 @@ import { DialogAddMultiRoomComponent } from './dialog-add-multi-room/dialog-add-
     MainPageComponent,
     HeaderComponent,
     AddStudentComponent,
-    StudentsComponent,
     MakeReservationComponent,
     DialogMessageComponent,
     LoadingDialogComponent,
@@ -75,6 +83,14 @@ import { DialogAddMultiRoomComponent } from './dialog-add-multi-room/dialog-add-
     AddSuiteComponent,
     DialogEditAndAddSuiteComponent,
     DialogAddMultiRoomComponent,
+    UserManagementComponent,
+    StudentManagementComponent,
+    DialogAddUserComponent,
+    DialogEditAndAddStudentComponent,
+    SearchStudentComponent,
+    CustomStudentSearchComponent,
+    DialogReservationComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -100,9 +116,21 @@ import { DialogAddMultiRoomComponent } from './dialog-add-multi-room/dialog-add-
     MatDatepickerModule,
     MatNativeDateModule,
     MatProgressSpinnerModule,
+    MatRadioModule,
     MatSnackBarModule,
-    RouterModule.forRoot([{ path: '', redirectTo: '/login', pathMatch: 'full' }, { path: 'login', component: LoginComponent }, { path: 'mainPage', component: MainPageComponent }
-      , { path: 'addStudent', component: AddStudentComponent }, { path: 'students', component: StudentsComponent }, { path: 'makeReservation', component: MakeReservationComponent }, { path: 'test', component: TestComponent }, { path: 'addBuilding', component: AddBuildingComponent }, { path: 'BuildingsManagement', component: BuildingsManagementComponent }
+    ReactiveFormsModule,
+    MatAutocompleteModule,
+    NgxMaterialTimepickerModule,
+    RouterModule.forRoot([{ path: '', redirectTo: '/login', pathMatch: 'full' },
+    { path: 'login', component: LoginComponent },
+    { path: 'mainPage', component: MainPageComponent },
+    { path: 'addStudent', component: AddStudentComponent },
+    { path: 'makeReservation', component: MakeReservationComponent },
+    { path: 'test', component: TestComponent },
+    { path: 'addBuilding', component: AddBuildingComponent },
+    { path: 'BuildingsManagement', component: BuildingsManagementComponent },
+    { path: 'StudentManagement', component: StudentManagementComponent },
+    { path: 'UsersManagement', component: UserManagementComponent },
     ]),
   ],
   providers: [DialogMessageComponent],

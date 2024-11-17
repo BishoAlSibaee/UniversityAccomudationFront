@@ -1,251 +1,289 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { Student } from '../Student';
-import { AppComponent } from '../app.component';
+import { Component, inject } from '@angular/core';
 import { Building } from '../Building';
 import { Floor } from '../Floor';
-import { Suite } from '../Suite';
-import { Room } from '../Room';
-import { DialogMessageComponent } from '../dialog-message/dialog-message.component';
-import { MatDialog } from '@angular/material/dialog';
+import { AppComponent } from '../app.component';
+import { Router } from '@angular/router';
+import { RoomType } from '../RoomType';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ApiLinks } from '../ApiLinks';
 import { LoadingDialogComponent } from '../loading-dialog/loading-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Room } from '../Room';
+import { Reservation } from '../Reservation';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { DialogReservationComponent } from '../dialog-reservation/dialog-reservation.component';
+import { DialogMessageComponent } from '../dialog-message/dialog-message.component';
 
 @Component({
   selector: 'app-make-reservation',
   templateUrl: './make-reservation.component.html',
-  styleUrls: ['./make-reservation.component.css']
+  styleUrls: ['./make-reservation.component.css'],
+  animations: [
+    trigger('slideToggle', [
+      state('void', style({ height: '0', opacity: '0', overflow: 'hidden' })),
+      state('*', style({ height: '*', opacity: '1', overflow: 'visible' })),
+      transition(':enter', [animate('300ms ease-out')]),
+      transition(':leave', [animate('300ms ease-in')]),
+    ]),
+  ],
 })
+
 export class MakeReservationComponent {
+  private _snackBar = inject(MatSnackBar);
+  buildings: Building[] = [];
+  selectedBuildingId: number = 0;
+  filteredFloors: Floor[] = [];
+  selectedFloorId: string | number | null = 'all';
+  capacities: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  selectedCapacity: string | number | null = 'all';
+  roomTypes: RoomType[] = [];
+  selectedRoomTypeId: string | number | null = 'all';
+  selectedOption: number = 0;
+  selectedRoom: any = null;
+  selectedRoomNumber: number | null = null;
+  startDate: string = '';
+  expirDate: string = '';
+  availableRooms: Room[] = []
+  reservations: Reservation[] = []
+  showOptions: boolean = false;
+  Start: any
+  Expire: any
+  userReservations: Reservation[] = [];
 
-  searchName = ""
-  LightColor = "#3d2706"
-  student: Student
-  searchStudents: Student[] = []
-  message = ""
-  searchStudent = AppComponent.AdminUrl + "searchStudentByName"
-  getBuildingsUrl = AppComponent.AdminUrl + "getBuildings"
-  getFloorsUrl = AppComponent.AdminUrl + "getFloors"
-  getSuitesUrl = AppComponent.AdminUrl + "getSuites"
-  getRoomsUrl = AppComponent.AdminUrl + "getRooms"
-  makeReservationUrl = AppComponent.AdminUrl + "makeReservation"
-  selectedBuilding: Building
-  buildings: Building[] = []
-  selectedFloor: Floor | any
-  floors: Floor[] = []
-  floorsForSelect: Floor[] = []
-  selectedSuite: Suite | any
-  suites: Suite[] = []
-  suitesForSelect: Suite[] = []
-  selectedRoom: Room | any
-  rooms: Room[] = []
-  roomsForSelect: Room[] = []
-  expirDate: any
-  startDate: any
-
-  constructor(
-    private router: Router,
-    private client: HttpClient,
-    private dialog: MatDialog
-  ) {
-    this.student = new Student(0, "", "", "", "", "", "", "", "")
-    this.selectedBuilding = this.buildings[0]
-  }
+  constructor(private router: Router, private client: HttpClient, private dialog: MatDialog) { }
 
   ngOnInit() {
-    this.getBuildings()
-  }
-
-  back() {
-    this.router.navigate(['mainPage'])
-  }
-
-  search() {
-    let params = new FormData()
-    params.append("student_name", this.searchName)
-    const h = new HttpHeaders({
-      Authorization: `Bearer`,
-    })
-    let options = { headers: h }
-    this.dialog.open(LoadingDialogComponent)
-    this.client.post<any>(this.searchStudent, params, options).subscribe({
-      next: (result) => {
-        this.dialog.closeAll()
-        console.log(result)
-        if (result.code == 1) {
-          this.searchStudents = result.students
-        }
-      }, error: (error) => {
-        this.dialog.closeAll()
-        console.log(error)
-        this.dialog.open(DialogMessageComponent, { data: { title: "خطأ", theMessage: "حدث خطأ \n " + error } })
-      }
-    })
-  }
-
-  getBuildings() {
-    const h = new HttpHeaders({
-      Authorization: `Bearer`,
-    })
-    let options = { headers: h }
-    this.client.get<any>(this.getBuildingsUrl, options).subscribe({
-      next: (result) => {
-        console.log(result)
-        this.buildings = result
-        this.getFloors()
-      }, error: (error) => {
-        console.log(error)
-      }
-    })
-  }
-
-  getFloors() {
-    const h = new HttpHeaders({
-      Authorization: `Bearer`,
-    })
-    let options = { headers: h }
-    this.client.get<any>(this.getFloorsUrl, options).subscribe({
-      next: (result) => {
-        console.log(result)
-        this.floors = result
-        this.getSuites()
-      }, error: (error) => {
-        console.log(error)
-      }
-    })
-  }
-
-  getSuites() {
-    const h = new HttpHeaders({
-      Authorization: `Bearer`,
-    })
-    let options = { headers: h }
-    this.client.get<any>(this.getSuitesUrl, options).subscribe({
-      next: (result) => {
-        console.log(result)
-        this.suites = result
-        this.getRooms()
-      }, error: (error) => {
-        console.log(error)
-      }
-    })
-  }
-
-  getRooms() {
-    const h = new HttpHeaders({
-      Authorization: `Bearer `,
-    })
-    let options = { headers: h }
-    this.client.get<any>(this.getRoomsUrl, options).subscribe({
-      next: (result) => {
-        console.log(result)
-        this.rooms = result
-      }, error: (error) => {
-        console.log(error)
-      }
-    })
-  }
-
-  setFloors(bu: Building) {
-    this.floorsForSelect = []
-    for (let i = 0; i < this.floors.length; i++) {
-      if (this.floors[i].building_id == bu.id) {
-        this.floorsForSelect.push(this.floors[i])
-      }
+    this.buildings = AppComponent.buildings;
+    if (this.buildings.length === 0) {
+      this.router.navigate(['/mainPage']);
+    } else {
+      this.selectedBuildingId = this.buildings[0].id;
+      this.roomTypes = AppComponent.roomType;
+      this.onBuildingChange(this.selectedBuildingId);
     }
   }
 
-  setSuites(fl: Floor) {
-    this.suitesForSelect = []
-    for (let i = 0; i < this.suites.length; i++) {
-      if (this.suites[i].building_id == fl.id) {
-        this.suitesForSelect.push(this.suites[i])
-      }
+  onBuildingChange(buildingId: number | null) {
+    const selectedBuilding = this.buildings.find(b => b.id === buildingId);
+    if (selectedBuilding) {
+      this.filteredFloors = selectedBuilding.floors || [];
+      this.selectedFloorId = null;
+      this.selectedFloorId = 'all';
     }
   }
 
-  setRooms(su: Suite) {
-    this.roomsForSelect = []
-    for (let i = 0; i < this.rooms.length; i++) {
-      if (this.rooms[i].building_id == su.id) {
-        this.roomsForSelect.push(this.rooms[i])
-      }
-    }
+  onFloorChange(floorId: any) {
+    this.selectedFloorId = floorId === 'all' ? null : floorId;
+    this.selectedFloorId = floorId;
   }
 
-  saveReservation() {
-    this.message = ""
-    if (this.student.id == 0 || this.student == undefined) {
-      if (this.searchStudents.length > 0) {
-        this.message = "يرجى اختيار طالب "
-      }
-      else {
-        this.message = "يرجى البحث عن الطالب"
-      }
-      return
-    }
-    if (this.selectedBuilding == null) {
-      this.message = "يرجى اختيار المبنى"
-      return
-    }
-    if (this.selectedFloor == null) {
-      this.message = "يرجى اختيار الدور"
-      return
-    }
-    if (this.selectedSuite == null) {
-      this.message = "يرجى اختيار الجناح"
-      return
-    }
-    if (this.selectedRoom == null) {
-      this.message = "يرجى اختيار الغرفة"
-      return
-    }
-    if (this.startDate == null) {
-      this.message = "يرجى تحديد بداية الفترة"
-      return
-    }
-    if (this.expirDate == null) {
-      this.message = "يرجى تحديد نهاية الفترة"
-      return
-    }
+  onRoomTypeChange(roomTypeId: number | null) {
+    this.selectedRoomTypeId = roomTypeId;
+  }
+
+  selectRoom(room: Room) {
+    this.selectedRoom = room;
+    this.selectedRoomNumber = room.number;
+  }
+
+  checkReservation() {
     let StartDate = new Date(this.startDate)
     let ExpireDate = new Date(this.expirDate)
-    let Start = StartDate.getFullYear() + "-" + (StartDate.getMonth() + 1) + "-" + StartDate.getDate()
-    let Expire = ExpireDate.getFullYear() + "-" + (ExpireDate.getMonth() + 1) + "-" + ExpireDate.getDate()
-    const h = new HttpHeaders({
-      Authorization: `Bearer `,
-    })
-    let options = { headers: h }
-    let params = new FormData()
-    params.append("student_id", this.student.id.toString())
-    params.append("room_id", this.selectedRoom.id)
-    params.append("student_name", this.student.name)
-    params.append("room_number", this.selectedRoom.number)
-    params.append("start_date", Start)
-    params.append("expire_date", Expire)
+    this.Start = StartDate.getFullYear() + "-" + (StartDate.getMonth() + 1) + "-" + StartDate.getDate()
+    this.Expire = ExpireDate.getFullYear() + "-" + (ExpireDate.getMonth() + 1) + "-" + ExpireDate.getDate()
 
-    this.client.post<any>(this.makeReservationUrl, params, options).subscribe({
+    if (this.selectedBuildingId === 0) {
+      return this.openSnackBar("All Required", "Ok");
+    }
+    if (this.startDate === '' || this.expirDate === '') {
+      return this.openSnackBar("Enter Date", "Ok");
+    }
+    if (this.selectedOption === 0) {
+      return this.openSnackBar("Select the type search ", "Ok");
+    }
+    const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
+    let params = new FormData();
+    params.append("building_id", this.selectedBuildingId.toString());
+    if (this.selectedFloorId !== 'all' && this.selectedFloorId != null) {
+      params.append("floor_id", this.selectedFloorId.toString());
+    }
+    if (this.selectedRoomTypeId != null && this.selectedRoomTypeId !== 'all') {
+      params.append("room_type", this.selectedRoomTypeId.toString());
+    }
+    if (this.selectedCapacity != null && this.selectedCapacity !== 'all') {
+      params.append("capacity", this.selectedCapacity.toString());
+    }
+    params.append("start_date", this.Start);
+    params.append("expire_date", this.Expire);
+    params.append("type_search", this.selectedOption.toString());
+    const token = localStorage.getItem("token")
+    const h = new HttpHeaders({ Authorization: "Bearer " + token, });
+    let options = { headers: h }
+    this.selectedRoomNumber = 0
+    this.userReservations = [];
+    this.availableRooms = [];
+    this.reservations = [];
+    this.selectedRoom = null;
+    this.client.post<any>(ApiLinks.checkReservation, params, options).subscribe({
       next: (result) => {
         console.log(result)
-        if (result.code == 1) {
-          this.dialog.open(DialogMessageComponent, { data: { title: "تم الحفظ", theMessage: "تم حفظ الحجز بنجاح" } });
-        }
-        else {
-          if (typeof result.error == "object") {
-            this.message = AppComponent.handleError(result.error)
-          }
-          else {
-            this.message = result.error
-          }
+        if (result.code === 1) {
+          this.availableRooms = result.AvailableRooms
+          console.log("result = " + result.AvailableRooms)
+        } else {
+          return this.openSnackBar(result.error, "Ok");
         }
       }, error: (error) => {
-        if (typeof error == "object") {
-          this.message = AppComponent.handleError(error)
-        }
-        else {
-          this.message = error
-        }
+        console.log(error)
+        return this.openSnackBar(error, "Ok");
+      },
+      complete: () => {
+        dialogRef.close();
       }
     })
+  }
+
+  makeReservation1() {
+    this.checkList();
+    const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
+
+    const token = localStorage.getItem("token");
+    const headers = new HttpHeaders({ Authorization: "Bearer " + token });
+    const options = { headers: headers };
+
+    const params = { 'Reservations': this.userReservations };
+
+    this.client.post<any>(ApiLinks.makeReservation, params, options).subscribe({
+      next: (result) => {
+        if (result.code === 1) {
+          const successful = result.successful_reservations.length;
+          const failed = result.failed_reservations.length;
+          let message = 'تم الحجز بنجاح';
+          if (failed > 0) {
+            message += ` و ${failed} حجز فشل بسبب: ${result.failed_reservations.map((res: any) => res.error).join(', ')}`;
+          }
+          this.clearDataAfterReservation()
+          this.openSnackBar(message, "Ok");
+        } else {
+          this.openSnackBar(result.error || "فشلت عملية الحجز.", "Ok");
+        }
+      },
+      error: (error) => {
+        console.log(error);
+        this.openSnackBar("حدث خطأ أثناء محاولة الاتصال بالخادم.", "Ok");
+      },
+      complete: () => {
+        dialogRef.close();
+      }
+    });
+  }
+
+  makeReservation() {
+    const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
+    const token = localStorage.getItem("token");
+    const headers = new HttpHeaders({ Authorization: "Bearer " + token });
+    const options = { headers: headers };
+    const params = { Reservations: this.userReservations };
+    this.client.post<any>(ApiLinks.makeReservation, params, options).subscribe({
+      next: (result) => {
+        if (result.code === 1) {
+          const failedReservations = result.failed_reservations;
+          if (failedReservations.length > 0) {
+            const failedNames = failedReservations.map((res: any) => res.reservation.student_name);
+            const message = `
+             <strong>تمت اضافة الحجوزات</strong>
+             <p>يوجد حجز/حجوزات للسمتخدم </p>
+             <ul>
+              ${failedNames.map((name: string) => `<li>${name}</li>`).join('')}
+             </ul>
+             <p>لم يتم تثبيتها بسبب سعة الغرفة</p>`;
+            this.dialog.open(DialogMessageComponent, { data: { title: 'تنبيه', theMessage: message, }, });
+          } else {
+            this.openSnackBar("تم الحجز بنجاح", "Ok");
+          }
+          this.clearDataAfterReservation();
+        } else {
+          this.openSnackBar(result.error || "فشلت عملية الحجز.", "Ok");
+        }
+      },
+      error: (error) => {
+        console.error(error);
+        this.openSnackBar("حدث خطأ أثناء محاولة الاتصال بالخادم.", "Ok");
+      },
+      complete: () => {
+        dialogRef.close();
+      },
+    });
+  }
+
+  openReservationComponent(roomId: number, roomNumber: number, startDate: string, endDate: string, availableCapacity: number): void {
+    if (this.userReservations.length >= availableCapacity) {
+      return this.openSnackBar("لا يمكن حجز الغرفة .. عدد الأفراد أكبر من سعة الغرفة", "Ok");
+    } else {
+      const dialogRef = this.dialog.open(DialogReservationComponent, {
+        data: { roomId, roomNumber, startDate, endDate }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          result.forEach((res: any) => {
+            if (this.isStudentAlreadyReserved(res.student_id)) {
+              this.openSnackBar(`الحجز موجود مسبقًا للطالب: ${res.student_name}`, "Ok");
+            } else {
+              this.userReservations.push(res);
+            }
+          });
+        }
+      });
+    }
+  }
+
+  checkList() {
+    console.table(this.userReservations);
+    this.reservations.forEach((reservation, index) => {
+      console.log(`Reservation ${index + 1}:`, this.userReservations);
+    });
+    console.log("Reservation length  = " + this.userReservations.length)
+    console.log("Reservations:", JSON.stringify(this.userReservations, null, 2));
+  }
+
+  deleteReservation(index: number) {
+    this.userReservations.splice(index, 1);
+  }
+
+  isStudentAlreadyReserved(studentId: number): boolean {
+    const isInCurrentReservations = this.selectedRoom.reservations.some(
+      (res: any) => res.student_id === studentId
+    );
+    const isInUserReservations = this.userReservations.some(
+      (res) => res.student_id === studentId
+    );
+    return isInCurrentReservations || isInUserReservations;
+  }
+
+  toggleOptions() {
+    this.showOptions = !this.showOptions;
+  }
+
+  clearDataAfterReservation() {
+    this.selectedOption = 0
+    this.selectedRoom = null
+    this.selectedRoomNumber = null
+    this.startDate = ''
+    this.expirDate = ''
+    this.availableRooms = [];
+    this.reservations = []
+    this.userReservations = []
+    this.showOptions = false
+    this.Start = null
+    this.Expire = null
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 6000,
+      panelClass: ['custom-snackbar']
+    });
   }
 }

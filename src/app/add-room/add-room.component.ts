@@ -71,10 +71,10 @@ export class AddRoomComponent {
   }
 
 
-  openDialogEditOrAdd(roomId: number, roomNumber: number, roomType: string, roomCapacity: number) {
-    if (roomId !== 0 && roomNumber !== 0 && roomType !== "" && roomCapacity !== 0) {
+  openDialogEditOrAdd(roomId: number, roomNumber: number, room_types_id: number, roomCapacity: number) {
+    if (roomId !== 0 && roomNumber !== 0 && room_types_id !== 0 && roomCapacity !== 0) {
       const dialogRef = this.dialog.open(DialogEditAndAddRoomComponent, {
-        data: { roomId: roomId, roomNumber: roomNumber, roomType: roomType, roomCapacity: roomCapacity }
+        data: { roomId: roomId, roomNumber: roomNumber, roomType: room_types_id, roomCapacity: roomCapacity }
       });
       dialogRef.afterClosed().subscribe(result => {
         console.log(`Dialog result: ${result}`);

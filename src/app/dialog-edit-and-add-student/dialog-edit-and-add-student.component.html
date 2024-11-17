@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>{{title}}</h1>
+<div mat-dialog-content class="dialog">
+
+  <mat-form-field color="accent" style="padding-left: 5px;">
+    <mat-label style="color: rgb(159, 158, 163);">Student Name</mat-label>
+    <input matInput [(ngModel)]="studentName" placeholder="Enter Student Name">
+  </mat-form-field>
+  <mat-form-field color="accent" style="padding-left: 5px;">
+    <mat-label style="color: rgb(159, 158, 163);">Student Number</mat-label>
+    <input matInput [(ngModel)]="studentNumber" placeholder="Enter Student Number">
+  </mat-form-field>
+
+  <mat-form-field color="accent" style="padding-left: 5px;" type="number">
+    <mat-label style="color: rgb(159, 158, 163);">Student Mobile</mat-label>
+    <input matInput [(ngModel)]="studentMobile" placeholder="Enter Student Mobile">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button (click)="onClickCancel()" mat-button style="color: white;">
+    <mat-icon>cancel</mat-icon> Cancel
+  </button>
+  <button (click)="onClickOk()" mat-button color="warn" style="background-color: #087709bd; color: white;">
+    <mat-icon>check</mat-icon> {{nameBtn}}
+  </button>
+</div>

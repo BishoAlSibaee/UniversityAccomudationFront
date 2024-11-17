@@ -3,6 +3,11 @@
   margin: 20px;
   /* background-color: rgba(207, 201, 201, 0.384); */
 }
+h1 {
+  padding-right: 25px;
+  padding-left: 25px;
+  font-weight: bold;
+}
 
 .building-container {
   padding: 30px;

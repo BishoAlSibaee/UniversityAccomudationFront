@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { Building } from './Building';
-import { Floor } from './Floor';
 import { Room } from './Room';
-import { Suite } from './Suite';
+import { Admin } from './Admin';
+import { Student } from './Student';
+import { College } from './College';
+import { RoomType } from './RoomType';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +19,10 @@ export class AppComponent {
   // public static token = ""
   public static buildings: Building[] = []
   public static rooms: Room[] = []
+  public static admin: Admin[] = []
+  public static students: Student[] = []
+  public static college: College[] = []
+  public static roomType: RoomType[] = []
   public static handleError(error: object) {
     let er = ""
     let keys = Object.keys(error)

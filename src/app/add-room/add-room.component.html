@@ -2,7 +2,7 @@
   <div class="header">
     <h1>All Rooms</h1>
     <div class="button-container">
-      <button (click)="openDialogEditOrAdd(0,0,'', 0)" class="add-button">
+      <button (click)="openDialogEditOrAdd(0,0,0, 0)" class="add-button">
         <mat-icon>add</mat-icon>
         <span>Add</span>
       </button>
@@ -43,10 +43,10 @@
         <td>{{ selectedBuilding?.name }}</td>
         <td>{{ getNumberFloor(room.floor_id)}}</td>
         <td>{{ room.number }}</td>
-        <td>{{ room.type_room }}</td>
+        <td>{{ room.room_types_id }}</td>
         <td>{{ room.capacity }}</td>
         <td>
-          <button (click)="openDialogEditOrAdd(room.id , room.number,room.type_room , room.capacity)"
+          <button (click)="openDialogEditOrAdd(room.id , room.number,room.room_types_id , room.capacity)"
             class="action-button">Update</button>
           <button (click)="openDeleteDialog(room.id , 0 , 0 , 'Room')" class="delete-button">Delete</button>
         </td>

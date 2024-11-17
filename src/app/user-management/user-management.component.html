@@ -1,0 +1,39 @@
+<div class="user-container">
+  <div class="header">
+    <h1>All Users</h1>
+    <div class="button-container">
+      <button (click)="openDialog(0,'','','',0, 'Add')" class=" add-button">
+        <mat-icon>add</mat-icon>
+        <span>Add</span>
+      </button>
+      <button class="back-button" routerLink="/mainPage">
+        <mat-icon>home</mat-icon>
+        <span>Back</span>
+      </button>
+    </div>
+  </div>
+  <table class="user-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Mobile</th>
+        <th>Email</th>
+        <th>User permission</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let admin of listAdmin">
+        <td>{{admin.name}}</td>
+        <td>{{admin.mobile}}</td>
+        <td>{{admin.email}}</td>
+        <td>{{isAdmain(admin.is_admin)}}</td>
+        <td>
+          <button (click)="openDialog(admin.id , admin.name ,admin.mobile,admin.email,admin.is_admin,'Update')"
+            class="action-button">Update</button>
+          <button (click)="openDeleteDialog(admin.id , 'admin')" class="delete-button">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -6,6 +6,7 @@ import { AppComponent } from '../app.component';
 import { Room } from '../Room';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RoomService } from '../room.service';
+import { RoomType } from '../RoomType';
 
 @Component({
   selector: 'app-dialog-add-multi-room',
@@ -19,14 +20,15 @@ export class DialogAddMultiRoomComponent {
   numberOfRoom: number = 0;
   numberRoom: number = 0;
   capacity: number = 0;
-  typeRoom: string = "";
-
+  listTypeRoom: RoomType[] = [];
+  selectedTypeRoom: string = ''
 
   constructor(private client: HttpClient, public dialogRef: MatDialogRef<DialogAddMultiRoomComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private roomService: RoomService,) {
     if (data) {
       this.buildingId = data.buildingId;
       this.floorId = data.floorId;
     }
+    this.listTypeRoom = AppComponent.roomType;
     console.log("BUILDING = " + this.buildingId)
     console.log("FLOOR = " + this.floorId)
   }
@@ -36,7 +38,8 @@ export class DialogAddMultiRoomComponent {
   }
 
   addMultiRoom() {
-    if (this.numberOfRoom === 0 || this.numberRoom === 0 || this.capacity === 0 || this.typeRoom == "") {
+    console.log("selectedCapacity = " + this.selectedTypeRoom)
+    if (this.numberOfRoom === 0 || this.numberRoom === 0 || this.capacity === 0 || this.selectedTypeRoom == "") {
       return this.openSnackBar("All Required", "Ok");
     }
     let params = new FormData();
@@ -44,7 +47,7 @@ export class DialogAddMultiRoomComponent {
     params.append("floorId", this.floorId.toString());
     params.append("numberOfRoom", this.numberOfRoom.toString());
     params.append("numberRoom", this.numberRoom.toString());
-    params.append("typeRoom", this.typeRoom);
+    params.append("typeRoom", this.selectedTypeRoom);
     params.append("capacity", this.capacity.toString());
     const token = localStorage.getItem("token")
     const h = new HttpHeaders({ Authorization: "Bearer " + token, });
@@ -71,6 +74,7 @@ export class DialogAddMultiRoomComponent {
         console.log("Error" + error);
       }
     });
+
   }
 
   openSnackBar(message: string, action: string) {

@@ -9,9 +9,11 @@
     <input matInput [(ngModel)]="numberRoom" placeholder="Enter First Room Number">
   </mat-form-field>
   <div>
-    <mat-form-field color="accent" style="padding-left: 5px;" type="number">
-      <mat-label style="color: rgb(159, 158, 163);">Type Room</mat-label>
-      <input matInput [(ngModel)]="typeRoom" placeholder="Enter Type Room">
+    <mat-form-field color="accent" appearance="outline" class="filter-field">
+      <mat-label>Type Room</mat-label>
+      <mat-select placeholder="Enter Type Room" [(value)]="selectedTypeRoom">
+        <mat-option *ngFor="let r of listTypeRoom" [value]="r.id">{{r.name_ar}}</mat-option>
+      </mat-select>
     </mat-form-field>
     <mat-form-field color="accent" style="padding-left: 5px;" type="number">
       <mat-label style="color: rgb(159, 158, 163);">Capacity Room</mat-label>

@@ -1,0 +1,74 @@
+<div class="search-container">
+  <div class="header">
+    <h1>Select Search Type</h1>
+    <div class="button-container">
+      <button class="back-button" routerLink="/mainPage">
+        <mat-icon>home</mat-icon>
+        <span>Back</span>
+      </button>
+    </div>
+  </div>
+  <mat-checkbox class="mdc-form-field" color="accent" (change)="isChecked()" [(ngModel)]="checkedCollege">Search for
+    student by college</mat-checkbox>
+  <p>Select Search Type</p>
+  <mat-radio-group [(ngModel)]="by" aria-label="Select an option">
+    <mat-radio-button value="name">By Student Name</mat-radio-button>
+    <mat-radio-button value="student_number">By Student Number</mat-radio-button>
+    <mat-radio-button value="mobile">By student mobile number</mat-radio-button>
+  </mat-radio-group>
+
+  <mat-form-field color="accent" style="padding-left: 5px;" type="number">
+    <mat-label style="color: rgb(159, 158, 163);">Search Word</mat-label>
+    <input matInput [(ngModel)]="value" placeholder="Enter The Search Word">
+  </mat-form-field>
+
+  <mat-form-field style="padding-left: 5px ; padding-right: 5px;" *ngIf="showList" color="accent">
+    <mat-label>Student College</mat-label>
+    <mat-select placeholder="Select Nationality" [(ngModel)]="selectedCollegeId">
+      <mat-option *ngFor="let c of listCollege" [value]="c.id">{{c.college_ar}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="submit">
+    <button (click)="serachStudentBy()" mat-raised-button color="primary">Submit</button>
+  </div>
+</div>
+
+<div class="student-container">
+  <div class="header">
+    <h1>Student</h1>
+    <!-- <div class="button-container">
+      <button (click)="openDialogEditOrAdd(0,'','','','Add')" class=" add-button">
+        <mat-icon>add</mat-icon>
+        <span>Add</span>
+      </button>
+      <button class="back-button" routerLink="/mainPage">
+        <mat-icon>home</mat-icon>
+        <span>Back</span>
+      </button>
+    </div> -->
+  </div>
+  <table class="student-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Student Number</th>
+        <th>Mobile</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let student of students">
+        <td>{{student.name}}</td>
+        <td>{{student.student_number}}</td>
+        <td>{{student.mobile}}</td>
+        <td>
+          <button
+            (click)="openDialogEditOrAdd(student.id , student.name , student.mobile , student.student_number , 'Update')"
+            class="action-button">Update</button>
+          <button (click)="openDeleteDialog(student.id , 'student')" class="delete-button">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
