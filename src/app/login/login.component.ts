@@ -14,7 +14,7 @@ export class LoginComponent {
   // loginUrl = AppComponent.AdminUrl + "login"
   user = ""
   password = ""
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   ngOnInit() {
     localStorage.removeItem('token');
@@ -47,4 +47,5 @@ export class LoginComponent {
       }
     }
   }
+
 }

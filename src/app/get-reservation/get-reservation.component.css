@@ -1,0 +1,142 @@
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #01053b;
+  width: 85%;
+  margin: 15px auto 0;
+}
+.filter-container p {
+  color: white;
+  font-weight: bold;
+}
+
+.filter-options {
+  display: flex;
+  gap: 15px;
+  /* flex-wrap: wrap; */
+}
+
+.more-filter-options {
+  display: flex;
+  gap: 15px;
+  /* flex-wrap: wrap; */
+  margin-top: 10px;
+}
+
+.filter-field {
+  width: 33.33%;
+}
+
+.radio-group {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.radio-option {
+  margin-right: 15px;
+}
+
+button {
+  align-self: flex-start;
+}
+
+.results-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.room-numbers {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.room-number {
+  padding: 15px 30px;
+  border: none;
+  background-color: #626486;
+  color: white;
+  border-radius: 5px;
+  font-weight: bolder;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.room-number.active-room {
+  background-color: #01053b;
+}
+
+.room-details {
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 85%;
+  margin-bottom: 15px;
+}
+
+.room-details h3 {
+  color: #3f51b5;
+  font-weight: bolder;
+}
+
+.occupants-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.occupant-info {
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 220px;
+  margin: 5px;
+}
+
+.occupant-info p {
+  margin: 5px 0;
+}
+
+.info {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.checkin-room {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.additional-options-container {
+  margin-top: 10px;
+}
+
+.toggle-options-btn {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.more-filter-options {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.filter-field {
+  width: 100%;
+}

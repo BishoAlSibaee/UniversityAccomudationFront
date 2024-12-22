@@ -1,0 +1,44 @@
+<h1 mat-dialog-title>Add Facilitie</h1>
+<div mat-dialog-content class="dialog">
+  <mat-form-field color="accent" style="padding-left: 5px;">
+    <mat-label style="color: rgb(159, 158, 163);">Name Ar</mat-label>
+    <input matInput [(ngModel)]="name_ar" placeholder="Enter Arabic Name">
+  </mat-form-field>
+  <mat-form-field color="accent" style="padding-left: 5px;">
+    <mat-label style="color: rgb(159, 158, 163);">Name En</mat-label>
+    <input matInput [(ngModel)]="name_en" placeholder="Enter English Name">
+  </mat-form-field>
+</div>
+<div>
+  <!-- Choose Buildig -->
+  <mat-form-field appearance="outline" class="choose-building">
+    <mat-label>Choose Building</mat-label>
+    <mat-select placeholder="Select Building" [(value)]="selectedBuildingName"
+      (selectionChange)="onBuildingChange($event.value)">
+      <mat-option *ngFor="let building of allBuilding" [value]="building">{{building.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <!-- Choose Floor -->
+  <mat-form-field appearance="outline" class="choose-Floor">
+    <mat-label>Choose Floor</mat-label>
+    <mat-select placeholder="Select Floor" [(value)]="selectedFloorNumber"
+      (selectionChange)="onFloorChange($event.value)">
+      <mat-option *ngFor="let f of floor" [value]="f">{{f.number}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<mat-form-field color="accent" appearance="outline" class="filter-field">
+  <mat-label>اختر نوع الغرفة</mat-label>
+  <mat-select [(value)]="selectedRoomTypeId" (selectionChange)="onRoomTypeChange($event.value)">
+    <mat-option [value]="'all'">All</mat-option>
+    <mat-option *ngFor="let roomType of roomTypes" [value]="roomType.id">{{ roomType.name_ar }}</mat-option>
+  </mat-select>
+</mat-form-field>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()" style="color: white;">
+    <mat-icon>cancel</mat-icon> Cancel
+  </button>
+  <button (click)="addFacilitie()" mat-button color="warn" style="background-color: #087709bd; color: white;">
+    <mat-icon>check</mat-icon> Add
+  </button>
+</div>

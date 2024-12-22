@@ -7,12 +7,12 @@ import { AppComponent } from '../app.component';
 import { LoadingDialogComponent } from '../loading-dialog/loading-dialog.component';
 import { Student } from '../Student';
 import { Reservation } from '../Reservation';
+import { Facilitie } from '../Facilitie';
 
 @Component({
   selector: 'app-dialog-reservation',
   templateUrl: './dialog-reservation.component.html',
   styleUrls: ['./dialog-reservation.component.css']
-
 })
 export class DialogReservationComponent {
   private _snackBar = inject(MatSnackBar);
@@ -26,14 +26,21 @@ export class DialogReservationComponent {
   expirTimestamp: string = '';
   startTime: string = '';
   expirTime: string = '';
+  facilities: Facilitie[] = []
+  selectedFacilities: number[] = [];
+  allSelected: boolean = false
 
   constructor(private client: HttpClient, public dialogRef: MatDialogRef<DialogReservationComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialog) {
     if (data) {
       console.log("roomId = " + data.roomId)
       console.log("roomNumber = " + data.roomNumber)
+      console.log("building_id = " + data.building_id)
+      console.log("floor_id = " + data.floor_id)
+      console.log("suite_id = " + data.suite_id)
       console.log("startDate = " + data.startDate)
       console.log("endDate = " + data.endDate)
     }
+    this.getFacilitieByRoom();
   }
 
   checkVaule(): boolean {
@@ -90,6 +97,64 @@ export class DialogReservationComponent {
     })
   }
 
+  getFacilitieByRoom() {
+    this.facilities = [];
+    const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
+    let params = new FormData();
+    params.append("building_id", this.data.building_id);
+    params.append("floor_id", this.data.floor_id);
+    params.append("suite_id", this.data.suite_id);
+    const token = localStorage.getItem("token")
+    const h = new HttpHeaders({ Authorization: "Bearer " + token, });
+    let options = { headers: h }
+    this.client.post<any>(ApiLinks.getFacilitieByRoom, params, options).subscribe({
+      next: (result) => {
+        console.log(result)
+        if (result.code === 1) {
+          AppComponent.facilitie = result.facilities
+          this.facilities = AppComponent.facilitie
+          console.log(this.facilities.length)
+          console.table(this.facilities)
+        } else {
+          return this.openSnackBar(result.error, "Ok");
+        }
+      }, error: (error) => {
+        console.log(error)
+        return this.openSnackBar(error, "Ok");
+      },
+      complete: () => {
+        dialogRef.close();
+      }
+    })
+  }
+
+  toggleFacility(facilitieId: number) {
+    const index = this.selectedFacilities.indexOf(facilitieId);
+    if (index > -1) {
+      this.selectedFacilities.splice(index, 1);
+      if (this.allSelected) {
+        this.allSelected = false
+      }
+    } else {
+      this.selectedFacilities.push(facilitieId);
+      if (this.selectedFacilities.length == this.facilities.length) {
+        if (!this.allSelected) {
+          this.allSelected = true
+        }
+      }
+    }
+  }
+
+  toggleSelectAll() {
+    if (this.allSelected) {
+      this.selectedFacilities = this.facilities.map(f => f.id);
+    } else {
+      this.selectedFacilities = [];
+    }
+    console.table(this.selectedFacilities)
+    console.log(this.selectedFacilities)
+  }
+
   addUserReservation() {
     if (this.selecteStudentName === '' || this.selecteStudentId === 0) {
       return this.openSnackBar('Select Student', 'Ok')
@@ -104,11 +169,12 @@ export class DialogReservationComponent {
       expire_date: this.data.endDate,
       start_time: this.startTimestamp,
       expire_time: this.expirTimestamp,
+      facility_ids: [...this.selectedFacilities],
+      is_available: 0
     };
     this.reservationsList.push(newReservation);
     this.dialogRef.close(this.reservationsList);
-    console.log("reservationsList = " + this.reservationsList.length)
-
+    this.selectedFacilities = []
   }
 
   onTimeChange() {
@@ -144,4 +210,5 @@ export class DialogReservationComponent {
     this.selecteStudentName = s.name;
     this.selecteStudentId = s.id;
   }
+
 }

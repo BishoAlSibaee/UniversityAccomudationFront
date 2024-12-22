@@ -58,6 +58,13 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DialogReservationComponent } from './dialog-reservation/dialog-reservation.component';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { ReservationManagementComponent } from './reservation-management/reservation-management.component';
+import { GetReservationComponent } from './get-reservation/get-reservation.component';
+import { FacilitieComponent } from './facilitie/facilitie.component';
+import { DialogAddFacilitieComponent } from './dialog-add-facilitie/dialog-add-facilitie.component';
+import { GetReservationByDateComponent } from './get-reservation-by-date/get-reservation-by-date.component';
+import { GetReservationByStudentComponent } from './get-reservation-by-student/get-reservation-by-student.component';
+import { UpdateReservationComponent } from './update-reservation/update-reservation.component';
 
 @NgModule({
   declarations: [
@@ -90,6 +97,13 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     SearchStudentComponent,
     CustomStudentSearchComponent,
     DialogReservationComponent,
+    ReservationManagementComponent,
+    GetReservationComponent,
+    FacilitieComponent,
+    DialogAddFacilitieComponent,
+    GetReservationByDateComponent,
+    GetReservationByStudentComponent,
+    UpdateReservationComponent,
 
   ],
   imports: [
@@ -126,11 +140,13 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     { path: 'mainPage', component: MainPageComponent },
     { path: 'addStudent', component: AddStudentComponent },
     { path: 'makeReservation', component: MakeReservationComponent },
+    { path: 'ReservationManagement', component: ReservationManagementComponent },
     { path: 'test', component: TestComponent },
     { path: 'addBuilding', component: AddBuildingComponent },
     { path: 'BuildingsManagement', component: BuildingsManagementComponent },
     { path: 'StudentManagement', component: StudentManagementComponent },
     { path: 'UsersManagement', component: UserManagementComponent },
+    { path: 'Facilitie', component: FacilitieComponent },
     ]),
   ],
   providers: [DialogMessageComponent],

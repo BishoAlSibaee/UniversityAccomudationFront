@@ -1,27 +1,32 @@
 <!-- <img src="./assets/image/room.jpg" class="BackImage" /> -->
 <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; opacity: 0.8; direction: rtl;">
 
-      <div id="mainContainer" class="containerr">
-        <img src="./assets/yanbo.jpeg" style="margin: auto; display: block; width: 200px; height: 200px;" />
-        <div class="loginLayout">
-          <label for="uname" style="color: white; margin: auto; display: block; width: 100%; text-align: center;" [ngStyle]="{'color': DarkColor }"><b>المستخدم</b></label>
-          <input style="font-size:medium; font-weight: bold;" [ngStyle]="{'color': DarkColor }" [(ngModel)]="user" type="text" placeholder="المستخدم" name="uname" required="" class="form-control-plaintext" id="staticEmail"><br><br>
+  <div id="mainContainer" class="containerr">
+    <img src="./assets/yanbo.jpeg" style="margin: auto; display: block; width: 200px; height: 200px;" />
+    <div class="loginLayout">
+      <label for="uname" style="color: white; margin: auto; display: block; width: 100%; text-align: center;"
+        [ngStyle]="{'color': DarkColor }"><b>المستخدم</b></label>
+      <input style="font-size:medium; font-weight: bold;" [ngStyle]="{'color': DarkColor }" [(ngModel)]="user"
+        type="text" placeholder="المستخدم" name="uname" required="" class="form-control-plaintext"
+        id="staticEmail"><br><br>
 
-          <label style="color: white; margin: auto; display: block; width: 100%; text-align: center; margin-top: 20px;" for="psw" [ngStyle]="{'color': DarkColor }"><b>كلمة المرور</b></label>
-          <input style="font-size:medium; font-weight: bold;" [ngStyle]="{'color': DarkColor }" [(ngModel)]="password" type="password" placeholder="كلمة المرور" name="psw" required="" class="form-control-plaintext">
-          <br>
-          <h3 style="color: red;">{{message}}</h3>
-          <br>
-          <button (click)="logIn()" type="button" [ngStyle]="{'background-color':DarkColor}">تسجيل الدخول</button><br>
-        </div>
-        
-      </div>
-      
-    <footer>
-      <span style="margin-left: 10%; font-size: x-small; color: white; position: absolute; top: 94%; " >
-        <img src="./assets/image/web_page_icon.png" style="width: 15px; height: 15px; margin-right: 2px;">
-        CHECKIN V2
-        <span style="font-size: large; padding: 0px; "> ®  </span>
-        Produced By RATCO</span>
-    </footer>
+      <label style="color: white; margin: auto; display: block; width: 100%; text-align: center; margin-top: 20px;"
+        for="psw" [ngStyle]="{'color': DarkColor }"><b>كلمة المرور</b></label>
+      <input style="font-size:medium; font-weight: bold;" [ngStyle]="{'color': DarkColor }" [(ngModel)]="password"
+        type="password" placeholder="كلمة المرور" name="psw" required="" class="form-control-plaintext">
+      <br>
+      <h3 style="color: red;">{{message}}</h3>
+      <br>
+      <button (click)="logIn()" type="button" [ngStyle]="{'background-color':DarkColor}">تسجيل الدخول</button><br>
+    </div>
+
+  </div>
+
+  <footer>
+    <span style="margin-left: 10%; font-size: x-small; color: white; position: absolute; top: 94%; ">
+      <img src="./assets/image/web_page_icon.png" style="width: 15px; height: 15px; margin-right: 2px;">
+      CHECKIN V2
+      <span style="font-size: large; padding: 0px; "> ® </span>
+      Produced By RATCO</span>
+  </footer>
 </div>

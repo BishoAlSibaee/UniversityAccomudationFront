@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Room } from '../Room';
 import { Building } from '../Building';
@@ -9,10 +9,11 @@ import { ApiLinks } from '../ApiLinks';
 import { AppComponent } from '../app.component';
 import { LoadingDialogComponent } from '../loading-dialog/loading-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { College } from '../College';
-import { DialogReservationComponent } from '../dialog-reservation/dialog-reservation.component';
 import { Reservation } from '../Reservation';
 import { RoomType } from '../RoomType';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DialogDeleteComponent } from '../dialog-delete/dialog-delete.component';
+import { UpdateReservationComponent } from '../update-reservation/update-reservation.component';
 
 @Component({
   selector: 'app-main-page',
@@ -20,6 +21,7 @@ import { RoomType } from '../RoomType';
   styleUrls: ['./main-page.component.css']
 })
 export class MainPageComponent {
+  private _snackBar = inject(MatSnackBar);
   LightColor = "#3d2706"
   studentsVisible
   roomsVisible
@@ -48,8 +50,9 @@ export class MainPageComponent {
 
   ngOnInit() {
     this.getBuildingData();
-    this.getReservation();
-    this.getAllRoomType()
+    // this.getReservation();
+    this.getAllRoomType();
+    // this.getAllFacilitie();
   }
 
   getBuildingData() {
@@ -83,20 +86,6 @@ export class MainPageComponent {
       this.listBuilding = AppComponent.buildings
       this.listRooms = AppComponent.rooms
       this.addDataListsFromBuildings(this.listBuilding)
-      // console.log("NOT NULL");
-      // console.log("Building  = " + AppComponent.buildings);
-      // console.log("LENGTH APP = " + AppComponent.buildings.length);
-      // console.log("===========================================");
-      // console.log("length List Building IS : " + this.listBuilding.length);
-      // console.log("Info Building list:", this.listBuilding);
-      // console.log("===========================================");
-      // console.log("length List Floor IS : " + this.listFloor.length);
-      // console.log("Info Floor list:", this.listFloor);
-      // console.log("===========================================");
-      // console.log("length List Suites IS : " + this.listSuite.length);
-      // console.log("Info Suites list:", this.listSuite);
-      // console.log("===========================================");
-      // console.log("length List ROOMS IS : " + this.listRooms.length);
       console.log("Info Rooms list:", this.listRooms);
       AppComponent.rooms.forEach(room => {
         if (room.building_id == 55) {
@@ -174,6 +163,34 @@ export class MainPageComponent {
     this.selectedRoomId = roomId;
     this.selectedRoomNumber = roomNumber;
     this.selectedRoomCapacity = roomCapacity
+    // const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
+    let params = new FormData();
+    params.append("roomId", roomId.toString());
+    const token = localStorage.getItem("token")
+    const h = new HttpHeaders({ Authorization: "Bearer " + token, });
+    let options = { headers: h }
+    this.client.post<any>(ApiLinks.getReservationByRoom, params, options).subscribe({
+      next: (result) => {
+        console.log(result)
+        if (result.code === 1) {
+          AppComponent.reservations = []
+          this.listReservation = []
+          AppComponent.reservations = result.reservations
+          this.listReservation = AppComponent.reservations
+          console.log(this.listReservation.length)
+          console.table(this.listReservation)
+          console.table(AppComponent.reservations)
+        } else {
+          return this.openSnackBar(result.error, "Ok");
+        }
+      }, error: (error) => {
+        console.log(error)
+        return this.openSnackBar(error, "Ok");
+      },
+      // complete: () => {
+      //   dialogRef.close();
+      // }
+    })
   }
 
   selectSuite(index: number) {
@@ -237,32 +254,46 @@ export class MainPageComponent {
     this.router.navigate([page]);
   }
 
-  // openDialogReservaion(): void {
-  //   this.dialog.open(DialogReservationComponent, {
-  //     data: { roomId: this.selectedRoomId, roomNumber: this.selectedRoomNumber, roomCapacity: this.selectedRoomCapacity }
-  //   });
+  // getReservation() {
+  //   const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
+  //   const token = localStorage.getItem("token")
+  //   const h = new HttpHeaders({ Authorization: "Bearer " + token, });
+  //   let options = { headers: h }
+  //   this.client.get<Reservation[]>(ApiLinks.getReservation, options).subscribe({
+  //     next: (result) => {
+  //       this.listReservation = result
+  //       console.log("Result = " + this.listReservation)
+  //       console.log("Result length = " + this.listReservation.length)
+  //       console.log("Result = " + result)
+  //     }, error: (error) => {
+  //       console.log(error)
+  //     },
+  //     complete: () => {
+  //       dialogRef.close();
+  //     }
+  //   })
   // }
 
-
-  getReservation() {
-    const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
-    const token = localStorage.getItem("token")
-    const h = new HttpHeaders({ Authorization: "Bearer " + token, });
-    let options = { headers: h }
-    this.client.get<Reservation[]>(ApiLinks.getReservation, options).subscribe({
-      next: (result) => {
-        this.listReservation = result
-        console.log("Result = " + this.listReservation)
-        console.log("Result length = " + this.listReservation.length)
-        console.log("Result = " + result)
-      }, error: (error) => {
-        console.log(error)
-      },
-      complete: () => {
-        dialogRef.close();
-      }
-    })
-  }
+  // getAllFacilitie() {
+  //   const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
+  //   const token = localStorage.getItem("token")
+  //   const h = new HttpHeaders({ Authorization: "Bearer " + token });
+  //   let options = { headers: h };
+  //   this.client.get<Facilitie[]>(ApiLinks.getFacilitie, options).subscribe({
+  //     next: (result) => {
+  //       AppComponent.facilitie = result
+  //       console.table(AppComponent.facilitie);
+  //       // this.facilitie = AppComponent.facilitie
+  //     },
+  //     error: (error) => {
+  //       console.log("Error");
+  //       console.log(error);
+  //     },
+  //     complete: () => {
+  //       dialogRef.close();
+  //     }
+  //   });
+  // }
 
   getAllRoomType() {
     const token = localStorage.getItem("token")
@@ -280,19 +311,51 @@ export class MainPageComponent {
       },
     });
   }
+
+  openDeleteDialog(id: number, name: string): void {
+    const dialogRef = this.dialog.open(DialogDeleteComponent, {
+      data: { id: id, name: name }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'ok') {
+        const reservationIndex = this.listReservation.findIndex(r => r.id === id);
+        if (reservationIndex != -1) {
+          this.listReservation.splice(reservationIndex, 1)
+        }
+      } else {
+        console.log('Deletion cancelled');
+      }
+    });
+  }
+
+  openUpdateReservationDialog(idReservation: number, nameUser: string, room_id: number, room_number: string, start_date: string, expire_date: string, facility_ids: any, buildingName: string): void {
+    const dialogRef = this.dialog.open(UpdateReservationComponent, {
+      data: { idReservation: idReservation, nameUser: nameUser, room_id: room_id, room_number: room_number, start_date: start_date, expire_date: expire_date, facility_ids: facility_ids, buildingName: buildingName },
+      panelClass: ['dialog-panel']
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.table(result)
+        console.log(result.id)
+        console.log(result.student_name)
+        const res = this.listReservation.find(r => r.id === idReservation)
+        console.table(result)
+        if (res) {
+          res.room_id = Number(result.room_id)
+          res.room_number = result.room_number
+          res.start_date = result.start_date
+          res.expire_date = result.expire_date
+          res.facility_ids = result.facility_ids
+          console.log('result.id ' + result.room_id);
+        }
+      }
+    });
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 6000,
+      panelClass: ['custom-snackbar']
+    });
+  }
 }
-
-
-// console.log("length List Building IS : " + this.listBuilding.length);
-// console.log("Info Building list:", this.listBuilding);
-// console.log("===========================================");
-// console.log("length List Floor IS : " + this.listFloor.length);
-// console.log("Info Floor list:", this.listFloor);
-// console.log("===========================================");
-// console.log("length List Suites IS : " + this.listSuite.length);
-// console.log("Info Suites list:", this.listSuite);
-// console.log("===========================================");
-// console.log("length List ROOMS IS : " + this.listRooms.length);
-// console.log("Info Rooms list:", this.listRooms);
-// console.log("===========================================");
-// console.log("Info Rooms Of Sutie list:", this.listRoomsOfSuite);

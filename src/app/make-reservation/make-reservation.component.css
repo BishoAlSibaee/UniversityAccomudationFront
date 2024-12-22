@@ -5,7 +5,7 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #01053b;
-  width: 85%;
+  width: 90%;
   margin: 15px auto 0;
 }
 
@@ -71,13 +71,14 @@ button {
 }
 
 .room-details {
-  background-color: #f5f5f5;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 85%;
+  width: 90%;
+  /* max-width: 85%; */
   margin-bottom: 15px;
+  box-shadow: 0px 0px 11px 6px rgba(0, 0, 0, 0.1);
+
 }
 
 .room-details h3 {
@@ -95,8 +96,9 @@ button {
 .occupant-info {
   background-color: #ffffff;
   padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  border: solid 1.5px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
   width: 220px;
   margin: 5px;
 }
@@ -135,4 +137,21 @@ button {
 
 .filter-field {
   width: 100%;
+}
+
+.facilities {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.facilitie {
+  padding: 3px 5px;
+  border: none;
+  background-color: #01053b;
+  color: white;
+  border-radius: 5px;
+  font-weight: bolder;
+  font-size: 13px;
+  transition: background-color 0.3s;
 }

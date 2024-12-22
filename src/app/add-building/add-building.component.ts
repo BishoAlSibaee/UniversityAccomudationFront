@@ -63,7 +63,7 @@ export class AddBuildingComponent {
         console.log(`Dialog result: ${result}`);
       });
     } else {
-      const dialogRef = this.dialog.open(DialogEditAndAddBuilding);
+      const dialogRef = this.dialog.open(DialogEditAndAddBuilding, { panelClass: ['dialog-panel'] });
       dialogRef.afterClosed().subscribe(result => {
         console.log(`Dialog result: ${result}`);
       });

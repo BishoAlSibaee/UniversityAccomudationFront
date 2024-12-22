@@ -1,51 +1,54 @@
 .search-container {
-  max-width: 900px;
+  /* max-width: 1000px; */
+  width: 90%;
   margin: 0 auto;
   margin-top: 10px;
   padding: 20px;
   font-family: Arial, sans-serif;
   border-radius: 8px;
+  background-color: #01053b;
   box-shadow: 0px 0px 11px 6px rgba(0, 0, 0, 0.1);
 }
 
-.search-container h1 {
-  margin-bottom: 20px;
+.radio-container {
+  border-radius: 8px;
+  background-color: #8a9ba963;
+  padding: 2px;
+  margin-bottom: 10px;
+}
+
+.checkbox-container {
+  border-radius: 8px;
+  background-color: #8a9ba963;
+  padding: 2px;
+  margin-bottom: 15px;
+  margin-top: 5px;
+}
+
+.radio-group {
+  padding: 5px;
+}
+
+.search-container h4 {
+  color: white;
+  font-weight: bold;
 }
 
 mat-radio-group {
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 40px;
   margin-bottom: 20px;
-  justify-content: space-around;
-}
-
-mat-radio-button {
-  background-color: #063896;
-  padding: 5px;
-  border-radius: 4px;
 }
 
 .mat-mdc-raised-button.mat-primary {
-  --mdc-protected-button-container-color: #267e7bfb;
-  --mdc-protected-button-label-text-color: #fff;
-  width: 50%;
-  padding: 10px 20px;
-  height: inherit;
+  /* --mdc-protected-button-container-color: #267e7bfb;
+  --mdc-protected-button-label-text-color: #fff; */
+  width: 30%;
 }
-
-.submit {
-  text-align: center;
-}
-
-
-
-/* a--------------------------------- */
-
-
 
 .student-container {
-  max-width: 900px;
+  width: 90%;
   margin: 0 auto;
   margin-top: 20px;
   padding: 20px;
@@ -56,27 +59,7 @@ mat-radio-button {
 
 .header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-h1 {
-  font-size: 24px;
-  margin: 0;
-}
-
-.add-button {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.add-button:hover {
-  background-color: #45a049;
+  justify-content: flex-start
 }
 
 .student-table {
@@ -142,7 +125,6 @@ h1 {
   gap: 10px;
 }
 
-.add-button,
 .back-button {
   display: flex;
   flex-direction: column;
@@ -163,43 +145,6 @@ h1 {
   background-color: #007BFF;
 }
 
-.add-button:hover {
-  background-color: #45a049;
-}
-
-.back-button:hover {
-  background-color: #0056b3;
-}
-
-.mat-icon {
-  font-size: 24px;
-  margin-bottom: 5px;
-}
-
-
-
-/* .mdc-form-field {
-  background-color: #0056b3;
-  padding-left: 10px;
-  padding-right: 10px;
-  margin-left: 10px;
-  margin-right: 10px;
-}
- */
-
-
-
-.mdc-form-field {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  margin-bottom: 20px;
-  width: fit-content;
-  /* justify-content: space-evenly; */
-}
-
-.mdc-form-field {
-  background-color: #063896;
-  padding: 5px;
-  border-radius: 4px;
+::ng-deep .mat-mdc-select-panel {
+  background-color: #373f66 !important;
 }

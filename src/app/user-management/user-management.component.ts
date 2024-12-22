@@ -57,7 +57,6 @@ export class UserManagementComponent {
       });
     } else {
       this.dialog.open(DialogAddUserComponent);
-
     }
   }
 

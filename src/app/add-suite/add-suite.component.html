@@ -1,4 +1,4 @@
-<div class="buildings-container">
+<div class="container-bar">
   <div class="header">
     <h1>All Suites</h1>
     <div class="button-container">
@@ -10,23 +10,24 @@
         <mat-icon>home</mat-icon>
         <span>Back</span>
       </button>
-      <div class="building-container">
-        <mat-form-field class="choose-building">
-          <mat-label>Choose Building</mat-label>
-          <mat-select [(value)]="selectedBuilding" (selectionChange)="onBuildingChange($event.value)">
-            <mat-option *ngFor="let building of allBuilding" [value]="building">{{building.name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field class="choose-floor">
-          <mat-label>Choose Floor</mat-label>
-          <mat-select [(value)]="selectedFloorName" (selectionChange)="onFloorChange($event.value)">
-            <mat-option [value]="'all'">All</mat-option>
-            <mat-option *ngFor="let floor of selectedFloors" [value]="floor">{{floor.number}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
     </div>
   </div>
+  <mat-form-field color="accent" appearance="outline" class="choose-building">
+    <mat-label>Choose Building</mat-label>
+    <mat-select [(value)]="selectedBuilding" (selectionChange)="onBuildingChange($event.value)">
+      <mat-option *ngFor="let building of allBuilding" [value]="building">{{building.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field color="accent" appearance="outline" class="choose-floor">
+    <mat-label>Choose Floor</mat-label>
+    <mat-select [(value)]="selectedFloorName" (selectionChange)="onFloorChange($event.value)">
+      <mat-option [value]="'all'">All</mat-option>
+      <mat-option *ngFor="let floor of selectedFloors" [value]="floor">{{floor.number}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<br>
+<div class="buildings-container">
   <table class="buildings-table">
     <thead>
       <tr>

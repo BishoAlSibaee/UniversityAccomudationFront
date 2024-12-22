@@ -1,44 +1,126 @@
-/* body, html {
-  margin: 0;
-  padding: 0;
+* {
+  box-sizing: border-box;
+}
+
+.all{
   height: 100%;
-  font-family: Arial, sans-serif;
-} */
+}
+
+.row {
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.side {
+  flex: 20%;
+  background-color: #07113b;
+  padding: 20px;
+}
 
 .top-bar {
-  background-color: #3f3f5f;
-  padding: 15px;
-  margin-left: 25%;
-  width: 75%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 50px;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
-  z-index: 1000;
   justify-content: space-between;
+  background-color: #3f3f5f;
 }
 
-.main-content {
-  display: flex;
-  margin-top: 50px;
-  height: calc(100vh - 50px);
+.main {
+  /* flex: 80%; */
+  width: 80%;
 }
 
-.sidebar {
-  width: 22%;
+.action {
   background-color: #305286;
-  padding: 20px;
-  height: 100%;
-  position: fixed;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
 }
 
-.main-section {
-  margin-left: 25%;
-  width: 75%;
-  background-color: #59728a;
-  padding: 20px;
-  height: 100%;
+.action button {
+  flex: 1;
+  margin: 0 5px;
 }
+
+.building-container {
+  background-color: rgb(146, 132, 132);
+  padding: 10px;
+}
+
+.choose-building,
+.choose-floor {
+  margin: 5px;
+}
+
+.room-data {
+  padding: 10px;
+}
+
+.rooms-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.suite {
+  border: 2px solid #3d2706;
+  border-radius: 10px;
+  padding: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.suite legend {
+  font-weight: bold;
+  padding: 0 5px;
+  color: #000;
+
+}
+
+.room-in-suite {
+  margin-bottom: 5px;
+}
+
+.single-room {
+  display: inline-block;
+  padding: 2px;
+  margin-bottom: 10px;
+}
+
+.suite-container {
+  margin-top: -5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+}
+
+.choose-building {
+  margin: 5px;
+}
+
+.choose-floor {
+  margin: 5px;
+}
+
+h1 {
+  color: cadetblue;
+  font-weight: bold;
+}
+
+
+
+
+/* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+/* @media screen and (max-width: 700px) {
+  .row {
+    flex-direction: column;
+  }
+} */
+
+/* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
+/* @media screen and (max-width: 400px) {
+  .navbar a {
+    float: none;
+    width: 100%;
+  }
+} */

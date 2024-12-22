@@ -1,4 +1,4 @@
-<div class="buildings-container">
+<div class="container-bar">
   <div class="header">
     <h1>All Floor</h1>
     <div class="button-container">
@@ -10,16 +10,19 @@
         <mat-icon>home</mat-icon>
         <span>Back</span>
       </button>
-      <div class="building-container">
-        <mat-form-field class="choose-building">
-          <mat-label>Choose Building</mat-label>
-          <mat-select [(value)]="selectedBuildingName" (selectionChange)="onBuildingChange($event.value)">
-            <mat-option *ngFor="let building of allBuilding" [value]="building">{{building.name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
     </div>
   </div>
+  <mat-form-field color="accent" style="padding-left: 20px; padding-right: 20px;" appearance="outline"
+    class="choose-building">
+    <mat-label>Choose Building</mat-label>
+    <mat-select [(value)]="selectedBuildingName" (selectionChange)="onBuildingChange($event.value)">
+      <mat-option *ngFor="let building of allBuilding" [value]="building">{{building.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<br>
+
+<div class="buildings-container">
   <table class="buildings-table">
     <thead>
       <tr>

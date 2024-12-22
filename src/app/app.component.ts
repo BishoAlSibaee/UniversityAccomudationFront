@@ -5,6 +5,8 @@ import { Admin } from './Admin';
 import { Student } from './Student';
 import { College } from './College';
 import { RoomType } from './RoomType';
+import { Facilitie } from './Facilitie';
+import { Reservation } from './Reservation';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +25,8 @@ export class AppComponent {
   public static students: Student[] = []
   public static college: College[] = []
   public static roomType: RoomType[] = []
+  public static facilitie: Facilitie[] = []
+  public static reservations: Reservation[] = []
   public static handleError(error: object) {
     let er = ""
     let keys = Object.keys(error)

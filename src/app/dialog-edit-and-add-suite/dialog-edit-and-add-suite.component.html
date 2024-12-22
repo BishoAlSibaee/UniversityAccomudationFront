@@ -1,7 +1,8 @@
-<h1 mat-dialog-title>{{title}}</h1>
 <div mat-dialog-content class="dialog">
+  <h1 mat-dialog-title>{{title}}</h1>
+
   <!-- Choose Buildig -->
-  <mat-form-field *ngIf="showList()" class="choose-building">
+  <mat-form-field color="accent" appearance="outline" *ngIf="showList()" class="choose-building">
     <mat-label>Choose Building</mat-label>
     <mat-select placeholder="Select Building" [(value)]="selectedBuildingName"
       (selectionChange)="onBuildingChange($event.value)">
@@ -9,14 +10,14 @@
     </mat-select>
   </mat-form-field>
   <!-- Choose Floor -->
-  <mat-form-field *ngIf="showList()" class="choose-Floor">
+  <mat-form-field color="accent" appearance="outline" style="padding-left: 5px;" *ngIf="showList()" class="choose-Floor">
     <mat-label>Choose Floor</mat-label>
     <mat-select placeholder="Select Floor" [(value)]="selectedFloorNumber"
       (selectionChange)="onFloorChange($event.value)">
       <mat-option *ngFor="let f of floor" [value]="f">{{f.number}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field color="accent" style="padding-left: 5px;">
+  <mat-form-field color="accent" appearance="outline" style="padding-left: 5px;">
     <mat-label style="color: rgb(159, 158, 163);">Suite Number</mat-label>
     <input matInput [(ngModel)]="suiteNumber" placeholder="Enter Suite Number">
   </mat-form-field>
@@ -32,12 +33,13 @@
     (click)="toggleRoomSelection(r.id,'add')">
     <p>{{r.number}}</p>
   </div>
+  <div mat-dialog-actions>
+    <button (click)="onClickCancel()" mat-button style="color: white;">
+      <mat-icon>cancel</mat-icon> Cancel
+    </button>
+    <button (click)="onClickOk()" mat-button color="warn" style="background-color: #087709bd; color: white;">
+      <mat-icon>check</mat-icon> {{nameBtn}}
+    </button>
+  </div>
 </div>
-<div mat-dialog-actions>
-  <button (click)="onClickCancel()" mat-button style="color: white;">
-    <mat-icon>cancel</mat-icon> Cancel
-  </button>
-  <button (click)="onClickOk()" mat-button color="warn" style="background-color: #087709bd; color: white;">
-    <mat-icon>check</mat-icon> {{nameBtn}}
-  </button>
-</div>
+

@@ -1,0 +1,28 @@
+.main-container {
+  padding: 20px;
+  margin: 20px;
+  /* background-color: rgba(207, 201, 201, 0.384); */
+}
+
+h1 {
+  padding-right: 25px;
+  padding-left: 25px;
+  font-weight: bold;
+}
+
+.reservatoin-container {
+  padding: 30px;
+}
+
+.floor-container {
+  padding: 30px;
+}
+
+.room-container {
+  padding: 30px;
+}
+
+[aria-label=accent] {
+  background-color: rgb(92, 95, 114);
+  font-weight: 700;
+}

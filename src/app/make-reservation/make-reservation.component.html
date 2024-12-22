@@ -37,7 +37,6 @@
       خيارات إضافية
       <mat-icon>{{ showOptions ? 'expand_less' : 'expand_more' }}</mat-icon>
     </button>
-
     <div class="more-filter-options" *ngIf="showOptions" [@slideToggle]>
       <mat-form-field color="accent" appearance="outline" class="filter-field">
         <mat-label>اختر الدور</mat-label>
@@ -77,10 +76,10 @@
   </div>
   <div class="room-details" *ngIf="selectedRoom">
     <div class="checkin-room">
-      <h3>غرفة رقم: {{ selectedRoom.number }}</h3>
+      <h3>غرفة رقم : {{ selectedRoom.number }}</h3>
       <h3>سعه الغرفة : {{ selectedRoom.availableCapacity }}</h3>
       <button mat-raised-button color="primary"
-        (click)="openReservationComponent(selectedRoom.id , selectedRoom.number ,Start , Expire, selectedRoom.availableCapacity )">
+        (click)="openReservationComponent(selectedRoom.id , selectedRoom.number , selectedRoom.building_id , selectedRoom.floor_id,  selectedRoom.suite_id , selectedRoom.availableCapacity , Start ,Expire )">
         <mat-icon>add</mat-icon>
         <span>اضافة طالب</span>
       </button>
@@ -108,8 +107,16 @@
     <div *ngIf="userReservations.length > 0" class="info">
       <div *ngFor="let res of userReservations; let i = index" class="occupant-info">
         <p><strong>الاسم:</strong> {{ res.student_name }}</p>
-        <p><strong>تاريخ بداية الحجز:</strong> {{ res.start_date }}</p>
-        <p><strong>تاريخ نهاية الحجز:</strong> {{ res.expire_date }}</p>
+        <p><strong>تاريخ بداية الحجز:</strong> {{ Start }}</p>
+        <p><strong>تاريخ نهاية الحجز:</strong> {{ Expire }}</p>
+        <div *ngIf="res.facility_ids.length>0">
+          <p><strong>المرافق المضافة</strong></p>
+          <div class="facilities">
+            <div class="facilitie" *ngFor="let f of res.facility_ids">
+              <p>{{getFacilitiesById(f)}}</p>
+            </div>
+          </div>
+        </div>
         <button mat-button color="warn" (click)="deleteReservation(i)">
           <mat-icon>delete-button</mat-icon>
           <span>حذف</span>

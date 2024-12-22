@@ -1,6 +1,5 @@
 <div class="search-container">
   <div class="header">
-    <h1>Select Search Type</h1>
     <div class="button-container">
       <button class="back-button" routerLink="/mainPage">
         <mat-icon>home</mat-icon>
@@ -8,23 +7,31 @@
       </button>
     </div>
   </div>
-  <mat-checkbox class="mdc-form-field" color="accent" (change)="isChecked()" [(ngModel)]="checkedCollege">Search for
-    student by college</mat-checkbox>
-  <p>Select Search Type</p>
-  <mat-radio-group [(ngModel)]="by" aria-label="Select an option">
-    <mat-radio-button value="name">By Student Name</mat-radio-button>
-    <mat-radio-button value="student_number">By Student Number</mat-radio-button>
-    <mat-radio-button value="mobile">By student mobile number</mat-radio-button>
-  </mat-radio-group>
-
-  <mat-form-field color="accent" style="padding-left: 5px;" type="number">
+  <div class="checkbox-container">
+    <h4>Select Search Type</h4>
+    <mat-checkbox color="accent" (change)="isChecked()" [(ngModel)]="checkedCollege">Search for
+      student by college
+    </mat-checkbox>
+  </div>
+  <div class="radio-container">
+    <div class="radio-group">
+      <h4 style="color: white;">Select Search Type</h4>
+      <mat-radio-group [(ngModel)]="by" aria-label="Select an option">
+        <mat-radio-button value="name">By Student Name</mat-radio-button>
+        <mat-radio-button value="student_number">By Student Number</mat-radio-button>
+        <mat-radio-button value="mobile">By student mobile number</mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </div>
+  <mat-form-field appearance="outline" color="accent" style="padding-left: 10px; width: 30%;" type="number">
     <mat-label style="color: rgb(159, 158, 163);">Search Word</mat-label>
     <input matInput [(ngModel)]="value" placeholder="Enter The Search Word">
   </mat-form-field>
 
-  <mat-form-field style="padding-left: 5px ; padding-right: 5px;" *ngIf="showList" color="accent">
+  <mat-form-field appearance="outline" style="padding-left: 10px ; padding-right: 10px; width: 30%;" *ngIf="showList"
+    color="accent">
     <mat-label>Student College</mat-label>
-    <mat-select placeholder="Select Nationality" [(ngModel)]="selectedCollegeId">
+    <mat-select class="custom-select" placeholder="Select College" [(ngModel)]="selectedCollegeId">
       <mat-option *ngFor="let c of listCollege" [value]="c.id">{{c.college_ar}}</mat-option>
     </mat-select>
   </mat-form-field>
@@ -37,16 +44,6 @@
 <div class="student-container">
   <div class="header">
     <h1>Student</h1>
-    <!-- <div class="button-container">
-      <button (click)="openDialogEditOrAdd(0,'','','','Add')" class=" add-button">
-        <mat-icon>add</mat-icon>
-        <span>Add</span>
-      </button>
-      <button class="back-button" routerLink="/mainPage">
-        <mat-icon>home</mat-icon>
-        <span>Back</span>
-      </button>
-    </div> -->
   </div>
   <table class="student-table">
     <thead>

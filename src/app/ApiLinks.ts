@@ -32,4 +32,12 @@ export class ApiLinks {
   public static getReservation: string = ApiLinks.MainUrl + "admins/getReservation"
   public static checkReservation: string = ApiLinks.MainUrl + "admins/checkReservation"
   public static getAllRoomType: string = ApiLinks.MainUrl + "admins/getAllRoomType"
+  public static getReservationByDate: string = ApiLinks.MainUrl + "admins/getReservationByDate"
+  public static getFacilitie: string = ApiLinks.MainUrl + "admins/getFacilitie"
+  public static addFacilitie: string = ApiLinks.MainUrl + "admins/addFacilitie"
+  public static getFacilitieByRoom: string = ApiLinks.MainUrl + "admins/getFacilitieByRoom"
+  public static getReservationByStudent: string = ApiLinks.MainUrl + "admins/getReservationByStudent"
+  public static setReservationUnavailable: string = ApiLinks.MainUrl + "admins/setReservationUnavailable"
+  public static updateReservation: string = ApiLinks.MainUrl + "admins/updateReservation"
+  public static getReservationByRoom: string = ApiLinks.MainUrl + "admins/getReservationByRoom"
 }

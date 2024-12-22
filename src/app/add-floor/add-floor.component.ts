@@ -21,9 +21,7 @@ export class AddFloorComponent {
   @ViewChild(AddRoomComponent) addRoomComponent!: AddRoomComponent;
 
 
-  constructor(public dialog: MatDialog, private roomService: RoomService) {
-
-  }
+  constructor(public dialog: MatDialog, private roomService: RoomService) { }
 
   ngOnInit() {
     this.allBuilding = AppComponent.buildings
@@ -67,13 +65,14 @@ export class AddFloorComponent {
   openDialogEditOrAdd(buildingId: number, floorId: number | null, floorNumber: number) {
     if (buildingId !== 0 && floorId !== 0 && floorNumber !== 0) {
       const dialogRef = this.dialog.open(DialogEditAndAddFloorComponent, {
-        data: { buildingId: buildingId, floorId: floorId, floorNumber: floorNumber }
+        data: { buildingId: buildingId, floorId: floorId, floorNumber: floorNumber },
+        panelClass: ['dialog-panel']
       });
       dialogRef.afterClosed().subscribe(result => {
         console.log(`Dialog result: ${result}`);
       });
     } else {
-      const dialogRef = this.dialog.open(DialogEditAndAddFloorComponent);
+      const dialogRef = this.dialog.open(DialogEditAndAddFloorComponent, { panelClass: ['dialog-panel'] });
       dialogRef.afterClosed().subscribe(result => {
         console.log(`Dialog result: ${result}`);
       });
@@ -82,7 +81,8 @@ export class AddFloorComponent {
 
   openDeleteDialog(id: number, buildingId: number, floorId: number, name: string): void {
     const dialogRef = this.dialog.open(DialogDeleteComponent, {
-      data: { id: id, buildingId: buildingId, floorId: floorId, name: name }
+      data: { id: id, buildingId: buildingId, floorId: floorId, name: name },
+      panelClass: ['dialog-panel']
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -96,15 +96,8 @@ export class AddFloorComponent {
 
   openAddMultiRoomDialog(buildingId: number, floorId: number): void {
     this.dialog.open(DialogAddMultiRoomComponent, {
-      data: { buildingId: buildingId, floorId: floorId, }
+      data: { buildingId: buildingId, floorId: floorId, },
+      panelClass: ['dialog-panel']
     });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result) {
-    //     console.log('Item deleted');
-    //   } else {
-    //     console.log('Deletion cancelled');
-    //   }
-    // });
   }
 }

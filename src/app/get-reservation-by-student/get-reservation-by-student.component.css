@@ -1,0 +1,80 @@
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #01053b;
+  width: 85%;
+  margin: 15px auto 0;
+}
+
+.filter-container p {
+  color: white;
+  font-weight: bold;
+}
+
+.filter-options {
+  display: flex;
+  gap: 15px;
+  /* flex-wrap: wrap; */
+}
+
+.more-filter-options {
+  display: flex;
+  gap: 15px;
+  /* flex-wrap: wrap; */
+  margin-top: 10px;
+}
+
+.filter-field {
+  width: 33.33%;
+}
+
+button {
+  align-self: flex-start;
+}
+
+.filter-field {
+  width: 100%;
+}
+
+.reservation-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.reservation-table th,
+.reservation-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.reservation-table th {
+  background-color: #f2f2f2;
+}
+
+.delete-button {
+  padding: 6px 12px;
+  background-color: #f34421;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.action-button:hover {
+  background-color: #1E88E5;
+}
+
+.action-button {
+  padding: 6px 12px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+}

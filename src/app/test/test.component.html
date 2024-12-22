@@ -1,17 +1,56 @@
-<!-- <div dir="rtl" class="top-bar">
-  <app-header></app-header>
-  <img id="LOGO" src="./assets/yanbo.jpeg" style="width:70px; height: 70px;" alt="  ">
-</div>
-
-<div class="main-content">
-  <div class="sidebar">
-    <button mat-raised-button color="accent" style="margin: auto; width: 100%; margin-top: 50px;">الطلاب</button>
-    <button mat-raised-button color="accent" style="margin: auto; width: 100%; margin-top: 20px;">الغرف</button>
-  </div>
-
-  <div class="main-section">
-    <div style="background-color: blueviolet; margin-top: 80px;">
-      <h2 style="margin: auto; display: block;">ادارة الغرف</h2>
+<div class="all">
+  <div class="row">
+    <div class="side">
+      <P>{{selectedRoomNumber}} {{selectedRoomId}}</P>
+      <button (click)="goToPage('ReservationManagement')" mat-raised-button color="accent">حجز غرفة</button>
+    </div>
+    <div class="main">
+      <div class="top-bar">
+        <app-header></app-header>
+        <img id="LOGO" src="./assets/yanbo.jpeg" style="width:70px; height: 70px;" alt="  ">
+      </div>
+      <div class="action">
+        <button (click)="goToPage('UsersManagement')" mat-raised-button color="accent">إدارة المستخدمين</button>
+        <button (click)="goToPage('StudentManagement')" mat-raised-button color="accent">إدارة الطلاب</button>
+        <button (click)="goToPage('Facilitie')" mat-raised-button color="accent">المرافق</button>
+        <button mat-raised-button color="accent" (click)="goBuildingManagement('BuildingsManagement')">ادارة
+          المباني</button>
+      </div>
+      <div class="building-container">
+        <mat-form-field color="accent" class="choose-building">
+          <mat-label>Choose Building</mat-label>
+          <mat-select [(value)]="selectedBuildingName" (selectionChange)="onBuildingChange($event.value)">
+            <mat-option *ngFor="let building of listBuilding" [value]="building">{{building.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field color="accent" class="choose-floor">
+          <mat-label>Choose Floor</mat-label>
+          <mat-select [(value)]="selectedFloorName" (selectionChange)="onFloorChange($event.value)">
+            <mat-option [value]="'all'">All</mat-option>
+            <mat-option *ngFor="let floor of filteredFloors" [value]="floor">{{floor.number}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="room-data">
+        <h1>Rooms</h1>
+        <div class="rooms-container">
+          <!-- غرف السويتات -->
+          <fieldset *ngFor="let suite of filteredSuites" class="suite">
+            <legend>Building {{getBuildingName(suite.building_id)}} Suite {{ suite.number }}</legend>
+            <div *ngFor="let room of listRoomsOfSuite[suite.id]" class="room-in-suite">
+              <app-room [roomData]="room" [isSelected]="selectedRoomId === room.id"
+                (click)="selectRoom(room.id, room.number,room.capacity)">
+              </app-room>
+            </div>
+          </fieldset>
+          <!-- غرف المستقلة -->
+          <ng-container *ngFor="let room of filteredRooms">
+            <div *ngIf="room.suite_id === 0" class="single-room"> <app-room [roomData]="room"
+                [isSelected]="selectedRoomId === room.id"
+                (click)="selectRoom(room.id , room.number , room.capacity)"></app-room></div>
+          </ng-container>
+        </div>
+      </div>
     </div>
   </div>
-</div> -->
+</div>

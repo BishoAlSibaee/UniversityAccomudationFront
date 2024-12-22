@@ -4,13 +4,14 @@
   align-items: center;
   padding: 20px;
   box-shadow: 0px 0px 11px 6px rgba(0, 0, 0, 0.1);
+  background-color: #01053b;
   border-radius: 8px;
-  max-width: 800px;
+  max-width: 90%;
   margin: auto;
 }
 
 h2 {
-  color: #333;
+  color: white;
   margin-bottom: 20px;
   font-size: 24px;
   font-weight: bold;
@@ -51,7 +52,6 @@ button {
 }
 
 .mat-mdc-raised-button.mat-primary {
-  --mdc-protected-button-container-color: #267e7bfb;
+  /* --mdc-protected-button-container-color: #267e7bfb; */
   --mdc-protected-button-label-text-color: #fff;
 }
-

@@ -24,8 +24,8 @@ export class DialogDeleteComponent {
 
   ngOnInit() {
     this.id = this.data.id;
-    this.buildingId = this.data.buildingId;
-    this.floorId = this.data.floorId;
+    this.buildingId = this.data.buildingId | 0;
+    this.floorId = this.data.floorId | 0;
     this.name = this.data.name;
   }
 
@@ -34,7 +34,6 @@ export class DialogDeleteComponent {
   }
 
   onConfirm(): void {
-    this.dialogRef.close(true);
     if (this.name === "Building") {
       this.deleteBuliding()
     }
@@ -53,6 +52,13 @@ export class DialogDeleteComponent {
     if (this.name === "student") {
       this.deleteStudent()
     }
+    if (this.name === "facilitie") {
+      this.deletefacilitie()
+    }
+    if (this.name === "Reservation") {
+      this.deleteReservation()
+    }
+    this.dialogRef.close("ok");
   }
 
   deleteBuliding() {
@@ -252,10 +258,41 @@ export class DialogDeleteComponent {
     });
   }
 
+  deleteReservation() {
+    console.log("NAME IS = " + this.name)
+    let params = new FormData();
+    params.append("id", this.data.id.toString());
+    const token = localStorage.getItem("token")
+    const h = new HttpHeaders({
+      Authorization: "Bearer " + token,
+    });
+    let options = { headers: h };
+    this.client.post<any>(ApiLinks.setReservationUnavailable, params, options).subscribe({
+      next: (result) => {
+        console.log(result);
+        if (result.code == 1) {
+          this.openSnackBar("Delete Done", "Ok");
+        } else {
+          this.openSnackBar("Not deleted try again", "Ok");
+          console.log("Warning");
+        }
+      }, error: (error) => {
+        console.log("Error" + error);
+      }
+    });
+  }
+
+  deletefacilitie() {
+    console.log('Delete Facilitie')
+    console.log('Facilitie ID = ' + this.id)
+    //هون لازم قبل الحذف شيك ع المرفق اذا هو ضمن الحجز او لا يعني إذا في حجز عليه ما لازم احذفو هي التشييكة لازم تكون من طرف الباك
+  }
+
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
       duration: 6000,
       panelClass: ['custom-snackbar']
     });
   }
+
 }

@@ -2,29 +2,27 @@
   <h2>Register New Student</h2>
   <form class="register-form">
     <div class="form-row">
-      <mat-form-field color="accent" appearance="fill">
+      <mat-form-field color="accent" appearance="outline">
         <mat-label>Student Name</mat-label>
-        <input matInput [(ngModel)]="student.name" name="name" placeholder="Enter Student Name" required />
+        <input matInput [(ngModel)]="student.name" name="name" placeholder="Enter Student Name" />
       </mat-form-field>
-      <mat-form-field color="accent" appearance="fill">
+      <mat-form-field color="accent" appearance="outline">
         <mat-label>Student Mobile</mat-label>
-        <input [(ngModel)]="student.mobile" name="mobile" matInput placeholder="Enter Student Mobile" type="tel"
-          required />
+        <input [(ngModel)]="student.mobile" name="mobile" matInput placeholder="Enter Student Mobile" type="tel" />
       </mat-form-field>
-      <mat-form-field color="accent" appearance="fill">
+      <mat-form-field color="accent" appearance="outline">
         <mat-label>Email</mat-label>
         <input [(ngModel)]="student.email" name="email" matInput placeholder="Enter your email" type="email" />
       </mat-form-field>
     </div>
 
     <div class="form-row">
-      <mat-form-field color="accent" appearance="fill">
+      <mat-form-field color="accent" appearance="outline">
         <mat-label>University ID</mat-label>
-        <input [(ngModel)]="student.student_number" name="student_number" matInput placeholder="Enter university ID"
-          required />
+        <input [(ngModel)]="student.student_number" name="student_number" matInput placeholder="Enter university ID" />
       </mat-form-field>
 
-      <mat-form-field color="accent" appearance="fill">
+      <mat-form-field color="accent" appearance="outline">
         <mat-label>Nationality</mat-label>
         <input type="text" placeholder="Select Nationality" aria-label="Nationality" matInput [formControl]="myControl"
           [matAutocomplete]="auto">
@@ -35,27 +33,13 @@
         </mat-autocomplete>
       </mat-form-field>
 
-      <mat-form-field color="accent">
+      <mat-form-field color="accent" appearance="outline">
         <mat-label>Student College</mat-label>
         <mat-select placeholder="Select Nationality" [(value)]="student.college">
           <mat-option *ngFor="let c of listCollege" [value]="c.id">{{c.college_ar}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
-
-    <!-- <div class="form-row full-width">
-      <mat-form-field color="accent">
-        <mat-label>Student Study Year</mat-label>
-        <mat-select>
-          <mat-option *ngFor="let s of study_year" [value]="s.value">{{s.value}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field color="accent" appearance="fill">
-        <mat-label>Term</mat-label>
-        <input name="term" matInput placeholder="Enter Student Term" />
-      </mat-form-field>
-    </div> -->
     <button (click)="addStudent()" mat-raised-button color="primary">Register</button>
   </form>
 </div>

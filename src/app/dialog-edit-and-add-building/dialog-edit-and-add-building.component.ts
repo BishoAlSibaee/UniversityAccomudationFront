@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, Inject, inject } from '@angular/core';
+import { Component, Inject, inject, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiLinks } from '../ApiLinks';
@@ -11,6 +11,8 @@ import { Floor } from '../Floor';
 @Component({
   selector: 'app-dialog-content-example',
   templateUrl: './dialog-edit-and-add-building.component.html',
+  // encapsulation: ViewEncapsulation.None, // تعطيل الحماية الافتراضية
+
 })
 export class DialogEditAndAddBuilding {
   private _snackBar = inject(MatSnackBar);

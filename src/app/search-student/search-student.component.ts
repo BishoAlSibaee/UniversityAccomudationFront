@@ -14,11 +14,10 @@ import { College } from '../College';
 @Component({
   selector: 'app-search-student',
   templateUrl: './search-student.component.html',
-  styleUrls: ['./search-student.component.css']
+  styleUrls: ['./search-student.component.css'],
 })
 export class SearchStudentComponent {
   private _snackBar = inject(MatSnackBar);
-
   students: Student[] = []
   value: string = ""
   by: string = ''
@@ -30,7 +29,6 @@ export class SearchStudentComponent {
   constructor(private client: HttpClient, public dialog: MatDialog, private userService: UserService) { }
 
   ngOnInit() {
-    // this.getStudents();
     this.userService.studentUpdated$.subscribe(() => {
       this.students = AppComponent.students
     });
@@ -81,7 +79,7 @@ export class SearchStudentComponent {
     }
     if (this.checkedCollege) {
       if (this.selectedCollegeId === 0) {
-        return this.openSnackBar("Select Nationality", "Ok");
+        return this.openSnackBar("Select College", "Ok");
       }
     }
     const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });

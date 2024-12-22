@@ -1,0 +1,43 @@
+<div dir="rtl" class="filter-container">
+  <p>Select Search Type</p>
+  <div class="filter-options">
+    <mat-radio-group [(ngModel)]="by" aria-label="Select an option" (change)="onChangeSearchType()">
+      <mat-radio-button value="allReservation">جميع الحجوزات بحسب التاريخ</mat-radio-button>
+      <mat-radio-button value="byName">بحسب اسم الطالب</mat-radio-button>
+      <mat-radio-button value="byNumber">بحسب رقم الطالب</mat-radio-button>
+      <mat-radio-button value="byRoomNumber">بحسب الغرفة</mat-radio-button>
+
+    </mat-radio-group>
+  </div>
+  <div class="filter-options">
+    <mat-form-field color="accent" appearance="outline" class="filter-field">
+      <mat-label>اختر المبنى</mat-label>
+      <mat-select [(value)]="selectedBuildingId" (selectionChange)="onBuildingChange($event.value)">
+        <mat-option *ngFor="let building of buildings" [value]="building.id">{{ building.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field color="accent" appearance="outline" class="filter-field">
+      <mat-label>Select Start Date</mat-label>
+      <input matInput [matDatepicker]="picker1" [(ngModel)]="startDate">
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1 color="accent"></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field color="accent" appearance="outline" class="filter-field">
+      <mat-label>Select End Date</mat-label>
+      <input matInput [matDatepicker]="picker2" [(ngModel)]="expirDate">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2 color="accent"></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <hr style="border: 1px solid #626486; width: 100%;">
+  <button (click)="getReservation()" mat-raised-button color="primary">عرض النتائج</button>
+</div>
+<div dir="rtl" class="results-container">
+  <div class="room-details" *ngFor="let r of reservation">
+    <div class="checkin-room">
+      <h3>غرفة رقم: {{ r.room_number }}</h3>
+      <h3>سعه الغرفة : {{ r.student_name }}</h3>
+    </div>
+    <hr style="border: 1px solid #626486; width: 100%;">
+  </div>
+</div>

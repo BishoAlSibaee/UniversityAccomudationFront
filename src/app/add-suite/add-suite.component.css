@@ -1,13 +1,25 @@
-.buildings-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  background-color: #f7f7f7;
+.container-bar {
+  background-color: #01053b;
+  width: 90%;
+  margin: 10px auto;
+  padding: 10px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 11px 6px rgba(0, 0, 0, 0.1);
 }
 
+.container-bar h1 {
+  color: white;
+}
+
+
+.buildings-container {
+  width: 90%;
+  margin: 0 auto;
+  padding: 10px;
+  font-family: Arial, sans-serif;
+  border-radius: 8px;
+  box-shadow: 0px 0px 11px 6px rgba(0, 0, 0, 0.1);
+}
 .header {
   display: flex;
   justify-content: space-between;
@@ -137,4 +149,8 @@ h1 {
 
 .choose-floor {
   margin: 5px;
+}
+
+::ng-deep .mat-mdc-select-panel {
+  background-color: #373f66 !important;
 }

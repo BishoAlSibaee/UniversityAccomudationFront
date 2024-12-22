@@ -8,3 +8,9 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
+.dialog-panel .mat-mdc-dialog-container .mdc-dialog__container .mat-mdc-dialog-surface {
+  background-color: #01053b;
+  border: solid 3px white;
+  border-radius: 8px;
+}
+

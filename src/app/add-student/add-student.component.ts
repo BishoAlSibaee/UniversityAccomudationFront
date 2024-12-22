@@ -22,17 +22,10 @@ export class AddStudentComponent {
   private _snackBar = inject(MatSnackBar);
   student: Student
   countryList: string[] = [];
-  study_year: any[] = [
-    { value: 'السنة التحضيرية' },
-    { value: 'السنة الأولى' },
-    { value: 'السنة الثانية' },
-    { value: 'السنة الثالثة' },
-    { value: 'السنة الرابعة' },
-    { value: 'السنة الخامسة' },
-  ];
   myControl = new FormControl('');
   filteredOptions: Observable<string[]> | undefined;
   listCollege: College[] = []
+  name: string = ''
 
   constructor(private router: Router, private client: HttpClient, private dialog: MatDialog) {
     this.student = new Student(0, "", "", "", "", "", "")

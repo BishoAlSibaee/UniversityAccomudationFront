@@ -74,7 +74,6 @@ export class DialogAddMultiRoomComponent {
         console.log("Error" + error);
       }
     });
-
   }
 
   openSnackBar(message: string, action: string) {

@@ -1,4 +1,4 @@
-.top-bar {
+/* .top-bar {
   background-color: #3f3f5f;
   padding: 15px;
   margin-left: 25%;
@@ -16,7 +16,6 @@
 
 .main-content {
   display: flex;
-  /* margin-top: 50px; */
   height: calc(100vh - 50px);
 }
 
@@ -103,4 +102,178 @@
 h1 {
   color: cadetblue;
   font-weight: bold;
+} */
+
+
+
+
+
+
+
+* {
+  box-sizing: border-box;
+}
+
+.all {
+  height: 100%;
+}
+
+.row {
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.side {
+  flex: 20%;
+  background-color: #07113b;
+  padding: 20px;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #3f3f5f;
+}
+
+.main {
+  /* flex: 80%; */
+  width: 80%;
+}
+
+.action {
+  background-color: #305286;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+}
+
+.action button {
+  flex: 1;
+  margin: 0 5px;
+}
+
+.building-container {
+  background-color: rgb(146, 132, 132);
+  padding: 10px;
+}
+
+.choose-building,
+.choose-floor {
+  margin: 5px;
+}
+
+.room-data {
+  padding: 10px;
+}
+
+.rooms-container {
+  background-color: #305286;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.suite {
+  border: 2px solid #3d2706;
+  border-radius: 10px;
+  /* padding: 5px; */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.suite legend {
+  font-weight: bold;
+  padding: 0 5px;
+  color: #000;
+}
+
+.room-in-suite {
+  margin-bottom: 5px;
+  padding: 0px;
+}
+
+.single-room {
+  display: inline-block;
+  padding: 2px;
+  /* margin-bottom: 10px; */
+}
+
+.suite-container {
+  margin-top: -5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+}
+
+.choose-building {
+  margin: 5px;
+}
+
+.choose-floor {
+  margin: 5px;
+}
+
+.reservation {
+  border-radius: 8px;
+  background-color: #3f3f5f;
+  padding: 12px;
+  border: solid 2px white;
+  margin-top: 10px;
+  text-align: start;
+}
+
+.reservation p {
+  color: white;
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+}
+
+.reservation .icon {
+  margin-right: 8px;
+  color: #9195a3;
+}
+
+.action-reservation {
+  display: flex;
+  gap: 10px;
+}
+
+.no-reservations {
+  text-align: center;
+  margin-top: 20px;
+  color: white;
+}
+
+.no-reservations-icon {
+  font-size: 48px;
+  color: #ff5252;
+  width: 100%;
+  height: auto;
+}
+
+.no-reservations-text {
+  margin-top: 10px;
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
+}
+
+h1 {
+  color: cadetblue;
+  font-weight: bold;
+}
+
+h3 {
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+::ng-deep .mat-mdc-select-panel {
+  background-color: #373f66 !important;
 }

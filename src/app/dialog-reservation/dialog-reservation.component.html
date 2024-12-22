@@ -26,11 +26,23 @@
     <mat-form-field style="width:100%" color="accent" class="choose-building">
       <mat-label>Choose Student</mat-label>
       <mat-select (selectionChange)="onStudentChange($event.value)">
-        <!-- <mat-select> -->
         <mat-option *ngFor="let s of students" [value]="s">Student Name : {{s.name}} | Student Number :
           {{s.student_number}}</mat-option>
       </mat-select>
     </mat-form-field>
+  </div>
+  <div class="facilities-container" *ngIf="facilities.length>0">
+    <p><strong> المرافق المتاحة </strong></p>
+    <div class="all-faciliti">
+      <mat-checkbox [(ngModel)]="allSelected" (change)="toggleSelectAll()">اختيار الكل</mat-checkbox>
+      <div class="facilities">
+        <div *ngFor="let f of facilities">
+          <mat-checkbox [checked]="selectedFacilities.includes(f.id)" (change)="toggleFacility(f.id)">
+            {{ f.name_ar }}
+          </mat-checkbox>
+        </div>
+      </div>
+    </div>
   </div>
   <div>
     <ngx-timepicker-field style="color: black;" [format]="24" [defaultTime]="'14:00'" #picker [(ngModel)]="startTime"

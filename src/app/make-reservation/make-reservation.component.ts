@@ -13,7 +13,6 @@ import { Room } from '../Room';
 import { Reservation } from '../Reservation';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { DialogReservationComponent } from '../dialog-reservation/dialog-reservation.component';
-import { DialogMessageComponent } from '../dialog-message/dialog-message.component';
 
 @Component({
   selector: 'app-make-reservation',
@@ -83,6 +82,9 @@ export class MakeReservationComponent {
   }
 
   selectRoom(room: Room) {
+    if (this.userReservations.length > 0) {
+      return this.openSnackBar("لا يمكن تغيير الغرفة بعد اضافة الحجز", "Ok");
+    }
     this.selectedRoom = room;
     this.selectedRoomNumber = room.number;
   }
@@ -130,6 +132,7 @@ export class MakeReservationComponent {
         console.log(result)
         if (result.code === 1) {
           this.availableRooms = result.AvailableRooms
+          this.availableRooms.sort((a, b) => { return a.number - b.number; });
           console.log("result = " + result.AvailableRooms)
         } else {
           return this.openSnackBar(result.error, "Ok");
@@ -144,42 +147,8 @@ export class MakeReservationComponent {
     })
   }
 
-  makeReservation1() {
-    this.checkList();
-    const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
-
-    const token = localStorage.getItem("token");
-    const headers = new HttpHeaders({ Authorization: "Bearer " + token });
-    const options = { headers: headers };
-
-    const params = { 'Reservations': this.userReservations };
-
-    this.client.post<any>(ApiLinks.makeReservation, params, options).subscribe({
-      next: (result) => {
-        if (result.code === 1) {
-          const successful = result.successful_reservations.length;
-          const failed = result.failed_reservations.length;
-          let message = 'تم الحجز بنجاح';
-          if (failed > 0) {
-            message += ` و ${failed} حجز فشل بسبب: ${result.failed_reservations.map((res: any) => res.error).join(', ')}`;
-          }
-          this.clearDataAfterReservation()
-          this.openSnackBar(message, "Ok");
-        } else {
-          this.openSnackBar(result.error || "فشلت عملية الحجز.", "Ok");
-        }
-      },
-      error: (error) => {
-        console.log(error);
-        this.openSnackBar("حدث خطأ أثناء محاولة الاتصال بالخادم.", "Ok");
-      },
-      complete: () => {
-        dialogRef.close();
-      }
-    });
-  }
-
   makeReservation() {
+    console.table(this.userReservations);
     const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
     const token = localStorage.getItem("token");
     const headers = new HttpHeaders({ Authorization: "Bearer " + token });
@@ -188,23 +157,10 @@ export class MakeReservationComponent {
     this.client.post<any>(ApiLinks.makeReservation, params, options).subscribe({
       next: (result) => {
         if (result.code === 1) {
-          const failedReservations = result.failed_reservations;
-          if (failedReservations.length > 0) {
-            const failedNames = failedReservations.map((res: any) => res.reservation.student_name);
-            const message = `
-             <strong>تمت اضافة الحجوزات</strong>
-             <p>يوجد حجز/حجوزات للسمتخدم </p>
-             <ul>
-              ${failedNames.map((name: string) => `<li>${name}</li>`).join('')}
-             </ul>
-             <p>لم يتم تثبيتها بسبب سعة الغرفة</p>`;
-            this.dialog.open(DialogMessageComponent, { data: { title: 'تنبيه', theMessage: message, }, });
-          } else {
-            this.openSnackBar("تم الحجز بنجاح", "Ok");
-          }
+          this.openSnackBar("تم الحجز بنجاح", "Ok");
           this.clearDataAfterReservation();
         } else {
-          this.openSnackBar(result.error || "فشلت عملية الحجز.", "Ok");
+          this.openSnackBar(result.error, "Ok");
         }
       },
       error: (error) => {
@@ -217,12 +173,12 @@ export class MakeReservationComponent {
     });
   }
 
-  openReservationComponent(roomId: number, roomNumber: number, startDate: string, endDate: string, availableCapacity: number): void {
+  openReservationComponent(roomId: number, roomNumber: number, building_id: number, floor_id: number, suite_id: number, availableCapacity: number, startDate: string, endDate: string): void {
     if (this.userReservations.length >= availableCapacity) {
-      return this.openSnackBar("لا يمكن حجز الغرفة .. عدد الأفراد أكبر من سعة الغرفة", "Ok");
+      return this.openSnackBar("لا يمكن الأضافة .. عدد الأفراد أكبر من سعة الغرفة", "Ok");
     } else {
       const dialogRef = this.dialog.open(DialogReservationComponent, {
-        data: { roomId, roomNumber, startDate, endDate }
+        data: { roomId, roomNumber, building_id, floor_id, suite_id, startDate, endDate }
       });
 
       dialogRef.afterClosed().subscribe(result => {
@@ -231,7 +187,9 @@ export class MakeReservationComponent {
             if (this.isStudentAlreadyReserved(res.student_id)) {
               this.openSnackBar(`الحجز موجود مسبقًا للطالب: ${res.student_name}`, "Ok");
             } else {
+              console.table(res);
               this.userReservations.push(res);
+              // res.facility_ids = [];
             }
           });
         }
@@ -278,6 +236,16 @@ export class MakeReservationComponent {
     this.showOptions = false
     this.Start = null
     this.Expire = null
+  }
+
+  getFacilitiesById(id: number) {
+    let name;
+    AppComponent.facilitie.forEach(f => {
+      if (f.id === id) {
+        name = f.name_ar
+      }
+    })
+    return name;
   }
 
   openSnackBar(message: string, action: string) {
