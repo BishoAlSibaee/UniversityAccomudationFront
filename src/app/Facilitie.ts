@@ -9,17 +9,7 @@ export class Facilitie {
   lock_id: string;
   isChecked?: boolean;
 
-  constructor(
-    id: number,
-    name_ar: string,
-    name_en: string,
-    building_id: number,
-    floor_id: number,
-    suite_id: number,
-    room_types_id: number,
-    lock_id: string,
-    isChecked?: boolean
-  ) {
+  constructor(id: number, name_ar: string, name_en: string, building_id: number, floor_id: number, suite_id: number, room_types_id: number, lock_id: string, isChecked?: boolean) {
     this.id = id;
     this.name_ar = name_ar;
     this.name_en = name_en;

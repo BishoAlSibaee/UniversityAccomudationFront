@@ -14,6 +14,7 @@ import { RoomType } from '../RoomType';
   templateUrl: './dialog-edit-and-add-room.component.html',
   styleUrls: ['./dialog-edit-and-add-room.component.css']
 })
+
 export class DialogEditAndAddRoomComponent {
   private _snackBar = inject(MatSnackBar);
   buildingId: number = 0;
@@ -139,13 +140,14 @@ export class DialogEditAndAddRoomComponent {
   }
 
   updateRoom() {
-    if (this.roomId === 0 || this.roomNumber === 0 || this.floorId === 0 || this.typeRoom == 0 || this.capacityRoom === 0) {
+    console.log(this.roomId)
+    if (this.roomId === 0 || this.roomNumber === 0 ||this.capacityRoom === 0) {
       return this.openSnackBar("All Required", "Ok");
     }
     let params = new FormData();
     params.append("id", this.roomId.toString());
     params.append("number", this.roomNumber.toString());
-    params.append("type_room", this.typeRoom.toString());
+    params.append("room_types_id", this.typeRoom.toString());
     params.append("capacity", this.capacityRoom.toString());
     const token = localStorage.getItem("token")
     const h = new HttpHeaders({ Authorization: "Bearer " + token, });

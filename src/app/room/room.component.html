@@ -1,7 +1,14 @@
 <div class="room" [ngClass]="{'selected': isSelected}" [ngStyle]="{'background-color': checkCapacity()}">
-  <div class="numper-room">
-    <p>Numper Room : {{roomData.number}}</p>
+  <div>
+    <p class="numper-room">{{roomData.number}}</p>
+    <hr>
+    <div class="info-room">
+      <p>capacity : {{roomData.capacity}}</p>
+      <p>building : {{roomData.building_id}}</p>
+      <img id="LOGO" *ngIf="roomData.lock_id" src="./assets/smart-door.png" style="align-self: flex-end;width: 19px;height: 19px;" alt="  ">
+    </div>
+    <!-- <p>Numper Room : {{roomData.number}}</p>
     <p>capacity : {{roomData.capacity}}</p>
-    <p>building : {{roomData.building_id}}</p>
+    <p>building : {{roomData.building_id}}</p> -->
   </div>
 </div>

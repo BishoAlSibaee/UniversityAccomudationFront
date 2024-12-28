@@ -10,6 +10,9 @@ export class RoomComponent {
   @Input() isSelected: boolean | undefined;
 
   checkCapacity() {
-    return this.roomData.capacity === 4 ? 'darkred' : 'gray';
+    return this.roomData.capacity === 4 ? 'darkred' : '#rgb(255 255 255)';
+    // return this.roomData.capacity === 4 ? 'darkred' : '#bfbfbf';
   }
+
+
 }

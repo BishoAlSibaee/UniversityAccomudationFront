@@ -40,11 +40,11 @@ export class AddBuildingComponent {
   getTotalRooms(buildingId: number): number {
     const building = this.buildings.find(b => b.id === buildingId);
     if (!building) return 0;
-    const roomOfSuite = building.floors.reduce((totalRooms, floor) => {
-      return totalRooms + floor.suites.reduce((suiteRooms, suite) => suiteRooms + suite.rooms.length, 0);
-    }, 0);
+    // const roomOfSuite = building.floors.reduce((totalRooms, floor) => {
+    //   return totalRooms + floor.suites.reduce((suiteRooms, suite) => suiteRooms + suite.rooms.length, 0);
+    // }, 0);
     const singelRooms = AppComponent.rooms.filter(room => room.building_id === buildingId).length;
-    return singelRooms + roomOfSuite;
+    return singelRooms
   }
 
   openSnackBar(message: string, action: string) {

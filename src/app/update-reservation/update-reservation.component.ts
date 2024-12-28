@@ -153,7 +153,7 @@ export class UpdateReservationComponent {
       params.append("new_facility_ids", JSON.stringify(this.selectedFacilities));
     }
     params.append("reservation_id", this.data.idReservation);
-    params.append("update_by", '1');
+    params.append("update_by", localStorage.getItem("userId") || '0');
     const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
     const token = localStorage.getItem("token")
     const h = new HttpHeaders({ Authorization: "Bearer " + token });

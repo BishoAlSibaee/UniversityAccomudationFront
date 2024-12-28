@@ -53,13 +53,13 @@ export class AddFloorComponent {
     if (!building) {
       return 0;
     }
-    const roomsInSuites = building.floors.filter(floor => floor.id === floorId).reduce((totalRooms, floor) => {
-      return totalRooms + floor.suites.reduce((suiteRooms, suite) => {
-        return suiteRooms + suite.rooms.length;
-      }, 0);
-    }, 0);
+    // const roomsInSuites = building.floors.filter(floor => floor.id === floorId).reduce((totalRooms, floor) => {
+    //   return totalRooms + floor.suites.reduce((suiteRooms, suite) => {
+    //     return suiteRooms + suite.rooms.length;
+    //   }, 0);
+    // }, 0);
     const singleRooms = AppComponent.rooms.filter(room => room.building_id === buildingId && room.floor_id === floorId).length;
-    return roomsInSuites + singleRooms;
+    return  singleRooms;
   }
 
   openDialogEditOrAdd(buildingId: number, floorId: number | null, floorNumber: number) {

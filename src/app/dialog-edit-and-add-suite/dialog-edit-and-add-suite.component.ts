@@ -58,12 +58,15 @@ export class DialogEditAndAddSuiteComponent {
   ngOnInit() {
     this.allBuilding = AppComponent.buildings;
     this.rooms = AppComponent.rooms;
+    console.log("UPDATE SUITE")
+    console.log(this.rooms)
     if (this.nameBtn === "Update") {
-      this.filteredRooms = this.rooms.filter(r => r.building_id === this.buildingId && r.floor_id === this.floorId)
+      this.filteredRooms = this.rooms.filter(r => r.building_id === this.buildingId && r.floor_id === this.floorId && r.suite_id === 0)
     }
   }
 
   onBuildingChange(selectedBuilding: Building) {
+    this.filteredRooms = []
     this.buildingId = selectedBuilding.id
     this.selectedFloorNumber = null;
     this.floorId = 0
@@ -85,7 +88,7 @@ export class DialogEditAndAddSuiteComponent {
   }
 
   filterRooms() {
-    this.filteredRooms = this.rooms.filter(r => r.building_id === this.buildingId && r.floor_id === this.floorId)
+    this.filteredRooms = this.rooms.filter(r => r.building_id === this.buildingId && r.floor_id === this.floorId && r.suite_id === 0)
   }
 
   onClickCancel(): void {

@@ -21,14 +21,13 @@ export class AddRoomComponent {
   selectedFloor: Floor | null = null;
   selectedFloorName: string | Floor = 'all';
   filteredRooms: Room[] = [];
-  roomInSuite: Room[] = [];
 
   constructor(public dialog: MatDialog, private roomService: RoomService) { }
 
   ngOnInit() {
     this.allBuilding = AppComponent.buildings;
     this.allRoom = AppComponent.rooms;
-
+    console.log(this.allRoom)
     if (this.allBuilding.length > 0) {
       this.selectedBuilding = this.allBuilding[0];
       this.onBuildingChange(this.selectedBuilding);
@@ -57,19 +56,21 @@ export class AddRoomComponent {
       } else {
         this.filteredRooms = this.allRoom.filter(room => room.building_id === this.selectedBuilding?.id && room.floor_id === this.selectedFloor?.id);
       }
-      this.selectedBuilding.floors.forEach(floor => {
-        if (this.selectedFloor === null || floor.id === this.selectedFloor?.id) {
-          floor.suites.forEach(suite => {
-            this.filteredRooms.push(...suite.rooms);
-          });
-        }
-      });
+      // this.selectedBuilding.floors.forEach(floor => {
+      //   if (this.selectedFloor === null || floor.id === this.selectedFloor?.id) {
+      //     floor.suites.forEach(suite => {
+      //       this.filteredRooms.push(...suite.rooms);
+      //     });
+      //   }
+      // });
       this.filteredRooms.sort((a, b) => a.number - b.number);
     }
   }
 
   openDialogEditOrAdd(roomId: number, roomNumber: number, room_types_id: number, roomCapacity: number) {
-    if (roomId !== 0 && roomNumber !== 0 && room_types_id !== 0 && roomCapacity !== 0) {
+    console.log(`roomId = ` + roomId + `roomNumber = ` + roomNumber);
+
+    if (roomId !== 0 || roomNumber !== 0 || room_types_id !== 0 || roomCapacity !== 0) {
       const dialogRef = this.dialog.open(DialogEditAndAddRoomComponent, {
         data: { roomId: roomId, roomNumber: roomNumber, roomType: room_types_id, roomCapacity: roomCapacity },
         panelClass: ['dialog-panel']

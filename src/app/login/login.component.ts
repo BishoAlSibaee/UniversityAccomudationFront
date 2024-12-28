@@ -18,6 +18,8 @@ export class LoginComponent {
 
   ngOnInit() {
     localStorage.removeItem('token');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userId');
     console.log("token = " + localStorage.getItem('token'))
   }
 
@@ -31,6 +33,8 @@ export class LoginComponent {
     if (result.code == 1) {
       console.log("login done")
       localStorage.setItem('token', result.token);
+      localStorage.setItem('userName', result.name);
+      localStorage.setItem('userId', result.id);
       this.router.navigate(['mainPage'])
     } else {
       console.log(result.error)
