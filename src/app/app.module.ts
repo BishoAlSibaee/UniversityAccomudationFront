@@ -65,6 +65,7 @@ import { DialogAddFacilitieComponent } from './dialog-add-facilitie/dialog-add-f
 import { GetReservationByDateComponent } from './get-reservation-by-date/get-reservation-by-date.component';
 import { GetReservationByStudentComponent } from './get-reservation-by-student/get-reservation-by-student.component';
 import { UpdateReservationComponent } from './update-reservation/update-reservation.component';
+import { authGuard } from './auth.guard';
 
 @NgModule({
   declarations: [
@@ -137,16 +138,16 @@ import { UpdateReservationComponent } from './update-reservation/update-reservat
     NgxMaterialTimepickerModule,
     RouterModule.forRoot([{ path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
-    { path: 'mainPage', component: MainPageComponent },
-    { path: 'addStudent', component: AddStudentComponent },
-    { path: 'makeReservation', component: MakeReservationComponent },
-    { path: 'ReservationManagement', component: ReservationManagementComponent },
+    { path: 'mainPage', component: MainPageComponent, canActivate: [authGuard] },
+    { path: 'addStudent', component: AddStudentComponent, canActivate: [authGuard] },
+    { path: 'makeReservation', component: MakeReservationComponent, canActivate: [authGuard] },
+    { path: 'ReservationManagement', component: ReservationManagementComponent, canActivate: [authGuard] },
     { path: 'test', component: TestComponent },
-    { path: 'addBuilding', component: AddBuildingComponent },
-    { path: 'BuildingsManagement', component: BuildingsManagementComponent },
-    { path: 'StudentManagement', component: StudentManagementComponent },
-    { path: 'UsersManagement', component: UserManagementComponent },
-    { path: 'Facilitie', component: FacilitieComponent },
+    { path: 'addBuilding', component: AddBuildingComponent, canActivate: [authGuard] },
+    { path: 'BuildingsManagement', component: BuildingsManagementComponent, canActivate: [authGuard] },
+    { path: 'StudentManagement', component: StudentManagementComponent, canActivate: [authGuard] },
+    { path: 'UsersManagement', component: UserManagementComponent, canActivate: [authGuard] },
+    { path: 'Facilitie', component: FacilitieComponent, canActivate: [authGuard] },
     ]),
   ],
   providers: [DialogMessageComponent],

@@ -15,12 +15,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DialogDeleteComponent } from '../dialog-delete/dialog-delete.component';
 import { UpdateReservationComponent } from '../update-reservation/update-reservation.component';
 import { Facilitie } from '../Facilitie';
+import { translates } from '../translates';
 
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page.component.html',
   styleUrls: ['./main-page.component.css']
 })
+
 export class MainPageComponent {
   private _snackBar = inject(MatSnackBar);
   LightColor = "#3d2706"
@@ -47,14 +49,16 @@ export class MainPageComponent {
   showDropdown = false;
   floorNumber: number = 0;
   buildingName: string = ''
+
   constructor(private client: HttpClient, private router: Router, public dialog: MatDialog) {
+    translates.create()
     this.studentsVisible = true
     this.roomsVisible = false
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.getBuildingData();
-    this.getAllRoomType();
+    await this.getAllRoomType();
     this.getAllFacilitie();
     this.nameUser = localStorage.getItem("userName") || ''
   }
@@ -274,7 +278,6 @@ export class MainPageComponent {
     this.selectedSuiteIndex = index;
   }
 
-
   getBuildingName(buildingId: number): string {
     const building = this.listBuilding.find(b => b.id === buildingId);
     return building ? building.name : 'Unknown Building';
@@ -306,19 +309,25 @@ export class MainPageComponent {
   }
 
   getAllRoomType() {
-    const token = localStorage.getItem("token")
-    const h = new HttpHeaders({
-      Authorization: "Bearer " + token,
-    });
-    let options = { headers: h };
-    this.client.get<RoomType[]>(ApiLinks.getAllRoomType, options).subscribe({
-      next: (result) => {
-        AppComponent.roomType = result
-      },
-      error: (error) => {
-        console.log("Error");
-        console.log(error);
-      },
+    return new Promise<void>((resolve, reject) => {
+      const token = localStorage.getItem("token");
+      const h = new HttpHeaders({
+        Authorization: "Bearer " + token,
+      });
+      let options = { headers: h };
+
+      this.client.get<RoomType[]>(ApiLinks.getAllRoomType, options).subscribe({
+        next: (result) => {
+          AppComponent.roomType = result;
+          console.log(AppComponent.roomType);
+          resolve();
+        },
+        error: (error) => {
+          console.log("Error");
+          console.log(error);
+          reject(error);
+        },
+      });
     });
   }
 
@@ -403,9 +412,22 @@ export class MainPageComponent {
     const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
     localStorage.clear();
     setTimeout(() => {
-      this.goToPage('login');
-      dialogRef.close();
+      // this.goToPage('login');
+      this.router.navigate(['login'], { replaceUrl: true });
+      dialogRef.close()
     }, 1000);
+  }
+
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
+  }
+
+  changeLanguage(id: string) {
+    if (id == "ar") {
+      AppComponent.language = "ar"
+    } else if (id == "en") {
+      AppComponent.language = "en"
+    }
   }
 
   openSnackBar(message: string, action: string) {

@@ -1,31 +1,74 @@
+/* .container {
+  animation: transitionIn 0.75s;
+  padding: 15px;
+} */
+
+@keyframes transitionIn {
+  from {
+    opacity: 0;
+    transform: rotateX(-10deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotateX(0);
+  }
+}
+
 * {
   box-sizing: border-box;
+  animation: transitionIn 0.75s;
+
 }
 
 .all {
-  height: 100%;
+  height: 100vh;
 }
 
 .row {
-  height: 100%;
   display: flex;
-  flex-wrap: wrap;
+  height: 100%;
+  position: relative;
 }
 
 .side {
   flex: 20%;
   background: linear-gradient(90deg, #07113b, #0a1a4d, #122a6e);
   padding: 20px;
+  height: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  overflow-y: auto;
 }
+
+.side::-webkit-scrollbar {
+  width: 8px;
+}
+
+.side::-webkit-scrollbar-thumb {
+  background-color: #0a1a4d9c;
+  border-radius: 10px;
+}
+
+
+.side::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+.side::-webkit-scrollbar-thumb:hover {
+  background-color: #0a1a4ddc;
+  border-radius: 10px;
+}
+
 
 .top-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: #fffefb;
-  /* background: linear-gradient(205deg, #2C3E50, #57687c, #b4c7dd); */
   padding: 15px;
-  /* border-radius: 5px; */
 }
 
 .container-bar {
@@ -36,11 +79,31 @@
 
 .main {
   width: 80%;
-  background-color: rgb(227 227 227);
+  background-color: rgb(227, 227, 227);
+  height: 100%;
+  overflow-y: auto;
+}
+
+.main::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main::-webkit-scrollbar-thumb {
+  background-color: #0a1a4d9c;
+  border-radius: 10px;
+}
+.main::-webkit-scrollbar-thumb:hover {
+  background-color: #0a1a4ddc;
+  border-radius: 10px;
+}
+
+.main::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
 }
 
 .action {
-  /* background: linear-gradient(90deg, #07113b, #0a1a4d, #122a6e); */
   display: flex;
   padding: 15px;
   gap: 10px;
@@ -69,7 +132,7 @@
 .btn span {
   font-size: 14px;
   text-align: center;
-  white-space: nowrap;
+  /* white-space: nowrap; */
 }
 
 .building-container {
@@ -136,14 +199,11 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-
-
 }
 
 .reservation {
   border-radius: 8px;
   background-color: #3f3f5f66;
-  padding: 12px;
   border: solid 2px white;
   margin-top: 10px;
   text-align: start;
@@ -159,12 +219,8 @@
 
 .reservation .icon {
   margin-right: 8px;
+  margin-left: 8px;
   color: #9195a3;
-}
-
-.action-reservation {
-  display: flex;
-  gap: 10px;
 }
 
 .no-reservations {
@@ -186,11 +242,6 @@
   color: white;
   font-weight: bold;
 }
-
-/* h1 {
-  color: cadetblue;
-  font-weight: bold;
-} */
 
 h3 {
   color: white;
@@ -237,13 +288,11 @@ h3 {
 
 .title-room {
   width: 100%;
-  /* background-color: #122a6e; */
   background-color: rgb(255 255 255);
   border-radius: 8px;
   text-align: center;
   margin-bottom: 5px;
   box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-
 }
 
 .title-room h1 {
@@ -255,7 +304,6 @@ h3 {
   position: relative;
   display: inline-block;
 }
-
 
 .dropdown-menu {
   position: absolute;
@@ -282,4 +330,22 @@ h3 {
 
 .dropdown-item:hover {
   background-color: #f5f5f5;
+}
+
+.LangBtn {
+  border-radius: 10px;
+  border-color: white;
+  background: repeat;
+  height: 25;
+  color: white;
+  padding: 5px;
+  text-align: center;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.info-reservation {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

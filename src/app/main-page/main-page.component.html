@@ -1,57 +1,74 @@
 <div class="all">
   <div class="row">
-    <div class="side">
-      <div class="reservation">
-        <h3>معلومات الغرفة</h3>
+    <div class="side" dir="auto">
+      <div class="reservation" style="padding: 12px;">
+        <h3>{{getTranslate("RoomInfo")}}</h3>
         <div class="info-room">
-          <h3> Room Number : </h3>
-          <h3>{{selectedRoomNumber}}</h3>
+          <p> {{getTranslate("RoomNum")}} : </p>
+          <p>{{selectedRoomNumber}}</p>
         </div>
         <div class="info-room">
-          <h3> Building Name : </h3>
-          <h3>{{buildingName}}</h3>
+          <p> {{getTranslate("BuildingName")}} : </p>
+          <p>{{buildingName}}</p>
         </div>
         <div class="info-room">
-          <h3> Floor Number : </h3>
-          <h3>{{floorNumber}}</h3>
+          <p> {{getTranslate("FloorNum")}} : </p>
+          <p>{{floorNumber}}</p>
         </div>
       </div>
       <br>
       <hr>
       <br>
-      <h3>حجوزات الغرفة </h3>
+      <h3> {{getTranslate("RoomReser")}}</h3>
       <div class="reservation" *ngFor="let r of listReservation">
-        <p>
+        <div class="info-reservation">
+          <p>
+            <mat-icon class="icon">person</mat-icon>
+            {{getTranslate('Name')}} :
+          </p>
+          <p style="padding-left: 5px; padding-right: 5px;"> {{ r.student_name }} </p>
+        </div>
+        <!-- <p>
           <mat-icon class="icon">person</mat-icon>
-          Name: {{ r.student_name }}
-        </p>
-        <p>
-          <mat-icon class="icon">event</mat-icon>
-          Start Date: {{ r.start_date }}
-        </p>
-        <p>
+          {{getTranslate('Name')}} : {{ r.student_name }}
+        </p> -->
+        <div class="info-reservation">
+          <p>
+            <mat-icon class="icon">event</mat-icon>
+            {{getTranslate('StartDate')}} :
+          </p>
+          <p style="padding-left: 5px; padding-right: 5px;">{{ r.start_date }} </p>
+        </div>
+        <div class="info-reservation">
+          <p>
+            <mat-icon class="icon">schedule</mat-icon>
+            {{getTranslate('ExpireDate')}} :
+          </p>
+          <p style="padding-left: 5px; padding-right: 5px;">{{ r.expire_date }} </p>
+        </div>
+        <!-- <p>
           <mat-icon class="icon">schedule</mat-icon>
-          Expire Date: {{ r.expire_date }}
-        </p>
+          {{getTranslate('ExpireDate')}} : {{ r.expire_date }}
+        </p> -->
         <p>
           <mat-icon class="icon">domain</mat-icon>
-          Facilities : <span *ngIf="!r.facility_name"> لا يوجد مرافق مضافة </span>
+          {{getTranslate('Facilities')}} : <span *ngIf="!r.facility_name"> {{getTranslate('NoFacilities')}}</span>
         </p>
         <div class="facility">
           <span *ngFor="let facilityName of r.facility_name">
             {{ facilityName }}
           </span>
         </div>
-        <div class="action-reservation">
+        <div>
           <button (click)="openDeleteDialog(r.id , 'Reservation')" mat-button color="warn">
             <mat-icon>delete</mat-icon>
-            <span>حذف</span>
+            <span>{{getTranslate('Delete')}}</span>
           </button>
           <button
             (click)="openUpdateReservationDialog(r.id , r.student_name, r.room_id, r.room_number, r.start_date, r.expire_date, r.facility_ids, '')"
             mat-button color="accent">
             <mat-icon>edit</mat-icon>
-            <span>تعديل</span>
+            <span>{{getTranslate('Edit')}}</span>
           </button>
         </div>
       </div>
@@ -59,7 +76,7 @@
         <mat-icon class="no-reservations-icon">event_busy</mat-icon>
         <div class="no-reservations-icon">
         </div>
-        <p class="no-reservations-text">لا توجد حجوزات لهذه الغرفة</p>
+        <p class="no-reservations-text">{{getTranslate('NoReser')}}</p>
       </div>
     </div>
     <div class="main">
@@ -73,7 +90,7 @@
           </h5>
           <div class="dropdown-menu" *ngIf="showDropdown">
             <!-- <mat-icon>logout</mat-icon> -->
-            <button (click)="logOut()" class="dropdown-item">تسجيل خروج </button>
+            <button (click)="logOut()" class="dropdown-item">{{getTranslate('LogOut')}}</button>
           </div>
         </div>
       </div>
@@ -81,45 +98,47 @@
         <div class="action">
           <button (click)="goToPage('UsersManagement')" class="btn">
             <mat-icon>group</mat-icon>
-            <span>إدارة المستخدمين</span>
+            <span>{{getTranslate('UserMang')}}</span>
           </button>
           <button (click)="goToPage('StudentManagement')" class="btn">
             <mat-icon>school</mat-icon>
-            <span>إدارة الطلاب</span>
+            <span>{{getTranslate('StudentMang')}}</span>
           </button>
           <button (click)="goToPage('Facilitie')" class="btn">
             <mat-icon>food_bank</mat-icon>
-            <span>المرافق</span>
+            <span>{{getTranslate('Facilities')}}</span>
           </button>
           <button (click)="goBuildingManagement('BuildingsManagement')" class="btn">
             <mat-icon>apartment</mat-icon>
-            <span>إدارة المباني</span>
+            <span>{{getTranslate('BuildingMang')}}</span>
           </button>
           <button (click)="goToPage('ReservationManagement')" class="btn">
             <mat-icon>hotel</mat-icon>
-            <span>حجز غرفة</span>
+            <span>{{getTranslate('ReserRoom')}}</span>
           </button>
         </div>
         <hr style="width: 100%;">
         <div class="building-container">
           <mat-form-field appearance="outline" color="accent" class="choose-building">
-            <mat-label>Choose Building</mat-label>
+            <mat-label>{{getTranslate('ChooseBuilding')}}</mat-label>
             <mat-select [(value)]="selectedBuildingName" (selectionChange)="onBuildingChange($event.value)">
               <mat-option *ngFor="let building of listBuilding" [value]="building">{{building.name}}</mat-option>
             </mat-select>
           </mat-form-field>
           <mat-form-field appearance="outline" color="accent" class="choose-floor">
-            <mat-label>Choose Floor</mat-label>
+            <mat-label>{{getTranslate('ChooseFloor')}}</mat-label>
             <mat-select [(value)]="selectedFloorName" (selectionChange)="onFloorChange($event.value)">
               <mat-option [value]="'all'">All</mat-option>
               <mat-option *ngFor="let floor of filteredFloors" [value]="floor">{{floor.number}}</mat-option>
             </mat-select>
           </mat-form-field>
+          <button class="LangBtn" (click)="changeLanguage('ar')">AR</button>
+          <button class="LangBtn" (click)="changeLanguage('en')">EN</button>
         </div>
       </div>
       <div class="room-data">
         <div class="title-room">
-          <h1>Rooms</h1>
+          <h1>{{getTranslate('Rooms')}}</h1>
         </div>
         <div class="rooms-container">
           <!-- غرف السويتات -->
