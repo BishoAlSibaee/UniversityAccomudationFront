@@ -22,13 +22,14 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-/* * {
-  font-family: 'Cairo';
-  margin: 0;
-} */
-
-.dialog-panel .mat-mdc-dialog-container .mdc-dialog__container .mat-mdc-dialog-surface {
+/* .dialog-panel .mat-mdc-dialog-container .mdc-dialog__container .mat-mdc-dialog-surface {
   background-color: #01053b;
   border: solid 3px white;
   border-radius: 8px;
 }
+
+.dialog-panel-delete .mat-mdc-dialog-container .mdc-dialog__container .mat-mdc-dialog-surface {
+  background-color: #01053b;
+  border: solid 1px white;
+  border-radius: 8px;
+} */

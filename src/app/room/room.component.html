@@ -1,12 +1,13 @@
-<div class="room" [ngClass]="{'selected': isSelected}" [ngStyle]="{'background-color': checkCapacity()}">
+<!-- <div class="room" [ngClass]="{'selected': isSelected}" [ngStyle]="{'background-color': checkCapacity()}"> -->
+<div class="room" [ngClass]="{'selected': isSelected}">
   <div>
     <p class="numper-room">{{roomData.number}}</p>
     <hr>
     <div class="info-room" dir="auto">
       <p>{{getTranslate('capacity')}} : {{roomData.capacity}}</p>
       <p>{{getTranslate('RoomType')}} : {{getRoomType(roomData.room_types_id)}}</p>
-      <img id="LOGO" *ngIf="roomData.lock_id" src="./assets/smart-door.png"
-        style="align-self: flex-end;width: 19px;height: 19px;" alt="  ">
+      <img id="Lock" *ngIf="roomData.lock_data != null" src="./assets/smart-door.png"
+        style="align-self: flex-start;width: 19px;height: 19px;" alt=" ">
     </div>
   </div>
 </div>

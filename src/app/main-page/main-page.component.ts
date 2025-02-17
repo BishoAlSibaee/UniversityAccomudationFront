@@ -58,8 +58,6 @@ export class MainPageComponent {
 
   async ngOnInit() {
     this.getBuildingData();
-    await this.getAllRoomType();
-    this.getAllFacilitie();
     this.nameUser = localStorage.getItem("userName") || ''
   }
 
@@ -69,12 +67,10 @@ export class MainPageComponent {
       const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
       let params = new FormData();
       const token = localStorage.getItem("token")
-
       const h = new HttpHeaders({
         Authorization: "Bearer " + token,
       });
       let options = { headers: h };
-
       this.client.post<any>(ApiLinks.getBuildingData, params, options).subscribe({
         next: (result) => {
           this.isBack = true
@@ -82,11 +78,12 @@ export class MainPageComponent {
           AppComponent.rooms = result.rooms;
           this.listBuilding = AppComponent.buildings;
           this.listRooms = AppComponent.rooms;
+          AppComponent.roomType = result.typeRoom;
+          AppComponent.facilitie = result.facilitie
+          this.facilitie = AppComponent.facilitie
           this.addDataListsFromBuildings(this.listBuilding)
         },
         error: (error) => {
-          console.log("Error");
-          console.log(error);
         },
         complete: () => {
           dialogRef.close();
@@ -104,9 +101,7 @@ export class MainPageComponent {
         .sort((a, b) => {
           return a.number - b.number;
         });
-      console.log("Info Rooms list:", this.listRooms);
     }
-
   }
 
   addDataListsFromBuildings(buildings: Building[]) {
@@ -117,6 +112,7 @@ export class MainPageComponent {
         this.listFloor.push(...building.floors);
       }
     });
+
     this.selectedBuildingName = buildings[0];
 
     this.listFloor.forEach(floor => {
@@ -124,16 +120,15 @@ export class MainPageComponent {
         this.listSuite.push(...floor.suites);
       }
     });
+
     if (this.isBack) {
       this.listSuite.forEach(suite => {
         if (suite.rooms && suite.rooms.length) {
           suite.rooms.forEach(room => {
-            console.log("room = " + room.number + " " + room.building_id)
             this.listRooms.push(room);
           });
         }
       });
-
       if (buildings.length > 0) {
         this.onBuildingChange(buildings[0]);
       }
@@ -143,6 +138,7 @@ export class MainPageComponent {
           return a.number - b.number;
         });
     }
+
     if (buildings.length > 0) {
       this.onBuildingChange(buildings[0]);
     }
@@ -163,22 +159,18 @@ export class MainPageComponent {
         return a.number - b.number;
       });
     } else {
-      console.log("No floors found for the selected building");
       this.filteredFloors = [];
     }
   }
 
   onFloorChange(selectedFloor: any) {
-    console.log("Selected Floor:", selectedFloor);
     this.filteredRooms = [];
     if (selectedFloor === 'all') {
-      console.log("Selected ALL");
       const currentBuildingId = this.selectedBuildingName.id;
       this.filteredRooms = this.listRooms.filter(room => room.building_id === currentBuildingId).sort((a, b) => {
         return a.number - b.number;
       });
     } else if (selectedFloor) {
-      console.log("Selected FLOOR");
       this.filteredRooms = this.listRooms.filter(room => room.floor_id === selectedFloor.id).sort((a, b) => {
         return a.number - b.number;
       });
@@ -231,8 +223,6 @@ export class MainPageComponent {
 
     this.client.post<any>(ApiLinks.getReservationByRoom, params, options).subscribe({
       next: (result) => {
-        console.log(result);
-        console.log("Enter Function");
         if (result.code === 1) {
           AppComponent.reservations = [];
           this.listReservation = [];
@@ -244,19 +234,20 @@ export class MainPageComponent {
             if (typeof reservation.facility_ids === "string") {
               try {
                 facilityIds = JSON.parse(reservation.facility_ids);
-                console.log(facilityIds);
 
               } catch (error) {
-                console.error(`Error parsing facility_ids for reservation ID: ${reservation.id}`, error);
               }
             }
             if (facilityIds.length > 0) {
               let myFacilitie: string[] = [];
               facilityIds.forEach((facilityId: number) => {
-                console.log(facilityIds);
                 const matchedFacility = this.facilitie.find(f => f.id === facilityId);
                 if (matchedFacility) {
-                  myFacilitie.push(matchedFacility.name_ar);
+                  if (AppComponent.language === 'ar') {
+                    myFacilitie.push(matchedFacility.name_ar);
+                  } else {
+                    myFacilitie.push(matchedFacility.name_en);
+                  }
                   reservation.facility_name = myFacilitie;
                 }
               });
@@ -268,7 +259,6 @@ export class MainPageComponent {
         }
       },
       error: (error) => {
-        console.log(error);
         return this.openSnackBar(error, "Ok");
       },
     });
@@ -299,8 +289,6 @@ export class MainPageComponent {
         this.facilitie = AppComponent.facilitie
       },
       error: (error) => {
-        console.log("Error");
-        console.log(error);
       },
       complete: () => {
         dialogRef.close();
@@ -319,12 +307,9 @@ export class MainPageComponent {
       this.client.get<RoomType[]>(ApiLinks.getAllRoomType, options).subscribe({
         next: (result) => {
           AppComponent.roomType = result;
-          console.log(AppComponent.roomType);
           resolve();
         },
         error: (error) => {
-          console.log("Error");
-          console.log(error);
           reject(error);
         },
       });
@@ -342,7 +327,6 @@ export class MainPageComponent {
           this.listReservation.splice(reservationIndex, 1)
         }
       } else {
-        console.log('Deletion cancelled');
       }
     });
   }
@@ -354,11 +338,7 @@ export class MainPageComponent {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.table(result)
-        console.log(result.id)
-        console.log(result.student_name)
         const res = this.listReservation.find(r => r.id === idReservation)
-        console.table(result)
         if (res) {
           //[7,8,9,10]
           res.room_id = Number(result.room_id)
@@ -366,13 +346,10 @@ export class MainPageComponent {
           res.start_date = result.start_date
           res.expire_date = result.expire_date
           res.facility_ids = result.facility_ids
-          console.log(res.facility_ids);
-
           // if (typeof res.facility_ids === "string") {
           //   try {
           //     res.facility_ids = JSON.parse(res.facility_ids);
           //   } catch (error) {
-          //     console.error(`Error parsing facility_ids for reservation ID: ${res.id}`, error);
           //     res.facility_ids = [];
           //   }
           // }
@@ -385,7 +362,6 @@ export class MainPageComponent {
           //     }
           //   });
           // } else {
-          //   console.error(`facility_ids is not an array for reservation ID: ${res.id}`);
           // }
 
 
@@ -393,7 +369,6 @@ export class MainPageComponent {
           //   try {
           //     JSON.parse(res.facility_ids);
           //   } catch (error) {
-          //     console.error(`Error parsing facility_ids for reservation ID: `, error);
           //   }
           // }
 
@@ -411,8 +386,8 @@ export class MainPageComponent {
   logOut() {
     const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
     localStorage.clear();
+    AppComponent.clearAllList();
     setTimeout(() => {
-      // this.goToPage('login');
       this.router.navigate(['login'], { replaceUrl: true });
       dialogRef.close()
     }, 1000);

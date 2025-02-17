@@ -1,29 +1,17 @@
-<div class="container-bar">
-  <div class="header">
-    <h1>All Buildings</h1>
-    <div class="button-container">
-      <button class="add-button" (click)="openDialog(0,null, 0)">
-        <mat-icon>add</mat-icon>
-        <span>Add</span>
-      </button>
-      <button class="back-button" routerLink="/mainPage">
-        <mat-icon>home</mat-icon>
-        <span>Back</span>
-      </button>
-    </div>
-  </div>
-</div>
-<br>
-<div class="buildings-container">
-  <table class="buildings-table">
+<div class="main-container">
+  <button class="add-button" (click)="openDialog(0,null, 0)">
+    <mat-icon>add</mat-icon>
+    <span>{{getTranslate('Add')}}</span>
+  </button>
+  <table class="building-table">
     <thead>
       <tr>
-        <th>Building Name</th>
-        <th>Building Number</th>
-        <th>Total Floors</th>
-        <th>Total Suites</th>
-        <th>Total Rooms</th>
-        <th>Actions</th>
+        <th>{{getTranslate('BuildingName')}}</th>
+        <th>{{getTranslate('BuildingNumber')}}</th>
+        <th>{{getTranslate('TotalFloors')}}</th>
+        <th>{{getTranslate('TotalSuites')}}</th>
+        <th>{{getTranslate('TotalRooms')}}</th>
+        <th>{{getTranslate('Actions')}}</th>
       </tr>
     </thead>
     <tbody>
@@ -34,9 +22,10 @@
         <td>{{ getTotalSuite(building) }}</td>
         <td>{{getTotalRooms(building.id)}}</td>
         <td>
-          <button class="action-button"
-            (click)="openDialog(building.id,building.name , building.number)">Update</button>
-          <button class="delete-button" (click)="openDeleteDialog(building.id , 0 , 0 , 'Building')">Delete</button>
+          <button class="action-button" (click)="openDialog(building.id,building.name , building.number)">
+            {{getTranslate('Update')}}</button>
+          <button class="delete-button"
+            (click)="openDeleteDialog(building.id , 0 , 0 , 'Building')">{{getTranslate('Delete')}} </button>
         </td>
       </tr>
     </tbody>

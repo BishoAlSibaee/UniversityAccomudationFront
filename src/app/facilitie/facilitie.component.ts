@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { AppComponent } from '../app.component';
 import { RoomService } from '../room.service';
 import { DialogDeleteComponent } from '../dialog-delete/dialog-delete.component';
+import { translates } from '../translates';
 
 @Component({
   selector: 'app-facilitie',
@@ -17,7 +18,9 @@ import { DialogDeleteComponent } from '../dialog-delete/dialog-delete.component'
 })
 export class FacilitieComponent {
   facilitie: Facilitie[] = []
-  constructor(private router: Router, private client: HttpClient, public dialog: MatDialog, private roomService: RoomService) { }
+  constructor(private router: Router, private client: HttpClient, public dialog: MatDialog, private roomService: RoomService) {
+    translates.create()
+  }
 
   ngOnInit() {
     if (AppComponent.buildings.length === 0) {
@@ -57,7 +60,6 @@ export class FacilitieComponent {
     this.dialog.open(DialogDeleteComponent, {
       data: { id: id, name: name }
     });
-
   }
 
   getNameBuilding(idBuilding: number) {
@@ -78,5 +80,9 @@ export class FacilitieComponent {
       }
     })
     return name
+  }
+
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
   }
 }

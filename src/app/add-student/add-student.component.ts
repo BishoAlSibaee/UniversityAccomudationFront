@@ -1,9 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
 import { Student } from '../Student';
 import { AppComponent } from '../app.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiLinks } from '../ApiLinks';
 import { countries } from 'countries-list';
@@ -11,6 +9,7 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { College } from '../College';
+import { translates } from '../translates';
 
 @Component({
   selector: 'app-add-student',
@@ -27,7 +26,8 @@ export class AddStudentComponent {
   listCollege: College[] = []
   name: string = ''
 
-  constructor(private router: Router, private client: HttpClient, private dialog: MatDialog) {
+  constructor(private client: HttpClient) {
+    translates.create()
     this.student = new Student(0, "", "", "", "", "", "")
     this.myControl.valueChanges.subscribe(value => {
       this.student.nationality = value || '';
@@ -46,10 +46,6 @@ export class AddStudentComponent {
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
     return this.countryList.filter(option => option.toLowerCase().includes(filterValue));
-  }
-
-  back() {
-    this.router.navigate(['mainPage'])
   }
 
   getAllCollege() {
@@ -73,13 +69,13 @@ export class AddStudentComponent {
   addStudent() {
     console.log(this.student.name)
     if (this.student.name == "") {
-      return this.openSnackBar("Enter Student Name", "Ok");
+      return this.openSnackBar(this.getTranslate('Enter') + ' ' + this.getTranslate('Name'), "Ok");
     }
     if (this.student.student_number == "") {
-      return this.openSnackBar("Enter Student Number", "Ok");
+      return this.openSnackBar(this.getTranslate('Enter') + ' ' + this.getTranslate('StudentNumber'), "Ok");
     }
     if (this.student.mobile == "") {
-      return this.openSnackBar("Enter Student Mobile", "Ok");
+      return this.openSnackBar(this.getTranslate('Enter') + ' ' + this.getTranslate('Mobile'), "Ok");
     }
     let params = new FormData();
     params.append("email", this.student.email)
@@ -98,8 +94,7 @@ export class AddStudentComponent {
           const newStudent = new Student(result.user.id, result.user.name, "", result.user.mobile, result.user.student_number, "", "")
           AppComponent.students.push(newStudent)
           this.student = new Student(0, "", "", "", "", "", "")
-          return this.openSnackBar("Add Done", "Ok");
-
+          return this.openSnackBar(this.getTranslate('AddDone'), "Ok");
         } else {
           if (result.error.mobile != null) {
             return this.openSnackBar(result.error.mobile, "Ok");
@@ -123,6 +118,10 @@ export class AddStudentComponent {
       duration: 6000,
       panelClass: ['custom-snackbar']
     });
+  }
+
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
   }
 
 }

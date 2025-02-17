@@ -1,16 +1,17 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, EventEmitter, inject, Inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Inject, Output, ViewEncapsulation } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiLinks } from '../ApiLinks';
 import { AppComponent } from '../app.component';
 import { RoomService } from '../room.service';
 import { UserService } from '../user.service';
+import { translates } from '../translates';
 
 @Component({
   selector: 'app-dialog-delete',
   templateUrl: './dialog-delete.component.html',
-  styleUrls: ['./dialog-delete.component.css']
+  styleUrls: ['./dialog-delete.component.css'],
 })
 export class DialogDeleteComponent {
   id: number = 0;
@@ -18,9 +19,12 @@ export class DialogDeleteComponent {
   floorId: number = 0;
   name: string = "";
   private _snackBar = inject(MatSnackBar);
+
   @Output() refreshListRoom = new EventEmitter<void>();
 
-  constructor(public dialogRef: MatDialogRef<DialogDeleteComponent>, private roomService: RoomService, private userService: UserService, private client: HttpClient, @Inject(MAT_DIALOG_DATA) public data: any,) { }
+  constructor(public dialogRef: MatDialogRef<DialogDeleteComponent>, private roomService: RoomService, private userService: UserService, private client: HttpClient, @Inject(MAT_DIALOG_DATA) public data: any,) {
+    translates.create()
+  }
 
   ngOnInit() {
     this.id = this.data.id;
@@ -79,12 +83,12 @@ export class DialogDeleteComponent {
           if (index !== -1) {
             AppComponent.buildings.splice(index, 1);
             AppComponent.rooms = AppComponent.rooms.filter(room => room.building_id !== this.id);
-            this.openSnackBar("Delete Done", "Ok");
+            this.openSnackBar(this.getTranslate('DeleteDone'), "Ok");
           }
           this.roomService.refreshRoomList();
           this.roomService.refreshFloorList();
         } else {
-          console.log("Warning");
+          this.openSnackBar(this.getTranslate('DeleteNo'), "Ok");
         }
       }, error: (error) => {
         console.log("Error" + error);
@@ -113,9 +117,9 @@ export class DialogDeleteComponent {
             if (floorIndex !== -1) {
               building.floors.splice(floorIndex, 1);
               AppComponent.rooms = AppComponent.rooms.filter(room => !(room.floor_id === this.id && room.building_id === this.buildingId));
-              this.openSnackBar("Delete Done", "Ok");
+              this.openSnackBar(this.getTranslate('DeleteDone'), "Ok");
             } else {
-              console.log("Not Found Data");
+              this.openSnackBar(this.getTranslate('DeleteNo'), "Ok");
             }
           }
           this.roomService.refreshRoomList();
@@ -147,10 +151,10 @@ export class DialogDeleteComponent {
           if (roomIndex !== -1) {
             AppComponent.rooms.splice(roomIndex, 1);
             this.refreshListRoom.emit();
-            this.openSnackBar("Delete Done", "Ok");
+            this.openSnackBar(this.getTranslate('DeleteDone'), "Ok");
           }
         } else {
-          this.openSnackBar("Not deleted try again", "Ok");
+          this.openSnackBar(this.getTranslate('DeleteDone'), "Ok");
           console.log("Warning");
         }
       }, error: (error) => {
@@ -182,10 +186,9 @@ export class DialogDeleteComponent {
               if (suiteIndex !== -1) {
                 floor.suites.splice(suiteIndex, 1)
                 // AppComponent.rooms = AppComponent.rooms.filter(room => !(room.floor_id === this.id && room.building_id === this.buildingId));
-                this.openSnackBar("Delete Done", "Ok");
-
+                this.openSnackBar(this.getTranslate('DeleteDone'), "Ok");
               } else {
-                console.log("Not Found Data");
+                this.openSnackBar(this.getTranslate('DeleteNo'), "Ok");
               }
             }
           }
@@ -217,10 +220,10 @@ export class DialogDeleteComponent {
           if (adminIndex !== -1) {
             AppComponent.admin.splice(adminIndex, 1);
             this.userService.refreshUserList();
-            this.openSnackBar("Delete Done", "Ok");
+            this.openSnackBar(this.getTranslate('DeleteDone'), "Ok");
           }
         } else {
-          this.openSnackBar("Not deleted try again", "Ok");
+          this.openSnackBar(this.getTranslate('DeleteNo'), "Ok");
           console.log("Warning");
         }
       }, error: (error) => {
@@ -246,10 +249,10 @@ export class DialogDeleteComponent {
           if (studentIndex !== -1) {
             AppComponent.students.splice(studentIndex, 1);
             this.userService.refreshStudentList();
-            this.openSnackBar("Delete Done", "Ok");
+            this.openSnackBar(this.getTranslate('DeleteDone'), "Ok");
           }
         } else {
-          this.openSnackBar("Not deleted try again", "Ok");
+          this.openSnackBar(this.getTranslate('DeleteNo'), "Ok");
           console.log("Warning");
         }
       }, error: (error) => {
@@ -271,9 +274,9 @@ export class DialogDeleteComponent {
       next: (result) => {
         console.log(result);
         if (result.code == 1) {
-          this.openSnackBar("Delete Done", "Ok");
+          this.openSnackBar(this.getTranslate('DeleteDone'), "Ok");
         } else {
-          this.openSnackBar("Not deleted try again", "Ok");
+          this.openSnackBar(this.getTranslate('DeleteNo'), "Ok");
           console.log("Warning");
         }
       }, error: (error) => {
@@ -295,4 +298,7 @@ export class DialogDeleteComponent {
     });
   }
 
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
+  }
 }

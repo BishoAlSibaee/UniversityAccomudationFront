@@ -8,6 +8,7 @@ import { Room } from '../Room';
 import { RoomService } from '../room.service';
 import { Suite } from '../Suite';
 import { DialogEditAndAddSuiteComponent } from '../dialog-edit-and-add-suite/dialog-edit-and-add-suite.component';
+import { translates } from '../translates';
 
 @Component({
   selector: 'app-add-suite',
@@ -20,23 +21,20 @@ export class AddSuiteComponent {
   selectedFloors: Floor[] = [];
   allSuites: Suite[] = []
   filteredSuites: Suite[] = []
-  selectedBuilding: Building | null = null;
-  selectedFloor: Floor | null = null;
-  selectedFloorName: string | Floor = 'all';
+  selectedBuilding: any;
+  selectedFloor: any;
+  selectedFloorName: string | Floor = 'All';
   filteredRooms: Room[] = [];
 
-  constructor(public dialog: MatDialog, private roomService: RoomService) { }
+  constructor(public dialog: MatDialog, private roomService: RoomService) {
+    translates.create()
+  }
 
   ngOnInit() {
     this.allBuilding = AppComponent.buildings;
     this.allRoom = AppComponent.rooms;
     if (this.allBuilding.length > 0) {
-      this.selectedBuilding = this.allBuilding[0];
-      this.allSuites = [];
-      this.allBuilding[0].floors.forEach(f => {
-        this.allSuites = this.allSuites.concat(f.suites);
-      });
-      console.log(" ALL SUITES =  " + this.allSuites.length)
+      this.selectedBuilding = this.allBuilding[0].id;
       this.onBuildingChange(this.selectedBuilding);
     }
     this.roomService.suiteListUpdated$.subscribe(() => {
@@ -44,70 +42,61 @@ export class AddSuiteComponent {
       this.allRoom = AppComponent.rooms;
       if (this.allBuilding.length > 0) {
         this.allSuites = [];
-        this.allBuilding[0].floors.forEach(f => {
+        const floor = this.allBuilding.find(b => b.id == this.selectedBuilding);
+        floor?.floors.forEach(f => {
           this.allSuites = this.allSuites.concat(f.suites);
-        });
+        })
       }
+      console.log(this.allSuites);
       this.getSuitesInFloor();
     });
   }
 
-  onBuildingChange(selectedBuilding: Building) {
-    this.selectedFloors = selectedBuilding.floors || [];
-    this.selectedFloor = null;
+  onBuildingChange(selectedBuilding: number) {
+    this.allSuites = [];
+    const floor = this.allBuilding.find(b => b.id == selectedBuilding);
+    floor?.floors.forEach(f => {
+      this.allSuites = this.allSuites.concat(f.suites);
+    })
+    this.selectedFloors = floor?.floors || [];
+    this.selectedFloor = 'All';
     this.getSuitesInFloor();
   }
 
   onFloorChange(selectedFloor: any) {
-    this.selectedFloor = selectedFloor === 'all' ? null : selectedFloor;
+    this.selectedFloor = selectedFloor == 'All' ? 'All' : selectedFloor;
     this.getSuitesInFloor();
   }
 
   getSuitesInFloor() {
     if (this.selectedBuilding) {
-      if (this.selectedFloor === null) {
-        this.filteredSuites = this.allSuites.filter(suite => suite.building_id === this.selectedBuilding?.id);
+      if (this.selectedFloor == 'All') {
+        this.filteredSuites = this.allSuites.filter(suite => suite.building_id == this.selectedBuilding);
       } else {
         this.filteredSuites = this.allSuites.filter(suite =>
-          suite.building_id === this.selectedBuilding?.id && suite.floor_id === this.selectedFloor?.id);
+          suite.building_id == this.selectedBuilding && suite.floor_id == this.selectedFloor);
       }
     }
+    console.log(this.filteredSuites);
+
   }
 
   openDialogEditOrAdd(suiteId: number, suiteNumber: number, rooms: Room[], buildingID: number, floorId: number) {
     if (suiteId !== 0 || suiteNumber !== 0 || rooms.length !== 0) {
-      const dialogRef = this.dialog.open(DialogEditAndAddSuiteComponent, {
+      this.dialog.open(DialogEditAndAddSuiteComponent, {
         data: { suiteId: suiteId, suiteNumber: suiteNumber, rooms: rooms, buildingID: buildingID, floorId: floorId },
-        panelClass: ['dialog-panel']
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log(`Dialog result: ${result}`);
       });
     } else {
-      const dialogRef = this.dialog.open(DialogEditAndAddSuiteComponent, {
-        panelClass: ['dialog-panel']
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log(`Dialog result: ${result}`);
-      });
+      this.dialog.open(DialogEditAndAddSuiteComponent);
     }
   }
 
   openDeleteDialog(id: number, buildingId: number, floorId: number, name: string): void {
     const dialogRef = this.dialog.open(DialogDeleteComponent, {
       data: { id: id, buildingId: buildingId, floorId: floorId, name: name },
-      panelClass: ['dialog-panel']
     });
     dialogRef.componentInstance.refreshListRoom.subscribe(() => {
-      console.log("ENTER ")
       this.allRoom = AppComponent.rooms;
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('Item deleted');
-      } else {
-        console.log('Deletion cancelled');
-      }
     });
   }
 
@@ -123,5 +112,17 @@ export class AddSuiteComponent {
 
   getCountRoomInSuite(suite: any): number {
     return suite.rooms.length;
+  }
+  getNameBuilding(idBulding: number) {
+    let nameBulding;
+    const name = this.allBuilding.find(b => b.id == idBulding);
+    if (name) {
+      nameBulding = name.name
+    }
+    return nameBulding;
+  }
+
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
   }
 }

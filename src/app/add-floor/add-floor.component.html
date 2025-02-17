@@ -1,49 +1,36 @@
-<div class="container-bar">
-  <div class="header">
-    <h1>All Floor</h1>
-    <div class="button-container">
-      <button class="add-button" (click)="openDialogEditOrAdd(0 , 0 , 0)">
-        <mat-icon>add</mat-icon>
-        <span>Add</span>
-      </button>
-      <button class="back-button" routerLink="/mainPage">
-        <mat-icon>home</mat-icon>
-        <span>Back</span>
-      </button>
-    </div>
+<div class="main-container">
+  <button class="add-button" (click)="openDialogEditOrAdd(0 , 0 , 0)">
+    <mat-icon>add</mat-icon>
+    <span>{{getTranslate('Add')}}</span>
+  </button>
+  <div class="form-group">
+    <label><i class="fas fa-building"></i> {{getTranslate('ChooseBuilding')}}</label>
+    <select [(ngModel)]="selectedBuildingName" (change)="onBuildingChange(selectedBuildingName)">
+      <option value="" disabled selected hidden>{{ getTranslate('ChooseBuilding') }}</option>
+      <option *ngFor="let building of allBuilding" [value]="building.id">{{building.name}}</option>
+    </select>
   </div>
-  <mat-form-field color="accent" style="padding-left: 20px; padding-right: 20px;" appearance="outline"
-    class="choose-building">
-    <mat-label>Choose Building</mat-label>
-    <mat-select [(value)]="selectedBuildingName" (selectionChange)="onBuildingChange($event.value)">
-      <mat-option *ngFor="let building of allBuilding" [value]="building">{{building.name}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
-<br>
-
-<div class="buildings-container">
-  <table class="buildings-table">
+  <table class="building-table">
     <thead>
       <tr>
-        <th>Building Name</th>
-        <th>Floor Number</th>
-        <th>Total Rooms</th>
-        <th>Actions</th>
+        <th>{{getTranslate('BuildingName')}}</th>
+        <th>{{getTranslate('FloorNum')}}</th>
+        <th>{{getTranslate('TotalRooms')}}</th>
+        <th>{{getTranslate('Actions')}}</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let floor of selectedFloors">
-        <td>{{ selectedBuildingName.name }}</td>
-        <td>{{ floor.number }}</td>
-        <td>{{getTotalRooms(selectedBuildingName.id , floor.id)}}</td>
+        <td>{{getNameBuilding(selectedBuildingName)}}</td>
+        <td>{{floor.number}}</td>
+        <td>{{getTotalRooms(selectedBuildingName , floor.id)}}</td>
         <td>
-          <button (click)="openDialogEditOrAdd(selectedBuildingName.id , floor.id , floor.number)"
-            class="action-button">Update</button>
-          <button (click)="openDeleteDialog(floor.id , selectedBuildingName.id , 0 , 'Floor') "
-            class="delete-button">Delete</button>
-          <button (click)="openAddMultiRoomDialog(floor.building_id , floor.id) " class="add-rooms-button">Add
-            Rooms</button>
+          <button (click)="openDialogEditOrAdd(selectedBuildingName , floor.id , floor.number)"
+            class="action-button">{{getTranslate('Update')}}</button>
+          <button (click)="openDeleteDialog(floor.id , selectedBuildingName , 0 , 'Floor') " class="delete-button">
+            {{getTranslate('Delete')}}</button>
+          <button class="action-button"
+            (click)="openAddMultiRoomDialog(floor.building_id , floor.id) ">{{getTranslate('AddRooms')}}</button>
         </td>
       </tr>
     </tbody>

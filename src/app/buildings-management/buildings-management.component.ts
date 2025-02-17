@@ -1,17 +1,22 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
+import { translates } from '../translates';
 
 
 @Component({
   selector: 'app-buildings-management',
   templateUrl: './buildings-management.component.html',
   styleUrls: ['./buildings-management.component.css'],
-  encapsulation: ViewEncapsulation.None
-
 })
+
 export class BuildingsManagementComponent {
-  constructor() { }
-  ngOnInit() {
-    console.log("Enter BuildingsManagementComponent")
+  constructor() {
+    translates.create()
+
+  }
+  ngOnInit() { }
+
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
   }
 
 }

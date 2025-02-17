@@ -6,6 +6,7 @@ import { Building } from '../Building';
 import { AppComponent } from '../app.component';
 import { ApiLinks } from '../ApiLinks';
 import { Floor } from '../Floor';
+import { translates } from '../translates';
 
 @Component({
   selector: 'app-dialog-edit-and-add-floor',
@@ -17,18 +18,19 @@ export class DialogEditAndAddFloorComponent {
   buildingId: number = 0;
   floorId: number = 0;
   floorNumber: number = 0;
-  title: string = "Add New Floor"
-  nameBtn: string = "Add"
+  title: string = this.getTranslate('AddNewFloor')
+  nameBtn: string = this.getTranslate('Add')
   allBuilding: Building[] = []
   selectedBuildingName: any;
 
   constructor(private client: HttpClient, public dialogRef: MatDialogRef<DialogEditAndAddFloorComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialog) {
+    translates.create()
     if (data) {
       this.buildingId = data.buildingId || 0;
       this.floorId = data.floorId || 0;
       this.floorNumber = data.floorNumber || 0;
-      this.title = "Update Floor"
-      this.nameBtn = "Update"
+      this.title = this.getTranslate('UpdateFloor')
+      this.nameBtn = this.getTranslate('Update')
     }
   }
 
@@ -36,8 +38,17 @@ export class DialogEditAndAddFloorComponent {
     this.allBuilding = AppComponent.buildings;
   }
 
-  onBuildingChange(selectedBuilding: Building) {
+  onBuildingChange1(selectedBuilding: Building) {
     this.buildingId = selectedBuilding.id
+  }
+
+  onBuildingChange(event: Event) {
+    const selectedBuildingId = (event.target as HTMLSelectElement).value;
+    console.log('buildingId ' + this.buildingId)
+    console.log('buildingId1 ' + selectedBuildingId)
+    if (selectedBuildingId) {
+      this.buildingId = +selectedBuildingId
+    }
   }
 
   onClickCancel(): void {
@@ -45,7 +56,7 @@ export class DialogEditAndAddFloorComponent {
   }
 
   onClickOk() {
-    if (this.title === "Update Floor" && this.nameBtn === "Update") {
+    if (this.title === this.getTranslate('UpdateFloor') && this.nameBtn === this.getTranslate('Update')) {
       console.log(this.nameBtn)
       this.updateFloor()
     } else {
@@ -55,9 +66,8 @@ export class DialogEditAndAddFloorComponent {
   }
 
   addFloor() {
-    console.log(this.buildingId + "BULDING ")
     if (this.buildingId == 0 && this.floorNumber == 0) {
-      return this.openSnackBar("All Required", "Ok");
+      return this.openSnackBar(this.getTranslate('Required'), "Ok");
     }
     let params = new FormData();
     params.append("building_id", this.buildingId.toString());
@@ -69,7 +79,6 @@ export class DialogEditAndAddFloorComponent {
       next: (result) => {
         console.log(result)
         if (result.code == 1) {
-          console.log("success");
           const newFloor = new Floor(0, 0, 0, "", []);
           newFloor.id = result.floor.id
           newFloor.number = result.floor.number;
@@ -79,16 +88,14 @@ export class DialogEditAndAddFloorComponent {
             building.floors.push(newFloor);
           }
           this.dialogRef.close();
-          this.openSnackBar("Add Done", "Ok");
+          this.openSnackBar(this.getTranslate('AddDone'), "Ok");
         } else {
           this.openSnackBar(result.error, "Ok");
           if (result.error.name) {
             this.openSnackBar(result.error.name, "Ok");
-            console.log("Warning");
           } else {
             if (result.error.number) {
               this.openSnackBar(result.error.number, "Ok");
-              console.log("Warning");
             }
           }
         }
@@ -101,7 +108,7 @@ export class DialogEditAndAddFloorComponent {
 
   updateFloor() {
     if (this.floorNumber === 0) {
-      return this.openSnackBar("All Required", "Ok");
+      return this.openSnackBar(this.getTranslate('Required'), "Ok");
     }
     let params = new FormData();
     params.append("id", this.floorId.toString());
@@ -112,19 +119,19 @@ export class DialogEditAndAddFloorComponent {
     this.client.post<any>(ApiLinks.updateFloor, params, options).subscribe({
       next: (result) => {
         if (result.code == 1) {
-          console.log("success");
-          console.log(result);
           const building = AppComponent.buildings.find(b => b.id === this.buildingId);
           if (building) {
             const floor = building.floors.find(f => f.id === this.floorId);
             if (floor) {
+              console.log('floor.number ' + floor.number)
+              console.log('this.floorNumber ' + this.floorNumber)
+
               floor.number = this.floorNumber;
             }
           }
           this.dialogRef.close();
-          this.openSnackBar("Update Done", "Ok");
+          this.openSnackBar(this.getTranslate('UpdateDone'), "Ok");
         } else {
-          console.log("Warning");
           this.openSnackBar(result.error, "Ok");
         }
       }, error: (error) => {
@@ -141,10 +148,14 @@ export class DialogEditAndAddFloorComponent {
   }
 
   showListBuilding(): boolean {
-    if (this.nameBtn === "Update") {
+    if (this.nameBtn === this.getTranslate('Update')) {
       return false
     }
     return true
+  }
+
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
   }
 }
 

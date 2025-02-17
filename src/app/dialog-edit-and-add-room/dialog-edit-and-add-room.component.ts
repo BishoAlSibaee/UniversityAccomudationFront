@@ -8,6 +8,7 @@ import { Building } from '../Building';
 import { Floor } from '../Floor';
 import { Room } from '../Room';
 import { RoomType } from '../RoomType';
+import { translates } from '../translates';
 
 @Component({
   selector: 'app-dialog-edit-and-add-room',
@@ -20,29 +21,30 @@ export class DialogEditAndAddRoomComponent {
   buildingId: number = 0;
   floorId: number = 0;
   floorNumber: number = 0;
-  roomId: number = 0
+  roomId: number = 0;
   roomNumber: number = 0;
   capacityRoom: number = 0;
   typeRoom: number = 0;
-  title: string = "Add New Room"
-  nameBtn: string = "Add"
-  allBuilding: Building[] = []
-  floor: Floor[] = []
-  rooms: Room[] = []
-  roomType: RoomType[] = []
-  selectedCapacity: string = ''
+  title: string = this.getTranslate('AddNewRoom');
+  nameBtn: string = this.getTranslate('Add');
+  allBuilding: Building[] = [];
+  floor: Floor[] = [];
+  rooms: Room[] = [];
+  roomType: RoomType[] = [];
+  selectedCapacity: string = '';
   selectedBuildingName: any;
   selectedFloorNumber: any;
   @Output() roomAdded = new EventEmitter<void>();
 
   constructor(private client: HttpClient, public dialogRef: MatDialogRef<DialogEditAndAddRoomComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+    translates.create()
     if (data) {
       this.roomId = data.roomId || 0;
       this.roomNumber = data.roomNumber || 0;
       this.capacityRoom = data.roomCapacity || 0;
       this.typeRoom = data.roomType || 0;
-      this.title = "Update Room"
-      this.nameBtn = "Update"
+      this.title = this.getTranslate('UpdateRoom');
+      this.nameBtn = this.getTranslate('Update');
     }
   }
 
@@ -52,44 +54,39 @@ export class DialogEditAndAddRoomComponent {
     this.roomType = AppComponent.roomType
   }
 
-  onBuildingChange(selectedBuilding: Building) {
-    this.buildingId = selectedBuilding.id
+  onBuildingChange(selectedBuilding: number) {
+    this.buildingId = selectedBuilding
     this.selectedFloorNumber = null;
     this.floorId = 0
-    this.floorInBuilding(selectedBuilding.id)
+    this.floorInBuilding(selectedBuilding)
   }
 
   floorInBuilding(buildingId: number) {
     this.floor = [];
-    this.allBuilding.forEach(building => {
-      if (building.id === buildingId) {
-        this.floor.push(...building.floors)
-      }
-    })
+    const building = this.allBuilding.find(b => b.id == buildingId);
+    if (building) {
+      this.floor.push(...building.floors);
+    }
   }
 
-  onFloorChange(selectedFloor: Floor) {
-    this.floorId = selectedFloor.id;
-    console.log("Floor = " + this.floorId)
+  onFloorChange(selectedFloor: number) {
+    this.floorId = selectedFloor;
   }
 
   onClickCancel(): void {
     this.dialogRef.close();
   }
-
   onClickOk() {
-    if (this.title === "Update Room" && this.nameBtn === "Update") {
-      console.log(this.nameBtn)
+    if (this.title === this.getTranslate('UpdateRoom') && this.nameBtn === this.getTranslate('Update')) {
       this.updateRoom()
     } else {
-      console.log(this.nameBtn)
       this.addRoom();
     }
   }
 
   addRoom() {
     if (this.buildingId === 0 && this.floorNumber === 0 && this.floorId === 0 && this.typeRoom == 0 && this.capacityRoom === 0) {
-      return this.openSnackBar("All Required", "Ok");
+      return this.openSnackBar(this.getTranslate('Required'), "Ok");
     }
     let params = new FormData();
     params.append("building_id", this.buildingId.toString());
@@ -103,9 +100,7 @@ export class DialogEditAndAddRoomComponent {
     let options = { headers: h };
     this.client.post<any>(ApiLinks.addRoom, params, options).subscribe({
       next: (result) => {
-        console.log(result)
         if (result.code == 1) {
-          console.log("success");
           const newRoom = new Room(0, 0, 0, 0, 0, 0, "", 0);
           newRoom.id = result.room.id
           newRoom.building_id = Number(result.room.building_id)
@@ -117,32 +112,28 @@ export class DialogEditAndAddRoomComponent {
           AppComponent.rooms = [...AppComponent.rooms, newRoom];
           this.roomAdded.emit();
           this.dialogRef.close();
-          this.openSnackBar("Add Done", "Ok");
+          this.openSnackBar(this.getTranslate('AddDone'), "Ok");
         } else {
           if (result.error.name) {
             this.openSnackBar(result.error.name, "Ok");
-            console.log("Warning");
           }
           if (result.error.number) {
             this.openSnackBar(result.error.number, "Ok");
-            console.log("Warning");
           }
           if (result.error) {
             this.openSnackBar(result.error, "Ok");
-            console.log("Warning");
           }
 
         }
       }, error: (error) => {
-        console.log("Error" + error);
+        this.openSnackBar(error, "Ok");
       }
     });
   }
 
   updateRoom() {
-    console.log(this.roomId)
-    if (this.roomId === 0 || this.roomNumber === 0 ||this.capacityRoom === 0) {
-      return this.openSnackBar("All Required", "Ok");
+    if (this.roomId === 0 || this.roomNumber === 0 || this.capacityRoom === 0) {
+      return this.openSnackBar(this.getTranslate('Required'), "Ok");
     }
     let params = new FormData();
     params.append("id", this.roomId.toString());
@@ -154,10 +145,7 @@ export class DialogEditAndAddRoomComponent {
     let options = { headers: h };
     this.client.post<any>(ApiLinks.updateRoom, params, options).subscribe({
       next: (result) => {
-        console.log(result);
         if (result.code == 1) {
-          console.log("success");
-          console.log(result);
           const room = AppComponent.rooms.find(r => r.id === this.roomId)
           if (room) {
             room.number = this.roomNumber;
@@ -165,13 +153,12 @@ export class DialogEditAndAddRoomComponent {
             room.capacity = this.capacityRoom;
           }
           this.dialogRef.close();
-          this.openSnackBar("Update Done", "Ok");
+          this.openSnackBar(this.getTranslate('UpdateDone'), "Ok");
         } else {
-          console.log("Warning");
           this.openSnackBar(result.error, "Ok");
         }
       }, error: (error) => {
-        console.log("Error" + error);
+        this.openSnackBar(error, "Ok");
       }
     });
   }
@@ -184,9 +171,12 @@ export class DialogEditAndAddRoomComponent {
   }
 
   showList(): boolean {
-    if (this.nameBtn === "Update") {
+    if (this.nameBtn === this.getTranslate("Update")) {
       return false
     }
     return true
+  }
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
   }
 }

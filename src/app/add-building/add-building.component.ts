@@ -7,6 +7,7 @@ import { DialogEditAndAddBuilding } from '../dialog-edit-and-add-building/dialog
 import { AppComponent } from '../app.component';
 import { MainPageComponent } from '../main-page/main-page.component';
 import { DialogDeleteComponent } from '../dialog-delete/dialog-delete.component';
+import { translates } from '../translates';
 
 @Component({
   selector: 'app-add-building',
@@ -19,10 +20,11 @@ export class AddBuildingComponent {
   buildingName: string = "";
   buildingNumber: string = "0";
   buildings: Building[] = [];
-
   private _snackBar = inject(MatSnackBar);
 
-  constructor(public dialog: MatDialog, private router: Router) { }
+  constructor(public dialog: MatDialog, private router: Router) {
+    translates.create()
+  }
 
   ngOnInit() {
     if (AppComponent.buildings.length === 0 && !MainPageComponent.isAddingMode) {
@@ -40,9 +42,6 @@ export class AddBuildingComponent {
   getTotalRooms(buildingId: number): number {
     const building = this.buildings.find(b => b.id === buildingId);
     if (!building) return 0;
-    // const roomOfSuite = building.floors.reduce((totalRooms, floor) => {
-    //   return totalRooms + floor.suites.reduce((suiteRooms, suite) => suiteRooms + suite.rooms.length, 0);
-    // }, 0);
     const singelRooms = AppComponent.rooms.filter(room => room.building_id === buildingId).length;
     return singelRooms
   }
@@ -56,17 +55,11 @@ export class AddBuildingComponent {
 
   openDialog(buildingId: number, buildingName: string | null, buildingNumber: number) {
     if (buildingId !== 0 && buildingName !== null && buildingNumber !== 0) {
-      const dialogRef = this.dialog.open(DialogEditAndAddBuilding, {
+      this.dialog.open(DialogEditAndAddBuilding, {
         data: { id: buildingId, name: buildingName, number: buildingNumber }
       });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log(`Dialog result: ${result}`);
-      });
     } else {
-      const dialogRef = this.dialog.open(DialogEditAndAddBuilding, { panelClass: ['dialog-panel'] });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log(`Dialog result: ${result}`);
-      });
+      this.dialog.open(DialogEditAndAddBuilding);
     }
   }
 
@@ -82,4 +75,9 @@ export class AddBuildingComponent {
       }
     });
   }
+
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
+  }
+
 }

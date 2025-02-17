@@ -1,55 +1,48 @@
-<div class="container-bar">
-  <div class="header">
-    <h1>All Rooms</h1>
-    <div class="button-container">
-      <button (click)="openDialogEditOrAdd(0,0,0, 0)" class="add-button">
-        <mat-icon>add</mat-icon>
-        <span>Add</span>
-      </button>
-      <button class="back-button" routerLink="/mainPage">
-        <mat-icon>home</mat-icon>
-        <span>Back</span>
-      </button>
+<div class="main-container">
+  <button class="add-button" (click)="openDialogEditOrAdd(0,0,0, 0)">
+    <mat-icon>add</mat-icon>
+    <span>{{getTranslate('Add')}}</span>
+  </button>
+  <div class="form-row">
+    <div class="form-group">
+      <label><i class="fas fa-building"></i> {{getTranslate('ChooseBuilding')}}</label>
+      <select [(ngModel)]="selectedBuilding" (change)="onBuildingChange(selectedBuilding)">
+        <option value="" disabled selected hidden>{{ getTranslate('ChooseBuilding') }}</option>
+        <option *ngFor="let building of allBuilding" [value]="building.id">{{building.name}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label><i class="fas fa-layer-group"></i> {{getTranslate('ChooseFloor')}}</label>
+      <select id="floor" [(ngModel)]="selectedFloor" (change)="onFloorChange(selectedFloor)">
+        <option value="All">All</option>
+        <option *ngFor="let floor of selectedFloors" [value]="floor.id">{{floor.number}}</option>
+      </select>
     </div>
   </div>
-    <mat-form-field color="accent" appearance="outline" class="choose-building">
-      <mat-label>Choose Building</mat-label>
-      <mat-select [(value)]="selectedBuilding" (selectionChange)="onBuildingChange($event.value)">
-        <mat-option *ngFor="let building of allBuilding" [value]="building">{{building.name}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field color="accent" appearance="outline" class="choose-floor">
-      <mat-label>Choose Floor</mat-label>
-      <mat-select [(value)]="selectedFloorName" (selectionChange)="onFloorChange($event.value)">
-        <mat-option [value]="'all'">All</mat-option>
-        <mat-option *ngFor="let floor of selectedFloors" [value]="floor">{{floor.number}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-</div>
-<br>
-<div class="buildings-container">
-  <table class="buildings-table">
+
+  <table class="building-table">
     <thead>
       <tr>
-        <th>Building Name</th>
-        <th>Floor Number</th>
-        <th>Room Number</th>
-        <th>Room Type</th>
-        <th>Room Capacity</th>
-        <th>Actions</th>
+        <th>{{getTranslate('BuildingName')}}</th>
+        <th>{{getTranslate('FloorNum')}}</th>
+        <th>{{getTranslate('RoomNum')}}</th>
+        <th>{{getTranslate('RoomType')}}</th>
+        <th>{{getTranslate('capacity')}}</th>
+        <th>{{getTranslate('Actions')}}</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let room of filteredRooms">
-        <td>{{ selectedBuilding?.name }}</td>
+        <td>{{getNameBuilding(selectedBuilding)}}</td>
         <td>{{ getNumberFloor(room.floor_id)}}</td>
         <td>{{ room.number }}</td>
         <td>{{ room.room_types_id }}</td>
         <td>{{ room.capacity }}</td>
         <td>
           <button (click)="openDialogEditOrAdd(room.id , room.number,room.room_types_id , room.capacity)"
-            class="action-button">Update</button>
-          <button (click)="openDeleteDialog(room.id , 0 , 0 , 'Room')" class="delete-button">Delete</button>
+            class="action-button">{{getTranslate('Update')}}</button>
+          <button (click)="openDeleteDialog(room.id , 0 , 0 , 'Room')"
+            class="delete-button">{{getTranslate('Delete')}}</button>
         </td>
       </tr>
     </tbody>

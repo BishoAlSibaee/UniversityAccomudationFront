@@ -8,6 +8,7 @@ import { AppComponent } from '../app.component';
 import { UserService } from '../user.service';
 import { LoadingDialogComponent } from '../loading-dialog/loading-dialog.component';
 import { DialogDeleteComponent } from '../dialog-delete/dialog-delete.component';
+import { translates } from '../translates';
 
 @Component({
   selector: 'app-student-management',
@@ -17,7 +18,10 @@ import { DialogDeleteComponent } from '../dialog-delete/dialog-delete.component'
 export class StudentManagementComponent {
   students: Student[] = []
 
-  constructor(private client: HttpClient, public dialog: MatDialog, private userService: UserService) { }
+  constructor(private client: HttpClient, public dialog: MatDialog, private userService: UserService) {
+    translates.create()
+
+  }
 
   ngOnInit() {
     // this.getStudents();
@@ -58,5 +62,9 @@ export class StudentManagementComponent {
 
   openDeleteDialog(id: number, name: string): void {
     this.dialog.open(DialogDeleteComponent, { data: { id: id, name: name } });
+  }
+
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
   }
 }

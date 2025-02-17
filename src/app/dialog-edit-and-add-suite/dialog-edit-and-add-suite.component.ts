@@ -9,6 +9,7 @@ import { DialogEditAndAddRoomComponent } from '../dialog-edit-and-add-room/dialo
 import { Floor } from '../Floor';
 import { Room } from '../Room';
 import { RoomService } from '../room.service';
+import { translates } from '../translates';
 
 @Component({
   selector: 'app-dialog-edit-and-add-suite',
@@ -22,8 +23,8 @@ export class DialogEditAndAddSuiteComponent {
   roomInSuite: Room[] = [];
   suiteNumber: number = 0;
   suiteId: number = 0;
-  title: string = "Add New Suite"
-  nameBtn: string = "Add"
+  title: string = this.getTranslate('AddNewSuite')
+  nameBtn: string = this.getTranslate('Add')
   allBuilding: Building[] = []
   floor: Floor[] = []
   rooms: Room[] = []
@@ -40,17 +41,17 @@ export class DialogEditAndAddSuiteComponent {
   removedRooms: any[] = [];
 
   constructor(private client: HttpClient, public dialogRef: MatDialogRef<DialogEditAndAddRoomComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private roomService: RoomService) {
+    translates.create()
     this.room_ids_to_add = []
     this.room_ids_to_remove = []
-
     if (data) {
       this.suiteId = data.suiteId || 0;
       this.roomInSuite = [...data.rooms];
       this.suiteNumber = this.data.suiteNumber
       this.floorId = data.floorId || 0
       this.buildingId = data.buildingID || 0
-      this.title = "Update Suite"
-      this.nameBtn = "Update"
+      this.title = this.getTranslate('UpdateSuite')
+      this.nameBtn = this.getTranslate('Update')
       this.isUpdate = true
     }
   }
@@ -58,37 +59,34 @@ export class DialogEditAndAddSuiteComponent {
   ngOnInit() {
     this.allBuilding = AppComponent.buildings;
     this.rooms = AppComponent.rooms;
-    console.log("UPDATE SUITE")
-    console.log(this.rooms)
-    if (this.nameBtn === "Update") {
+    if (this.nameBtn === this.getTranslate('Update')) {
       this.filteredRooms = this.rooms.filter(r => r.building_id === this.buildingId && r.floor_id === this.floorId && r.suite_id === 0)
     }
   }
 
-  onBuildingChange(selectedBuilding: Building) {
+  onBuildingChange(selectedBuilding: number) {
     this.filteredRooms = []
-    this.buildingId = selectedBuilding.id
+    this.buildingId = selectedBuilding
     this.selectedFloorNumber = null;
     this.floorId = 0
-    this.floorInBuilding(selectedBuilding.id)
+    this.floorInBuilding(selectedBuilding)
   }
 
   floorInBuilding(buildingId: number) {
     this.floor = [];
-    this.allBuilding.forEach(building => {
-      if (building.id === buildingId) {
-        this.floor.push(...building.floors)
-      }
-    })
+    const building = this.allBuilding.find(b => b.id == buildingId);
+    if (building) {
+      this.floor.push(...building.floors);
+    }
   }
 
-  onFloorChange(selectedFloor: Floor) {
-    this.floorId = selectedFloor.id;
+  onFloorChange(selectedFloor: number) {
+    this.floorId = selectedFloor;
     this.filterRooms();
   }
 
   filterRooms() {
-    this.filteredRooms = this.rooms.filter(r => r.building_id === this.buildingId && r.floor_id === this.floorId && r.suite_id === 0)
+    this.filteredRooms = this.rooms.filter(r => r.building_id == this.buildingId && r.floor_id == this.floorId && r.suite_id == 0)
   }
 
   onClickCancel(): void {
@@ -98,7 +96,7 @@ export class DialogEditAndAddSuiteComponent {
   }
 
   onClickOk() {
-    if (this.title === "Update Suite" && this.nameBtn === "Update") {
+    if (this.title === this.getTranslate('UpdateSuite') && this.nameBtn === this.getTranslate('Update')) {
       this.updateSuite()
     } else {
       this.addSuite();
@@ -107,7 +105,7 @@ export class DialogEditAndAddSuiteComponent {
 
   addSuite() {
     if (this.buildingId === 0 || this.floorId === 0 || this.suiteNumber === 0 || this.selectedRoomIds.length === 0) {
-      return this.openSnackBar("All Required", "Ok");
+      return this.openSnackBar(this.getTranslate('Required'), "Ok");
     }
     let params = new FormData();
     params.append("building_id", this.buildingId.toString());
@@ -119,9 +117,7 @@ export class DialogEditAndAddSuiteComponent {
     let options = { headers: h };
     this.client.post<any>(ApiLinks.addSuite, params, options).subscribe({
       next: (result) => {
-        console.log(result)
         if (result.code == 1) {
-          console.log("success");
           const newSuite = {
             id: Number(result.suite.id),
             number: result.suite.number,
@@ -129,26 +125,26 @@ export class DialogEditAndAddSuiteComponent {
             floor_id: Number(result.suite.floor_id),
             rooms: result.rooms,
           };
-          const building = AppComponent.buildings.find(b => b.id === this.buildingId);
-          const floor = building?.floors.find(f => f.id === this.floorId);
+          const building = AppComponent.buildings.find(b => b.id == this.buildingId);
+          const floor = building?.floors.find(f => f.id == this.floorId);
           floor?.suites.push(newSuite);
-          AppComponent.rooms = AppComponent.rooms.filter(room => !this.selectedRoomIds.includes(room.id));
+          // AppComponent.rooms = AppComponent.rooms.filter(room => !this.selectedRoomIds.includes(room.id));
           this.roomService.refreshSuiteList();
           this.dialogRef.close();
-          this.openSnackBar("Add Done", "Ok");
+          this.openSnackBar(this.getTranslate('AddDone'), "Ok");
         } else {
           this.openSnackBar(result.error, "Ok");
-          console.log("Warning");
         }
       }, error: (error) => {
-        console.log("Error" + error);
+        this.openSnackBar(error, "Ok");
       }
     });
   }
 
   updateSuite() {
     if (!this.suiteNumber) {
-      return this.openSnackBar("All Required", "Ok");
+      return this.openSnackBar(this.getTranslate('Required'), "Ok");
+
     }
     let params = new FormData();
     params.append("id", this.suiteId.toString());
@@ -167,9 +163,7 @@ export class DialogEditAndAddSuiteComponent {
     let options = { headers: h };
     this.client.post<any>(ApiLinks.updateSuite, params, options).subscribe({
       next: (result) => {
-        console.log(result);
         if (result.code == 1) {
-          console.log("success");
           const building = AppComponent.buildings.find(b => b.id === this.buildingId);
           const floor = building?.floors.find(f => f.id === this.floorId);
           const suiteIndex = floor?.suites.findIndex(suite => suite.id === this.suiteId);
@@ -182,42 +176,28 @@ export class DialogEditAndAddSuiteComponent {
               rooms: [...this.roomInSuite]
             };
           }
-          if (this.room_ids_to_add.length > 0) {
-            AppComponent.rooms = AppComponent.rooms.filter(room => !this.room_ids_to_add.includes(room.id));
-            AppComponent.rooms.sort((a, b) => a.number - b.number);
-          }
-
-
-          if (this.temporaryRemovedRooms.length > 0) {
-            const uniqueRemovedRooms = this.temporaryRemovedRooms.filter(removedRoom =>
-              !AppComponent.rooms.some(room => room.id === removedRoom.id)
-            );
-            if (uniqueRemovedRooms.length > 0) {
-              AppComponent.rooms = [...AppComponent.rooms, ...uniqueRemovedRooms];
-              AppComponent.rooms.sort((a, b) => a.number - b.number);
-            }
-            this.temporaryRemovedRooms = [];
-          }
-
-          // if (this.room_ids_to_remove.length > 0) {
-          //   const removedRooms = this.roomInSuite.filter(room => this.room_ids_to_remove.includes(room.id));
-          //   const uniqueRemovedRooms = removedRooms.filter(removedRoom => !AppComponent.rooms.some(room => room.id === removedRoom.id));
+          // if (this.room_ids_to_add.length > 0) {
+          //   AppComponent.rooms = AppComponent.rooms.filter(room => !this.room_ids_to_add.includes(room.id));
+          //   AppComponent.rooms.sort((a, b) => a.number - b.number);
+          // }
+          // if (this.temporaryRemovedRooms.length > 0) {
+          //   const uniqueRemovedRooms = this.temporaryRemovedRooms.filter(removedRoom =>
+          //     !AppComponent.rooms.some(room => room.id === removedRoom.id)
+          //   );
           //   if (uniqueRemovedRooms.length > 0) {
-          //     AppComponent.rooms = [...AppComponent.rooms, ...this.removedRooms];
+          //     AppComponent.rooms = [...AppComponent.rooms, ...uniqueRemovedRooms];
           //     AppComponent.rooms.sort((a, b) => a.number - b.number);
           //   }
-          //   this.removedRooms = [];
-
+          //   this.temporaryRemovedRooms = [];
           // }
           this.roomService.refreshSuiteList();
           this.dialogRef.close();
-          this.openSnackBar("Update Done", "Ok");
+          this.openSnackBar(this.getTranslate('UpdateDone'), "Ok");
         } else {
-          console.log("Warning");
           this.openSnackBar(result.error, "Ok");
         }
       }, error: (error) => {
-        console.log("Error" + error);
+        this.openSnackBar(error, "Ok");
       }
     });
   }
@@ -230,14 +210,14 @@ export class DialogEditAndAddSuiteComponent {
   }
 
   showList(): boolean {
-    if (this.nameBtn === "Update") {
+    if (this.nameBtn === this.getTranslate('Update')) {
       return false
     }
     return true
   }
 
-  toggleRoomSelection(roomId: number, action: 'add' | 'delete') {
-    if (this.nameBtn === "Add") {
+  toggleRoomSelection(roomId: number, action: String) {
+    if (this.nameBtn === this.getTranslate('Add')) {
       const index = this.selectedRoomIds.indexOf(roomId);
       if (index > -1) {
         this.selectedRoomIds.splice(index, 1);
@@ -249,7 +229,7 @@ export class DialogEditAndAddSuiteComponent {
       const roomIndexInSuite = this.roomInSuite.findIndex(r => r.id === roomId);
       const roomIndexInFiltered = this.filteredRooms.findIndex(r => r.id === roomId);
       if (roomIndexInSuite !== -1) {
-        if (action === 'delete') {
+        if (action === this.getTranslate('Delete')) {
           const removedRoom = this.roomInSuite.splice(roomIndexInSuite, 1)[0];
           removedRoom.suite_id = 0
           this.filteredRooms.push(removedRoom);
@@ -260,7 +240,7 @@ export class DialogEditAndAddSuiteComponent {
           this.removedRooms.push(removedRoom);
         }
       } else {
-        if (action === 'add') {
+        if (action === this.getTranslate('Add')) {
           if (roomIndexInFiltered !== -1) {
             const addedRoom = this.filteredRooms.splice(roomIndexInFiltered, 1)[0];
             addedRoom.suite_id = this.suiteId
@@ -274,5 +254,10 @@ export class DialogEditAndAddSuiteComponent {
       }
     }
   }
+
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
+  }
+
 }
 

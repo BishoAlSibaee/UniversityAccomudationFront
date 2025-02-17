@@ -1,57 +1,36 @@
-<div class="search-container">
-  <div class="header">
-    <div class="button-container">
-      <button class="back-button" routerLink="/mainPage">
-        <mat-icon>home</mat-icon>
-        <span>Back</span>
-      </button>
-    </div>
-  </div>
+<div dir="auto" class="search-container">
+  <h4><i class="fa-solid fa-magnifying-glass"></i> {{getTranslate('SelectSearch')}}</h4>
   <div class="checkbox-container">
-    <h4>Select Search Type</h4>
-    <mat-checkbox color="accent" (change)="isChecked()" [(ngModel)]="checkedCollege">Search for
-      student by college
-    </mat-checkbox>
+    <input type="checkbox" (change)="isChecked()" [(ngModel)]="checkedCollege">
+    <label>{{getTranslate('Searchfor')}}</label>
   </div>
   <div class="radio-container">
-    <div class="radio-group">
-      <h4 style="color: white;">Select Search Type</h4>
-      <mat-radio-group [(ngModel)]="by" aria-label="Select an option">
-        <mat-radio-button value="name">By Student Name</mat-radio-button>
-        <mat-radio-button value="student_number">By Student Number</mat-radio-button>
-        <mat-radio-button value="mobile">By student mobile number</mat-radio-button>
-      </mat-radio-group>
+    <label><input type="radio" [(ngModel)]="by" value="name">{{getTranslate('By1')}}</label>
+    <label><input type="radio" [(ngModel)]="by" value="student_number">{{getTranslate('By2')}}</label>
+    <label><input type="radio" [(ngModel)]="by" value="mobile">{{getTranslate('By3')}}</label>
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label><i class="fa-regular fa-a"></i>{{getTranslate('SearchWord')}}</label>
+      <input type="text" [(ngModel)]="value" placeholder="{{getTranslate('Enter')}} {{getTranslate('SearchWord')}}">
+    </div>
+    <div class="form-group" *ngIf="showList">
+      <label><i class="fa-solid fa-building"></i>{{getTranslate('StudentCollege')}}</label>
+      <select id="collegeSelect">
+        <option value="">{{getTranslate('Select')}} {{getTranslate('StudentCollege')}}</option>
+      </select>
     </div>
   </div>
-  <mat-form-field appearance="outline" color="accent" style="padding-left: 10px; width: 30%;" type="number">
-    <mat-label style="color: rgb(159, 158, 163);">Search Word</mat-label>
-    <input matInput [(ngModel)]="value" placeholder="Enter The Search Word">
-  </mat-form-field>
-
-  <mat-form-field appearance="outline" style="padding-left: 10px ; padding-right: 10px; width: 30%;" *ngIf="showList"
-    color="accent">
-    <mat-label>Student College</mat-label>
-    <mat-select class="custom-select" placeholder="Select College" [(ngModel)]="selectedCollegeId">
-      <mat-option *ngFor="let c of listCollege" [value]="c.id">{{c.college_ar}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-
   <div class="submit">
-    <button (click)="serachStudentBy()" mat-raised-button color="primary">Submit</button>
-  </div>
-</div>
-
-<div class="student-container">
-  <div class="header">
-    <h1>Student</h1>
+    <button (click)="serachStudentBy()">{{getTranslate('Confirm')}}</button>
   </div>
   <table class="student-table">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Student Number</th>
-        <th>Mobile</th>
-        <th>Actions</th>
+        <th>{{getTranslate('Name')}}</th>
+        <th>{{getTranslate('StudentNumber')}}</th>
+        <th>{{getTranslate('Mobile')}}</th>
+        <th>{{getTranslate('Actions')}}</th>
       </tr>
     </thead>
     <tbody>
@@ -61,9 +40,10 @@
         <td>{{student.mobile}}</td>
         <td>
           <button
-            (click)="openDialogEditOrAdd(student.id , student.name , student.mobile , student.student_number , 'Update')"
-            class="action-button">Update</button>
-          <button (click)="openDeleteDialog(student.id , 'student')" class="delete-button">Delete</button>
+            (click)="openDialogEditOrAdd(student.id , student.name , student.mobile , student.student_number ,  this.getTranslate('Update'))"
+            class="action-button">{{getTranslate('Update')}}</button>
+          <button (click)="openDeleteDialog(student.id , 'student')"
+            class="delete-button">{{getTranslate('Delete')}}</button>
         </td>
       </tr>
     </tbody>

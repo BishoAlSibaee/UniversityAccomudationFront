@@ -6,6 +6,7 @@ import { AppComponent } from '../app.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Admin } from '../Admin';
 import { UserService } from '../user.service';
+import { translates } from '../translates';
 
 @Component({
   selector: 'app-dialog-add-user',
@@ -21,8 +22,12 @@ export class DialogAddUserComponent {
   password_confirmation: string = "";
   isAdmin: number = 1;
   adminId: number = 0;
-  nameBtn: string = "Add";
+  nameBtn: string = this.getTranslate('Add');
+  currentLang: string = "";
+
   constructor(private client: HttpClient, public dialogRef: MatDialogRef<DialogAddUserComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private userService: UserService) {
+    this.currentLang = AppComponent.language
+    translates.create()
     if (data) {
       this.adminId = data.id;
       this.name = data.name;
@@ -63,7 +68,7 @@ export class DialogAddUserComponent {
           AppComponent.admin.push(newAdmin)
           this.userService.refreshUserList();
           this.dialogRef.close()
-          return this.openSnackBar("Add Done", "Ok");
+          return this.openSnackBar(this.getTranslate('AddDone'), "Ok");
         } else {
           if (result.error.mobile != null) {
             return this.openSnackBar(result.error.mobile, "Ok");
@@ -109,7 +114,7 @@ export class DialogAddUserComponent {
           }
           this.userService.refreshUserList();
           this.dialogRef.close()
-          return this.openSnackBar("Update Done", "Ok");
+          return this.openSnackBar(this.getTranslate('UpdateDone'), "Ok");
         } else {
           if (result.error.mobile != null) {
             return this.openSnackBar(result.error.mobile, "Ok");
@@ -136,7 +141,7 @@ export class DialogAddUserComponent {
   }
 
   onClickOk() {
-    if (this.nameBtn === 'Add') {
+    if (this.nameBtn === this.getTranslate('Add')) {
       this.addUser()
     } else {
       this.updateUser()
@@ -151,9 +156,13 @@ export class DialogAddUserComponent {
   }
 
   isAdd() {
-    if (this.nameBtn === 'Add') {
+    if (this.nameBtn === this.getTranslate('Add')) {
       return true
     }
     return false
+  }
+
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
   }
 }

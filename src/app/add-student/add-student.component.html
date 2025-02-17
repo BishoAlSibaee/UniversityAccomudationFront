@@ -1,45 +1,46 @@
-<div class="register-container">
-  <h2>Register New Student</h2>
-  <form class="register-form">
+<div class="user-page">
+  <div dir="auto" class="user-table-container">
+    <h2>{{getTranslate('NewStudent')}}</h2>
     <div class="form-row">
-      <mat-form-field color="accent" appearance="outline">
-        <mat-label>Student Name</mat-label>
-        <input matInput [(ngModel)]="student.name" name="name" placeholder="Enter Student Name" />
-      </mat-form-field>
-      <mat-form-field color="accent" appearance="outline">
-        <mat-label>Student Mobile</mat-label>
-        <input [(ngModel)]="student.mobile" name="mobile" matInput placeholder="Enter Student Mobile" type="tel" />
-      </mat-form-field>
-      <mat-form-field color="accent" appearance="outline">
-        <mat-label>Email</mat-label>
-        <input [(ngModel)]="student.email" name="email" matInput placeholder="Enter your email" type="email" />
-      </mat-form-field>
+      <div class="form-group">
+        <label><i class="fas fa-user"></i> {{getTranslate('Name')}}</label>
+        <input [(ngModel)]="student.name" placeholder="{{getTranslate('Enter')}} {{getTranslate('Name')}}">
+      </div>
+      <div class="form-group">
+        <label><i class="fas fa-phone"></i> {{getTranslate('Mobile')}}</label>
+        <input [(ngModel)]="student.mobile" placeholder="{{getTranslate('Enter')}} {{getTranslate('Mobile')}}">
+      </div>
     </div>
-
     <div class="form-row">
-      <mat-form-field color="accent" appearance="outline">
-        <mat-label>University ID</mat-label>
-        <input [(ngModel)]="student.student_number" name="student_number" matInput placeholder="Enter university ID" />
-      </mat-form-field>
-
-      <mat-form-field color="accent" appearance="outline">
-        <mat-label>Nationality</mat-label>
-        <input type="text" placeholder="Select Nationality" aria-label="Nationality" matInput [formControl]="myControl"
-          [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-            {{ option }}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-
-      <mat-form-field color="accent" appearance="outline">
-        <mat-label>Student College</mat-label>
-        <mat-select placeholder="Select Nationality" [(value)]="student.college">
-          <mat-option *ngFor="let c of listCollege" [value]="c.id">{{c.college_ar}}</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div class="form-group">
+        <label><i class="fa-solid fa-envelope"></i> {{getTranslate('Email')}}</label>
+        <input [(ngModel)]="student.email" placeholder="{{getTranslate('Enter')}} {{getTranslate('Email')}}">
+      </div>
+      <div class="form-group">
+        <label><i class="fa-regular fa-hashtag"></i>{{getTranslate('PersonalNum')}}</label>
+        <input [(ngModel)]="student.student_number"
+          placeholder="{{getTranslate('Enter')}} {{getTranslate('PersonalNum')}}">
+      </div>
     </div>
-    <button (click)="addStudent()" mat-raised-button color="primary">Register</button>
-  </form>
+    <div class="form-row">
+      <div class="form-group">
+        <label><i class="fas fa-globe"></i> {{ getTranslate('Nationality') }}</label>
+        <input type="text" [(ngModel)]="student.nationality" placeholder="{{ getTranslate('SelectNationality') }}"
+          list="nationalityList">
+        <datalist id="nationalityList">
+          <option *ngFor="let option of filteredOptions | async" [value]="option">{{ option }}</option>
+        </datalist>
+      </div>
+      <div class="form-group">
+        <label><i class="fas fa-university"></i> {{ getTranslate('StudentCollege') }}</label>
+        <select [(ngModel)]="student.college" class="custom-select">
+          <option value="" disabled selected hidden>{{ getTranslate('StudentCollege') }}</option>
+          <option *ngFor="let c of listCollege" [value]="c.id">{{ c.college_ar }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="submit">
+      <button (click)="addStudent()">{{getTranslate('Confirm')}}</button>
+    </div>
+  </div>
 </div>

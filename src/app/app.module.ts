@@ -29,10 +29,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MakeReservationComponent } from './make-reservation/make-reservation.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { DialogMessageComponent } from './dialog-message/dialog-message.component';
 import { LoadingDialogComponent } from './loading-dialog/loading-dialog.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TestComponent } from './test/test.component';
 import { RoomComponent } from './room/room.component';
 import { SuiteComponent } from './suite/suite.component';
 import { AddBuildingComponent } from './add-building/add-building.component';
@@ -52,7 +50,6 @@ import { StudentManagementComponent } from './student-management/student-managem
 import { DialogAddUserComponent } from './dialog-add-user/dialog-add-user.component';
 import { DialogEditAndAddStudentComponent } from './dialog-edit-and-add-student/dialog-edit-and-add-student.component';
 import { SearchStudentComponent } from './search-student/search-student.component';
-import { CustomStudentSearchComponent } from './custom-student-search/custom-student-search.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -75,9 +72,7 @@ import { authGuard } from './auth.guard';
     HeaderComponent,
     AddStudentComponent,
     MakeReservationComponent,
-    DialogMessageComponent,
     LoadingDialogComponent,
-    TestComponent,
     RoomComponent,
     SuiteComponent,
     AddBuildingComponent,
@@ -96,7 +91,6 @@ import { authGuard } from './auth.guard';
     DialogAddUserComponent,
     DialogEditAndAddStudentComponent,
     SearchStudentComponent,
-    CustomStudentSearchComponent,
     DialogReservationComponent,
     ReservationManagementComponent,
     GetReservationComponent,
@@ -142,15 +136,14 @@ import { authGuard } from './auth.guard';
     { path: 'addStudent', component: AddStudentComponent, canActivate: [authGuard] },
     { path: 'makeReservation', component: MakeReservationComponent, canActivate: [authGuard] },
     { path: 'ReservationManagement', component: ReservationManagementComponent, canActivate: [authGuard] },
-    { path: 'test', component: TestComponent },
     { path: 'addBuilding', component: AddBuildingComponent, canActivate: [authGuard] },
     { path: 'BuildingsManagement', component: BuildingsManagementComponent, canActivate: [authGuard] },
-    { path: 'StudentManagement', component: StudentManagementComponent, canActivate: [authGuard] },
+    { path: 'GuestManagement', component: StudentManagementComponent, canActivate: [authGuard] },
     { path: 'UsersManagement', component: UserManagementComponent, canActivate: [authGuard] },
     { path: 'Facilitie', component: FacilitieComponent, canActivate: [authGuard] },
     ]),
   ],
-  providers: [DialogMessageComponent],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

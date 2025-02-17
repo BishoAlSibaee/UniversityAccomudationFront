@@ -1,30 +1,38 @@
-<div mat-dialog-content class="dialog">
-  <h1 mat-dialog-title>{{title}}</h1>
-  <mat-form-field color="accent" style="padding-left: 5px;" appearance="outline">
-    <mat-label>Building Name</mat-label>
-    <input matInput [(ngModel)]="buildingName" placeholder="Enter Building Name">
-  </mat-form-field>
-  <mat-form-field color="accent" style="padding-left: 5px;" appearance="outline">
-    <mat-label>Building Number</mat-label>
-    <input matInput [(ngModel)]="buildingNumber" placeholder="Enter Building Number">
-  </mat-form-field>
-  <div *ngIf="showFormFieldFloor()">
-    <mat-form-field color="accent" style="padding-left: 5px;" appearance="outline">
-      <mat-label>Number Of Floor</mat-label>
-      <input matInput [(ngModel)]="numberOfFloor" placeholder="Enter Number Of Floor">
-    </mat-form-field>
-    <mat-form-field color="accent" style="padding-left: 5px;" appearance="outline">
-      <mat-label>Floor Number</mat-label>
-      <input matInput [(ngModel)]="numberFloor" placeholder="Enter Floor Number">
-    </mat-form-field>
-  </div>
-  <div mat-dialog-actions >
-    <button mat-button (click)="onNoClick()" style="color: white;">
-      <mat-icon>cancel</mat-icon> Cancel
-    </button>
-    <button mat-button color="warn" (click)="onClickOk()" style="background-color: #087709bd; color: white;">
-      <mat-icon>check</mat-icon> {{nameBtn}}
-    </button>
+<div dir="auto" class="overlay">
+  <div class="dialog-box">
+    <h2><i class="fas fa-user-edit"></i> {{title}}</h2>
+    <div class="form-row">
+      <div class="form-group">
+        <label><i class="fas fa-building"></i> {{getTranslate('BuildingName')}}</label>
+        <input type="text" [(ngModel)]="buildingName"
+          placeholder="{{getTranslate('Enter')}} {{getTranslate('BuildingName')}}">
+      </div>
+      <div class="form-group">
+        <label><i class="fa-regular fa-hashtag"></i>{{getTranslate('BuildingNumber')}}</label>
+        <input type="text" [(ngModel)]="buildingNumber"
+          placeholder="{{getTranslate('Enter')}} {{getTranslate('BuildingNumber')}}">
+      </div>
+    </div>
+    <div *ngIf="showFormFieldFloor()" class="form-row">
+      <div class="form-group">
+        <label><i class="fas fa-layer-group"></i> {{getTranslate('TotalFloors')}}</label>
+        <input type="text" [(ngModel)]="numberOfFloor"
+          placeholder="{{getTranslate('Enter')}} {{getTranslate('TotalFloors')}}">
+      </div>
+
+      <div class="form-group">
+        <label><i class="fa-regular fa-hashtag"></i> {{getTranslate('FloorNum')}}</label>
+        <input type="text" [(ngModel)]="numberFloor"
+          placeholder="{{getTranslate('Enter')}} {{getTranslate('FloorNum')}}">
+      </div>
+    </div>
+    <div class="dialog-actions">
+      <button class="cancel-btn" (click)="onNoClick()">
+        <i class="fas fa-times"></i> {{getTranslate('Cancel')}}
+      </button>
+      <button class="confirm-btn" (click)="onClickOk()">
+        <i class="fas fa-check"></i> {{nameBtn}}
+      </button>
+    </div>
   </div>
 </div>
-

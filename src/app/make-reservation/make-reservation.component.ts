@@ -13,6 +13,7 @@ import { Room } from '../Room';
 import { Reservation } from '../Reservation';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { DialogReservationComponent } from '../dialog-reservation/dialog-reservation.component';
+import { translates } from '../translates';
 
 @Component({
   selector: 'app-make-reservation',
@@ -49,8 +50,12 @@ export class MakeReservationComponent {
   Start: any
   Expire: any
   userReservations: Reservation[] = [];
+  lang: string = "";
 
-  constructor(private router: Router, private client: HttpClient, private dialog: MatDialog) { }
+  constructor(private router: Router, private client: HttpClient, private dialog: MatDialog) {
+    translates.create()
+    this.lang = AppComponent.language;
+  }
 
   ngOnInit() {
     this.buildings = AppComponent.buildings;
@@ -64,7 +69,7 @@ export class MakeReservationComponent {
   }
 
   onBuildingChange(buildingId: number | null) {
-    const selectedBuilding = this.buildings.find(b => b.id === buildingId);
+    const selectedBuilding = this.buildings.find(b => b.id == buildingId);
     if (selectedBuilding) {
       this.filteredFloors = selectedBuilding.floors || [];
       this.selectedFloorId = null;
@@ -77,13 +82,13 @@ export class MakeReservationComponent {
     this.selectedFloorId = floorId;
   }
 
-  onRoomTypeChange(roomTypeId: number | null) {
+  onRoomTypeChange(roomTypeId: number | string | null) {
     this.selectedRoomTypeId = roomTypeId;
   }
 
   selectRoom(room: Room) {
     if (this.userReservations.length > 0) {
-      return this.openSnackBar("لا يمكن تغيير الغرفة بعد اضافة الحجز", "Ok");
+      return this.openSnackBar(this.getTranslate('NoChange'), "Ok");
     }
     this.selectedRoom = room;
     this.selectedRoomNumber = room.number;
@@ -96,13 +101,13 @@ export class MakeReservationComponent {
     this.Expire = ExpireDate.getFullYear() + "-" + (ExpireDate.getMonth() + 1) + "-" + ExpireDate.getDate()
 
     if (this.selectedBuildingId === 0) {
-      return this.openSnackBar("All Required", "Ok");
+      return this.openSnackBar(this.getTranslate('Required'), "Ok");
     }
     if (this.startDate === '' || this.expirDate === '') {
-      return this.openSnackBar("Enter Date", "Ok");
+      return this.openSnackBar(this.getTranslate('EnterDate'), "Ok");
     }
     if (this.selectedOption === 0) {
-      return this.openSnackBar("Select the type search ", "Ok");
+      return this.openSnackBar(this.getTranslate('SelectSearch'), "Ok");
     }
     const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
     let params = new FormData();
@@ -129,16 +134,13 @@ export class MakeReservationComponent {
     this.selectedRoom = null;
     this.client.post<any>(ApiLinks.checkReservation, params, options).subscribe({
       next: (result) => {
-        console.log(result)
         if (result.code === 1) {
           this.availableRooms = result.AvailableRooms
           this.availableRooms.sort((a, b) => { return a.number - b.number; });
-          console.log("result = " + result.AvailableRooms)
         } else {
           return this.openSnackBar(result.error, "Ok");
         }
       }, error: (error) => {
-        console.log(error)
         return this.openSnackBar(error, "Ok");
       },
       complete: () => {
@@ -148,7 +150,6 @@ export class MakeReservationComponent {
   }
 
   makeReservation() {
-    console.table(this.userReservations);
     const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
     const token = localStorage.getItem("token");
     const headers = new HttpHeaders({ Authorization: "Bearer " + token });
@@ -157,14 +158,13 @@ export class MakeReservationComponent {
     this.client.post<any>(ApiLinks.makeReservation, params, options).subscribe({
       next: (result) => {
         if (result.code === 1) {
-          this.openSnackBar("تم الحجز بنجاح", "Ok");
+          this.openSnackBar(this.getTranslate('ReservationDone'), "Ok");
           this.clearDataAfterReservation();
         } else {
           this.openSnackBar(result.error, "Ok");
         }
       },
       error: (error) => {
-        console.error(error);
         this.openSnackBar("حدث خطأ أثناء محاولة الاتصال بالخادم.", "Ok");
       },
       complete: () => {
@@ -175,7 +175,7 @@ export class MakeReservationComponent {
 
   openReservationComponent(roomId: number, roomNumber: number, building_id: number, floor_id: number, suite_id: number, availableCapacity: number, startDate: string, endDate: string): void {
     if (this.userReservations.length >= availableCapacity) {
-      return this.openSnackBar("لا يمكن الأضافة .. عدد الأفراد أكبر من سعة الغرفة", "Ok");
+      return this.openSnackBar(this.getTranslate('CannotAdd'), "Ok");
     } else {
       const dialogRef = this.dialog.open(DialogReservationComponent, {
         data: { roomId, roomNumber, building_id, floor_id, suite_id, startDate, endDate }
@@ -185,9 +185,8 @@ export class MakeReservationComponent {
         if (result) {
           result.forEach((res: any) => {
             if (this.isStudentAlreadyReserved(res.student_id)) {
-              this.openSnackBar(`الحجز موجود مسبقًا للطالب: ${res.student_name}`, "Ok");
+              this.openSnackBar(`${this.getTranslate('ResAlready')} ${res.student_name}`, "Ok");
             } else {
-              console.table(res);
               this.userReservations.push(res);
               // res.facility_ids = [];
             }
@@ -198,12 +197,8 @@ export class MakeReservationComponent {
   }
 
   checkList() {
-    console.table(this.userReservations);
     this.reservations.forEach((reservation, index) => {
-      console.log(`Reservation ${index + 1}:`, this.userReservations);
     });
-    console.log("Reservation length  = " + this.userReservations.length)
-    console.log("Reservations:", JSON.stringify(this.userReservations, null, 2));
   }
 
   deleteReservation(index: number) {
@@ -242,7 +237,11 @@ export class MakeReservationComponent {
     let name;
     AppComponent.facilitie.forEach(f => {
       if (f.id === id) {
-        name = f.name_ar
+        if (AppComponent.language === 'ar') {
+          name = f.name_ar
+        } else {
+          name = f.name_en
+        }
       }
     })
     return name;
@@ -253,5 +252,9 @@ export class MakeReservationComponent {
       duration: 6000,
       panelClass: ['custom-snackbar']
     });
+  }
+
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
   }
 }

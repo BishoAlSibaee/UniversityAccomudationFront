@@ -1,14 +1,21 @@
-<div class="main-container">
-  <h1>Student Management</h1>
-  <mat-tab-group mat-stretch-tabs backgroundColor="accent">
-    <mat-tab label="Search Student" aria-label="primary">
-      <div class="building-container"><app-search-student></app-search-student></div>
-    </mat-tab>
-    <mat-tab label="Custom Student Search" aria-label="primary">
-      <div class="floor-container"><app-custom-student-search></app-custom-student-search></div>
-    </mat-tab>
-    <mat-tab label="Add Student" aria-label="primary">
-      <div class="room-container"><app-add-student></app-add-student></div>
-    </mat-tab>
-  </mat-tab-group>
+<div dir="auto" class="container-page">
+  <div class="top-bar">
+    <div class="title-page">
+      <h1>{{getTranslate('UserMang')}}</h1>
+    </div>
+    <button class="back-button" routerLink="/mainPage">
+      <mat-icon>home</mat-icon>
+      <span>{{getTranslate('Back')}}</span>
+    </button>
+  </div>
+  <div dir="auto" class="user-table-container">
+    <mat-tab-group mat-stretch-tabs backgroundColor="accent">
+      <mat-tab label="{{getTranslate('SearchStudent')}}" aria-label="primary">
+        <div class="building-container"><app-search-student></app-search-student></div>
+      </mat-tab>
+      <mat-tab label="{{getTranslate('AddStudent')}}" aria-label="primary">
+        <div class="room-container"><app-add-student></app-add-student></div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
 </div>

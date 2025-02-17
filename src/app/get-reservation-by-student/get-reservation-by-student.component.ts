@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { ApiLinks } from '../ApiLinks';
 import { LoadingDialogComponent } from '../loading-dialog/loading-dialog.component';
 import { Reservation } from '../Reservation';
@@ -9,6 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DialogDeleteComponent } from '../dialog-delete/dialog-delete.component';
 import { AppComponent } from '../app.component';
 import { UpdateReservationComponent } from '../update-reservation/update-reservation.component';
+import { translates } from '../translates';
 
 @Component({
   selector: 'app-get-reservation-by-student',
@@ -23,14 +23,16 @@ export class GetReservationByStudentComponent {
   value: string = '';
   reservation: Reservation[] = [];
 
-  constructor(private client: HttpClient, private dialog: MatDialog) { }
+  constructor(private client: HttpClient, private dialog: MatDialog) {
+    translates.create()
+  }
 
   getReservation() {
     if (this.by === '') {
-      return this.openSnackBar("Select Search Type", "Ok");
+      return this.openSnackBar(this.getTranslate('SelectSearch'), "Ok");
     }
     if (this.value === '') {
-      return this.openSnackBar("Enter Search Word", "Ok");
+      return this.openSnackBar(this.getTranslate('Enter') + " " + this.getTranslate('SearchWord'), "Ok");
     }
     this.reservation = [];
     const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
@@ -42,8 +44,6 @@ export class GetReservationByStudentComponent {
       let Expire = ExpireDate.getFullYear() + "-" + (ExpireDate.getMonth() + 1) + "-" + ExpireDate.getDate()
       params.append("start_date", Start);
       params.append("expire_date", Expire);
-      console.log("start_date " + Start)
-      console.log("expire_date " + Expire)
     }
     params.append("type", this.by);
     params.append("word", this.value);
@@ -58,7 +58,7 @@ export class GetReservationByStudentComponent {
           this.openSnackBar(result.error, "Ok");
         }
       }, error: (error) => {
-        console.log(error)
+        this.openSnackBar(error, "Ok");
       },
       complete: () => {
         dialogRef.close();
@@ -66,29 +66,24 @@ export class GetReservationByStudentComponent {
     })
   }
 
-    openUpdateReservationDialog(idReservation: number, nameUser: string, room_id: number, room_number: string, start_date: string, expire_date: string, facility_ids: any, buildingName: string): void {
-      const dialogRef = this.dialog.open(UpdateReservationComponent, {
-        data: { idReservation: idReservation, nameUser: nameUser, room_id: room_id, room_number: room_number, start_date: start_date, expire_date: expire_date, facility_ids: facility_ids, buildingName: buildingName },
-        panelClass: ['dialog-panel']
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          console.table(result)
-          console.log(result.id)
-          console.log(result.student_name)
-          const res = this.reservation.find(r => r.id === idReservation)
-          console.table(result)
-          if (res) {
-            res.room_id = Number(result.room_id)
-            res.room_number = result.room_number
-            res.start_date = result.start_date
-            res.expire_date = result.expire_date
-            res.facility_ids = result.facility_ids
-            console.log('result.id ' + result.room_id);
-          }
+  openUpdateReservationDialog(idReservation: number, nameUser: string, room_id: number, room_number: string, start_date: string, expire_date: string, facility_ids: any, buildingName: string): void {
+    const dialogRef = this.dialog.open(UpdateReservationComponent, {
+      data: { idReservation: idReservation, nameUser: nameUser, room_id: room_id, room_number: room_number, start_date: start_date, expire_date: expire_date, facility_ids: facility_ids, buildingName: buildingName },
+      panelClass: ['dialog-panel']
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const res = this.reservation.find(r => r.id === idReservation)
+        if (res) {
+          res.room_id = Number(result.room_id)
+          res.room_number = result.room_number
+          res.start_date = result.start_date
+          res.expire_date = result.expire_date
+          res.facility_ids = result.facility_ids
         }
-      });
-    }
+      }
+    });
+  }
 
   openDeleteDialog(id: number, name: string): void {
     const dialogRef = this.dialog.open(DialogDeleteComponent, {
@@ -130,5 +125,9 @@ export class GetReservationByStudentComponent {
       duration: 6000,
       panelClass: ['custom-snackbar']
     });
+  }
+
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
   }
 }

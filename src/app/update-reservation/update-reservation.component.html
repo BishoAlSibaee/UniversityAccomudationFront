@@ -1,78 +1,72 @@
-<div class="dialog-container">
-  <h1 style="margin: 0px;" mat-dialog-title>UpdateReservation</h1>
-  <div class="info-reservation">
-    <h4>Name Student : {{data.nameUser}}</h4>
-    <h4>Number Reservation : {{data.idReservation}}</h4>
-  </div>
-  <div>
+<div dir="auto" class="overlay">
+  <div class="dialog-box">
+    <h2><i class="fas fa-user-edit"></i> <strong>{{getTranslate('UpdateReservation')}}</strong></h2>
+    <div class="info-reser">
+      <h4>{{getTranslate('Name')}} : {{data.nameUser}}</h4>
+      <h4>{{getTranslate('ReservationNumber')}} : {{data.idReservation}}</h4>
+    </div>
     <!-- تعديل التاريخ -->
-    <div style="padding-left: 5px; padding-right: 5px;">
-      <button mat-button class="toggle-options-btn" (click)="toggleEditDate()">
-        تعديل التاريخ
-        <mat-icon>{{ editDate ? 'expand_less' : 'expand_more' }}</mat-icon>
-      </button>
-      <div class="room-update" *ngIf="editDate" [@slideToggle]>
-        <div class="info-reservation">
-          <h3>Start Date: {{data.start_date}}</h3>
-          <h3>End Date: {{data.expire_date}}</h3>
+    <button mat-button class="toggle-options-btn" (click)="toggleEditDate()">
+      {{getTranslate('UpdateDate')}}
+      <mat-icon>{{ editDate ? 'expand_less' : 'expand_more' }}</mat-icon>
+    </button>
+    <div class="room-update" *ngIf="editDate" [@slideToggle]>
+      <div class="info-reser">
+        <h4>{{getTranslate('StartDate')}} : {{data.start_date}}</h4>
+        <h4>{{getTranslate('ExpireDate')}} : {{data.expire_date}}</h4>
+      </div>
+      <div class="info-reservation">
+        <div class="form-group">
+          <label><i class="fas fa-calendar-alt"></i> {{getTranslate('StartDate')}}</label>
+          <input type="date" [(ngModel)]="startDate">
         </div>
-        <div class="info-reservation">
-          <mat-form-field color="accent" appearance="outline">
-            <mat-label>Select Start Date</mat-label>
-            <input matInput [matDatepicker]="picker1" [(ngModel)]="startDate">
-            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-            <mat-datepicker #picker1 color="accent"></mat-datepicker>
-          </mat-form-field>
-          <mat-form-field color="accent" appearance="outline">
-            <mat-label>Select End Date</mat-label>
-            <input matInput [matDatepicker]="picker2" [(ngModel)]="expirDate">
-            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-            <mat-datepicker #picker2 color="accent"></mat-datepicker>
-          </mat-form-field>
+        <div class="form-group">
+          <label><i class="fas fa-calendar-check"></i> {{getTranslate('ExpireDate')}}</label>
+          <input type="date" [(ngModel)]="expirDate">
         </div>
       </div>
     </div>
-
     <!-- تعديل الغرفة -->
-    <div style="padding-left: 5px; padding-right: 5px;">
-      <button mat-button class="toggle-options-btn" (click)="toggleEditRoom()">
-        تعديل الغرفة
-        <mat-icon>{{ editRoom ? 'expand_less' : 'expand_more' }}</mat-icon>
-      </button>
-      <div *ngIf="editRoom" [@slideToggle]>
-        <h3 style="margin: 0px;"> الغرفة الحالية {{data.room_number}} </h3>
-        <h3 style="margin: 0px;">البحث عن الغرفة</h3>
-        <div class="radio-group">
-          <mat-radio-group [(ngModel)]="selectedOption">
-            <mat-radio-button class="radio-option" value="1">غرفة فارغة</mat-radio-button>
-            <mat-radio-button class="radio-option" value="2">غرفة متاحة</mat-radio-button>
-            <mat-radio-button class="radio-option" value="3">جميع الغرف الفارغة</mat-radio-button>
-            <mat-radio-button class="radio-option" value="4">جميع الغرف المتاحة</mat-radio-button>
-          </mat-radio-group>
+    <button mat-button class="toggle-options-btn" (click)="toggleEditRoom()">
+      {{getTranslate('UpdateRoom')}}
+      <mat-icon>{{ editRoom ? 'expand_less' : 'expand_more' }}</mat-icon>
+    </button>
+    <div *ngIf="editRoom" [@slideToggle]>
+      <div class="info-reser">
+        <h4> {{getTranslate('CurrentRoom')}} {{data.room_number}} </h4>
+      </div>
+      <h3 style="margin: 0px; color: black;">
+        <i class="fas fa-search"></i> <strong>{{getTranslate('SearchRoom')}}</strong>
+      </h3>
+      <div class="radio-container">
+        <label><input type="radio" class="radio-option" [(ngModel)]="selectedOption"
+            value="1">{{getTranslate('EmptyRoom')}}</label>
+        <!-- <label><input type="radio" class="radio-option" [(ngModel)]="selectedOption"
+            value="2">{{getTranslate('AvailableRoom')}}</label> -->
+        <label><input type="radio" class="radio-option" [(ngModel)]="selectedOption"
+            value="3">{{getTranslate('AllEmptyRoom')}}</label>
+        <!-- <label><input type="radio" class="radio-option" [(ngModel)]="selectedOption"
+            value="4">{{getTranslate('AllAvailableRoom')}}</label> -->
+      </div>
+      <div class="selection-container">
+        <div class="selection-group">
+          <label for="building">{{ getTranslate('ChooseBuilding') }}</label>
+          <select id="building" [(ngModel)]="selectedBuildingId" (change)="onBuildingChange(selectedBuildingId)">
+            <option *ngFor="let building of listBuilding" [value]="building.id">{{ building.name }}</option>
+          </select>
         </div>
-        <div class="info-reservation">
-          <!-- اختيار المبنى -->
-          <mat-form-field style="width: 100%;" color="accent" appearance="outline">
-            <mat-label>اختر المبنى</mat-label>
-            <mat-select [(value)]="selectedBuildingId" (selectionChange)="onBuildingChange($event.value)">
-              <mat-option *ngFor="let building of listBuilding" [value]="building.id">{{ building.name }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <!-- اختيار الطابق -->
-          <mat-form-field style="width: 100%;" color="accent" appearance="outline">
-            <mat-label>اختر الدور</mat-label>
-            <mat-select [(value)]="selectedFloorId" (selectionChange)="onFloorChange($event.value)">
-              <mat-option [value]="'all'">All</mat-option>
-              <mat-option *ngFor="let floor of filteredFloors" [value]="floor.id">{{ floor.number }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <button mat-icon-button color="accent" aria-label="Search" class="search-btn" (click)="checkReservation()">
-            <mat-icon>search</mat-icon>
-          </button>
+        <div class="selection-group">
+          <label for="floor">{{ getTranslate('ChooseFloor') }}</label>
+          <select id="floor" [(ngModel)]="selectedFloorId" (change)="onFloorChange(selectedFloorId)">
+            <option value="all">All</option>
+            <option *ngFor="let floor of filteredFloors" [value]="floor.id">{{ floor.number }}</option>
+          </select>
         </div>
-
+        <button class="search-button" (click)="checkReservation()">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+      <div class="info-reservation">
         <div class="room-numbers">
           <button *ngFor="let r of availableRooms" class="room-number" (click)="selectRoom(r)"
             [ngClass]="{'active-room': r.number === selectedRoomNumber}">
@@ -81,30 +75,27 @@
         </div>
       </div>
     </div>
-
     <!-- تعديل المرافق -->
-    <div style="padding-left: 5px; padding-right: 5px;">
-      <button mat-button class="toggle-options-btn" (click)="toggleEditFacility()">
-        تعديل المرافق
-        <mat-icon>{{ editFacility ? 'expand_less' : 'expand_more' }}</mat-icon>
-      </button>
-      <div class="room-update" *ngIf="editFacility" [@slideToggle]>
-        <div class="facilities" *ngIf="facilitie.length>0">
-          <div *ngFor="let f of facilitie">
-            <mat-checkbox (change)="changeFacilitie(f.id)" [(ngModel)]="f.isChecked">
-              {{ f.name_ar }}
-            </mat-checkbox>
+    <button mat-button class="toggle-options-btn" (click)="toggleEditFacility()">
+      {{getTranslate('UpdateFacilities')}}
+      <mat-icon>{{ editFacility ? 'expand_less' : 'expand_more' }}</mat-icon>
+    </button>
+    <div class="room-update" *ngIf="editFacility" [@slideToggle]>
+      <div class="facilities" *ngIf="facilitie.length>0">
+        <div *ngFor="let f of facilitie">
+          <div class="checkbox-container">
+            <input type="checkbox" (change)="changeFacilitie(f.id)" [(ngModel)]="f.isChecked">
+            {{ currentLang ==='ar' ? f.name_ar :f.name_en }}
           </div>
         </div>
       </div>
     </div>
-
-    <div mat-dialog-actions>
-      <button (click)="onCancel()" mat-button style="color: white;">
-        <mat-icon>cancel</mat-icon> Cancel
+    <div class="dialog-actions">
+      <button class="cancel-btn" (click)="onCancel()">
+        <i class="fas fa-times"></i> {{getTranslate('Cancel')}}
       </button>
-      <button (click)="updateReservation()" mat-button color="warn" style="background-color: #087709bd; color: white;">
-        <mat-icon>check</mat-icon> Save
+      <button class="confirm-btn" (click)="updateReservation()">
+        <i class="fas fa-check"></i> {{getTranslate('Update')}}
       </button>
     </div>
   </div>

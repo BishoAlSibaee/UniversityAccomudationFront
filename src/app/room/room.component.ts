@@ -14,16 +14,16 @@ export class RoomComponent {
   constructor() {
     translates.create()
   }
-
-  checkCapacity() {
-    return this.roomData.capacity === 4 ? 'darkred' : '#rgb(255 255 255)';
-    // return this.roomData.capacity === 4 ? 'darkred' : '#bfbfbf';
+  ngOnInit() {
   }
+
+  // checkCapacity() {
+  //   return this.roomData.capacity === 4 ? 'darkred' : '#rgb(255 255 255)';
+  // }
 
   getRoomType(idRoomType: number) {
     let name;
     const ro = AppComponent.roomType.find(r => r.id === idRoomType)
-    console.log("roomData ")
     if (ro) {
       name = ro.name_ar
     }

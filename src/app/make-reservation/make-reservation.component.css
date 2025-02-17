@@ -1,57 +1,21 @@
-.filter-container {
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #01053b;
-  width: 90%;
-  margin: 15px auto 0;
-}
-
 .filter-options {
   display: flex;
   gap: 15px;
-  /* flex-wrap: wrap; */
 }
 
 .more-filter-options {
   display: flex;
   gap: 15px;
-  /* flex-wrap: wrap; */
   margin-top: 10px;
 }
 
-.filter-field {
-  width: 33.33%;
-}
-
-.radio-group {
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-
-.radio-option {
-  margin-right: 15px;
-}
-
-button {
-  align-self: flex-start;
-}
-
 .results-container {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  align-items: center;
-}
-
-.room-numbers {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  margin: 20px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .room-number {
@@ -66,19 +30,11 @@ button {
   transition: background-color 0.3s;
 }
 
-.room-number.active-room {
-  background-color: #01053b;
-}
-
 .room-details {
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 90%;
-  /* max-width: 85%; */
   margin-bottom: 15px;
-  box-shadow: 0px 0px 11px 6px rgba(0, 0, 0, 0.1);
-
+  margin-top: 15px;
 }
 
 .room-details h3 {
@@ -99,7 +55,7 @@ button {
   border-radius: 10px;
   border: solid 1.5px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-  width: 220px;
+  width: 235px;
   margin: 5px;
 }
 
@@ -116,6 +72,8 @@ button {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  background-color: #80808038;
+  padding: 10px;
 }
 
 .additional-options-container {
@@ -126,6 +84,8 @@ button {
   display: flex;
   align-items: center;
   cursor: pointer;
+  background-color: #01053b;
+  width: 100%;
 }
 
 .more-filter-options {
@@ -154,4 +114,148 @@ button {
   font-weight: bolder;
   font-size: 13px;
   transition: background-color 0.3s;
+}
+
+.search-container {
+  margin: 20px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+h4 {
+  font-weight: bold;
+}
+
+.radio-container {
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+.radio-container {
+  display: flex;
+  gap: 70px;
+}
+
+.radio-container input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #3E5879;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.radio-container input[type="radio"]:hover {
+  transform: scale(1.1);
+}
+
+.radio-container input[type="radio"]:checked {
+  transform: scale(1.2);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-group input,
+.form-group select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 13px;
+  transition: 0.3s ease-in-out;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.2);
+}
+
+.submit button {
+  width: 100%;
+  padding: 10px;
+  background-color: #3E5879;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  transition: all 0.3s ease-in-out;
+}
+
+.submit button:hover {
+  background-color: #2b405d;
+  box-shadow: 0px 4px 12px rgba(62, 88, 121, 0.4);
+}
+
+.room-numbers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+}
+
+.action-button {
+  padding: 15px 30px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  background-color: #3E5879;
+  color: white;
+  margin: 5px 0;
+  min-width: 80px;
+  text-align: center;
+}
+
+.action-button.active-room {
+  position: relative;
+  box-shadow: 0px 0px 10px 3px rgba(23, 41, 76, 0.7);
+  transform: scale(1.05);
+  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.action-button:hover {
+  background-color: #213555;
+  box-shadow: 0px 4px 8px rgba(62, 88, 121, 0.3);
+}
+
+.confirm-btn {
+  border: none;
+  padding: 0px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+.confirm-btn {
+  background-color: #3E5879;
+  color: white;
+}
+
+.confirm-btn:hover {
+  background-color: #213555;
+  box-shadow: 0px 4px 8px rgba(62, 88, 121, 0.3);
 }

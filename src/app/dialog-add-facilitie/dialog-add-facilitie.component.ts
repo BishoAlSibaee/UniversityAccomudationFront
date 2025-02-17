@@ -1,16 +1,15 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, inject, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { UserService } from '../user.service';
 import { Building } from '../Building';
 import { Floor } from '../Floor';
 import { AppComponent } from '../app.component';
 import { RoomType } from '../RoomType';
 import { ApiLinks } from '../ApiLinks';
-import { Room } from '../Room';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Facilitie } from '../Facilitie';
 import { RoomService } from '../room.service';
+import { translates } from '../translates';
 
 @Component({
   selector: 'app-dialog-add-facilitie',
@@ -33,19 +32,22 @@ export class DialogAddFacilitieComponent {
   selectedRoomType: string = ''
 
   constructor(private client: HttpClient, public dialogRef: MatDialogRef<DialogAddFacilitieComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private roomService: RoomService) {
+    translates.create()
   }
 
   ngOnInit() {
     this.allBuilding = AppComponent.buildings;
     this.roomTypes = AppComponent.roomType
-
   }
 
-  onBuildingChange(selectedBuilding: Building) {
-    this.buildingId = selectedBuilding.id
-    this.selectedFloorNumber = null;
-    this.floorId = 0
-    this.floorInBuilding(selectedBuilding.id)
+  onBuildingChange(event: Event) {
+    const selectedBuildingId = (event.target as HTMLSelectElement).value;
+    if (selectedBuildingId) {
+      this.buildingId = +selectedBuildingId;
+      this.selectedFloorNumber = null;
+      this.floorId = 0;
+      this.floorInBuilding(this.buildingId);
+    }
   }
 
   floorInBuilding(buildingId: number) {
@@ -57,13 +59,18 @@ export class DialogAddFacilitieComponent {
     })
   }
 
-  onFloorChange(selectedFloor: Floor) {
-    this.floorId = selectedFloor.id;
-    console.log("Floor = " + this.floorId)
+  onFloorChange(event: Event) {
+    const selectedFloorId = (event.target as HTMLSelectElement).value;
+    if (selectedFloorId) {
+      this.floorId = +selectedFloorId;
+    }
   }
 
-  onRoomTypeChange(roomTypeId: number) {
-    this.selectedRoomTypeId = roomTypeId;
+  onRoomTypeChange(event: Event) {
+    const selectedRoomTypeId = (event.target as HTMLSelectElement).value;
+    if (selectedRoomTypeId) {
+      this.selectedRoomTypeId = +selectedRoomTypeId
+    }
   }
 
   addFacilitie() {
@@ -86,7 +93,7 @@ export class DialogAddFacilitieComponent {
           console.table(AppComponent.facilitie)
           this.roomService.refreshfacilitieList();
           this.dialogRef.close();
-          this.openSnackBar("Add Done", "Ok");
+          this.openSnackBar(this.getTranslate('AddDone'), "Ok");
         } else {
           if (result.error.name) {
             this.openSnackBar(result.error, "Ok");
@@ -108,5 +115,9 @@ export class DialogAddFacilitieComponent {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
   }
 }

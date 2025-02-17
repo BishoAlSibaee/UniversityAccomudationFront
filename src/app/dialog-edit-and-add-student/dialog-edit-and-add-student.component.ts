@@ -6,6 +6,7 @@ import { AppComponent } from '../app.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Student } from '../Student';
 import { UserService } from '../user.service';
+import { translates } from '../translates';
 
 @Component({
   selector: 'app-dialog-edit-and-add-student',
@@ -13,21 +14,23 @@ import { UserService } from '../user.service';
   styleUrls: ['./dialog-edit-and-add-student.component.css']
 })
 export class DialogEditAndAddStudentComponent {
-
   private _snackBar = inject(MatSnackBar);
   studentName: string = ""
   studentNumber: string = ""
   studentMobile: string = ""
-  nameBtn: string = "Add"
-  title: string = "Add Student"
+  nameBtn: string = this.getTranslate('Add');
+  title: string = this.getTranslate('AddStudent');
+  currentLang: string = "";
 
   constructor(private client: HttpClient, public dialogRef: MatDialogRef<DialogEditAndAddStudentComponent>, private userService: UserService, @Inject(MAT_DIALOG_DATA) public data: any) {
+    this.currentLang = AppComponent.language
+    translates.create()
     if (data) {
       this.studentName = data.studentName;
       this.studentNumber = data.student_number;
       this.studentMobile = data.studentMobile;
       this.nameBtn = data.action;
-      this.title = "Update Student"
+      this.title = this.getTranslate('UpdateStudent');
     }
   }
 
@@ -36,10 +39,10 @@ export class DialogEditAndAddStudentComponent {
   }
 
   onClickOk() {
-    if (this.nameBtn === 'Add') {
+    if (this.nameBtn === this.getTranslate('Add')) {
       this.addStudent();
     }
-    if (this.nameBtn === 'Update') {
+    if (this.nameBtn === this.getTranslate('Update')) {
       this.updateStudent()
     }
   }
@@ -83,8 +86,10 @@ export class DialogEditAndAddStudentComponent {
 
   updateStudent() {
     if (this.studentName === "" || this.studentNumber === "" || this.studentMobile === "") {
-      return this.openSnackBar("All Required", "Ok");
+      return this.openSnackBar(this.getTranslate('Required'), "Ok");
     }
+    console.log("mobile = " + this.studentMobile)
+
     let params = new FormData();
     params.append("id", this.data.studentId);
     params.append("name", this.studentName);
@@ -107,7 +112,7 @@ export class DialogEditAndAddStudentComponent {
           }
           this.userService.refreshStudentList();
           this.dialogRef.close()
-          return this.openSnackBar("Add Done", "Ok");
+          return this.openSnackBar(this.getTranslate('AddDone'), "Ok");
         } else {
           if (result.error.mobile != null) {
             return this.openSnackBar(result.error.mobile, "Ok");
@@ -130,5 +135,9 @@ export class DialogEditAndAddStudentComponent {
       duration: 6000,
       panelClass: ['custom-snackbar']
     });
+  }
+
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
   }
 }

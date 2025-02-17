@@ -1,25 +1,29 @@
-<div mat-dialog-content class="dialog">
-  <h1 mat-dialog-title>{{title}}</h1>
+<div dir="auto" class="overlay">
+  <div class="dialog-box">
+    <h2><i class="fas fa-user-edit"></i> {{title}}</h2>
+    <div class="form-row">
+      <div *ngIf="showListBuilding()" class="form-group">
+        <label><i class="fas fa-building"></i> {{getTranslate('ChooseBuilding')}}</label>
+        <select [(ngModel)]="selectedBuildingName" (change)="onBuildingChange($event)" class="custom-select">
+          <option value="" disabled selected hidden>{{ getTranslate('ChooseBuilding') }}</option>
+          <option *ngFor="let building of allBuilding" [value]="building.id">{{building.name}}</option>
+        </select>
+      </div>
 
-  <mat-form-field color="accent" appearance="outline" *ngIf="showListBuilding()" class="choose-building">
-    <mat-label>Choose Building</mat-label>
-    <mat-select placeholder="Select Building" [(value)]="selectedBuildingName"
-      (selectionChange)="onBuildingChange($event.value)">
-      <mat-option *ngFor="let building of allBuilding" [value]="building">{{building.name}}</mat-option>
-    </mat-select>
-  </mat-form-field>
+      <div class="form-group">
+        <label><i class="fa-regular fa-hashtag"></i>{{getTranslate('FloorNum')}}</label>
+        <input type="text" [(ngModel)]="floorNumber"
+          placeholder="{{getTranslate('Enter')}} {{getTranslate('FloorNum')}}">
+      </div>
+    </div>
 
-  <mat-form-field color="accent" appearance="outline" style="padding-left: 5px;">
-    <mat-label style="color: rgb(159, 158, 163);">Floor Number</mat-label>
-    <input type="number" matInput [(ngModel)]="floorNumber" placeholder="Enter Floor Number">
-  </mat-form-field>
-  <div mat-dialog-actions>
-    <button (click)="onClickCancel()" mat-button style="color: white;">
-      <mat-icon>cancel</mat-icon> Cancel
-    </button>
-    <button (click)="onClickOk()" mat-button color="warn" style="background-color: #087709bd; color: white;">
-      <mat-icon>check</mat-icon> {{nameBtn}}
-    </button>
+    <div class="dialog-actions">
+      <button class="cancel-btn" (click)="onClickCancel()">
+        <i class="fas fa-times"></i> {{getTranslate('Cancel')}}
+      </button>
+      <button class="confirm-btn" (click)="onClickOk()">
+        <i class="fas fa-check"></i> {{nameBtn}}
+      </button>
+    </div>
   </div>
 </div>
-

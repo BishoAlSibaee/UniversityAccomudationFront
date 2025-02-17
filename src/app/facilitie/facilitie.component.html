@@ -1,37 +1,40 @@
-<div class="user-container">
-  <div class="header">
-    <h1>All Facilitie</h1>
-    <div class="button-container">
-      <button (click)="openDialogAdd()" class=" add-button">
-        <mat-icon>add</mat-icon>
-        <span>Add</span>
-      </button>
-      <button class="back-button" routerLink="/mainPage">
-        <mat-icon>home</mat-icon>
-        <span>Back</span>
-      </button>
+<div dir="auto" class="user-page">
+  <div class="top-bar">
+    <button (click)="openDialogAdd()" class="add-button">
+      <mat-icon>add</mat-icon>
+      <span>{{getTranslate('Add')}}</span>
+    </button>
+    <div class="title-page">
+      <h1>{{getTranslate('Facilities')}}</h1>
     </div>
+    <button class="back-button" routerLink="/mainPage">
+      <mat-icon>home</mat-icon>
+      <span>{{getTranslate('Back')}}</span>
+    </button>
   </div>
-  <table class="user-table">
-    <thead>
-      <tr>
-        <th>Name AR</th>
-        <th>Name EN</th>
-        <th>Building</th>
-        <th>Type</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let f of facilitie">
-        <td>{{f.name_ar}}</td>
-        <td>{{f.name_en}}</td>
-        <td>{{getNameBuilding(f.building_id)}}</td>
-        <td>{{getNameRoomTypes(f.room_types_id)}}</td>
-        <td>
-          <button (click)="openDeleteDialog(f.id , 'facilitie')" class="delete-button">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div dir="auto" class="user-table-container">
+    <table class="user-table">
+      <thead>
+        <tr>
+          <th>{{getTranslate('NameAR')}}</th>
+          <th>{{getTranslate('NameEN')}}</th>
+          <th>{{getTranslate('BuildingName')}}</th>
+          <th>{{getTranslate('RoomType')}}</th>
+          <th>{{getTranslate('Actions')}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let f of facilitie">
+          <td>{{f.name_ar}}</td>
+          <td>{{f.name_en}}</td>
+          <td>{{getNameBuilding(f.building_id)}}</td>
+          <td>{{getNameRoomTypes(f.room_types_id)}}</td>
+          <td>
+            <button (click)="openDeleteDialog(f.id , 'facilitie')"
+              class="delete-button">{{getTranslate('Delete')}}</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

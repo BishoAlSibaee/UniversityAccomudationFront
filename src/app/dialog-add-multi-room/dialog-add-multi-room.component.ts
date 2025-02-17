@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, EventEmitter, Inject, inject, Output } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ApiLinks } from '../ApiLinks';
 import { AppComponent } from '../app.component';
@@ -7,6 +7,7 @@ import { Room } from '../Room';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RoomService } from '../room.service';
 import { RoomType } from '../RoomType';
+import { translates } from '../translates';
 
 @Component({
   selector: 'app-dialog-add-multi-room',
@@ -24,13 +25,12 @@ export class DialogAddMultiRoomComponent {
   selectedTypeRoom: string = ''
 
   constructor(private client: HttpClient, public dialogRef: MatDialogRef<DialogAddMultiRoomComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private roomService: RoomService,) {
+    translates.create()
     if (data) {
       this.buildingId = data.buildingId;
       this.floorId = data.floorId;
     }
     this.listTypeRoom = AppComponent.roomType;
-    console.log("BUILDING = " + this.buildingId)
-    console.log("FLOOR = " + this.floorId)
   }
 
   onClickCancel() {
@@ -38,9 +38,8 @@ export class DialogAddMultiRoomComponent {
   }
 
   addMultiRoom() {
-    console.log("selectedCapacity = " + this.selectedTypeRoom)
     if (this.numberOfRoom === 0 || this.numberRoom === 0 || this.capacity === 0 || this.selectedTypeRoom == "") {
-      return this.openSnackBar("All Required", "Ok");
+      return this.openSnackBar(this.getTranslate('Required'), "Ok");
     }
     let params = new FormData();
     params.append("buildingId", this.buildingId.toString());
@@ -54,9 +53,7 @@ export class DialogAddMultiRoomComponent {
     let options = { headers: h };
     this.client.post<any>(ApiLinks.addMultiRoom, params, options).subscribe({
       next: (result) => {
-        console.log(result)
         if (result.code == 1) {
-          console.log("success");
           for (let i = 0; i < result.rooms.length; i++) {
             const room = result.rooms[i];
             const newRoom = new Room(room.id, Number(room.building_id), Number(room.floor_id), room.suite_id, room.number, room.capacity, "", room.type_room);
@@ -64,14 +61,12 @@ export class DialogAddMultiRoomComponent {
           }
           this.roomService.refreshRoomList();
           this.dialogRef.close();
-          this.openSnackBar("Add Done", "Ok");
+          this.openSnackBar(this.getTranslate('AddDone'), "Ok");
         } else {
           this.openSnackBar(result.error, "Ok");
-          console.log("Warning");
         }
       }, error: (error) => {
         this.openSnackBar(error, "Ok");
-        console.log("Error" + error);
       }
     });
   }
@@ -81,5 +76,9 @@ export class DialogAddMultiRoomComponent {
       duration: 6000,
       panelClass: ['custom-snackbar']
     });
+  }
+
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
   }
 }

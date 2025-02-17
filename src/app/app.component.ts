@@ -14,11 +14,11 @@ import { Reservation } from './Reservation';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'QassimUniversity';
+  title = 'Checkin Housing';
   public static MainUrl = "https://qu.ratco-solutions.com/api/"
   public static AdminUrl = AppComponent.MainUrl + "admins/"
   public static StudentUrl = AppComponent.MainUrl + "users/"
-  static language = "ar"
+  static language: string = "ar"
   public static buildings: Building[] = []
   public static rooms: Room[] = []
   public static admin: Admin[] = []
@@ -49,4 +49,16 @@ export class AppComponent {
       AppComponent.language = "en"
     }
   }
+
+  public static clearAllList() {
+    this.buildings = [];
+    this.rooms = [];
+    this.admin = [];
+    this.students = [];
+    this.college = [];
+    this.roomType = [];
+    this.facilitie = [];
+    this.reservations = [];
+  }
+
 }

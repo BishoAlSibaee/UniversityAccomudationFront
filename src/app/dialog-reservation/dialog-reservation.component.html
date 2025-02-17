@@ -1,62 +1,56 @@
-<h1 mat-dialog-title>Make Reservation</h1>
-<div class="info-reservation">
-  <h5>Room Number :{{data.roomNumber}} </h5>
-  <h5>Start Date : {{data.startDate}} </h5>
-  <h5>End Date : {{data.endDate}}</h5>
-</div>
-<div mat-dialog-content class="dialog">
-
-  <div>
-    <h5>Select Search Type</h5>
-    <mat-radio-group [(ngModel)]="by" aria-label="Select an option">
-      <mat-radio-button value="name">Student Name</mat-radio-button>
-      <mat-radio-button value="student_number">Student Number</mat-radio-button>
-    </mat-radio-group>
-  </div>
-  <div>
-    <mat-form-field color="accent" style="padding-left: 5px;">
-      <mat-label style="color: rgb(159, 158, 163);">Word Search</mat-label>
-      <input [(ngModel)]="value" matInput placeholder="Enter Word Search">
-    </mat-form-field>
-    <button (click)="serachStudentBy()" mat-button style="color: white;">
-      <mat-icon>search</mat-icon> Search
-    </button>
-  </div>
-  <div>
-    <mat-form-field style="width:100%" color="accent" class="choose-building">
-      <mat-label>Choose Student</mat-label>
-      <mat-select (selectionChange)="onStudentChange($event.value)">
-        <mat-option *ngFor="let s of students" [value]="s">Student Name : {{s.name}} | Student Number :
-          {{s.student_number}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div class="facilities-container" *ngIf="facilities.length>0">
-    <p><strong> المرافق المتاحة </strong></p>
-    <div class="all-faciliti">
-      <mat-checkbox [(ngModel)]="allSelected" (change)="toggleSelectAll()">اختيار الكل</mat-checkbox>
-      <div class="facilities">
-        <div *ngFor="let f of facilities">
-          <mat-checkbox [checked]="selectedFacilities.includes(f.id)" (change)="toggleFacility(f.id)">
-            {{ f.name_ar }}
-          </mat-checkbox>
+<div dir="auto" class="overlay">
+  <div class="dialog-box">
+    <h2><i class="fa-solid fa-building-columns"></i>{{getTranslate('MakeReservation')}}</h2>
+    <div class="info-reservation">
+      <h5><strong>{{getTranslate('RoomNum')}}: {{data.roomNumber}}</strong></h5>
+      <h5><strong>{{getTranslate('StartDate')}}: {{data.startDate}}</strong></h5>
+      <h5><strong>{{getTranslate('ExpireDate')}}: {{data.endDate}}</strong></h5>
+    </div>
+    <h4 style="color: black; margin-bottom: 5px;"><strong>{{getTranslate('SelectSearch')}}</strong></h4>
+    <div class="search-options">
+      <div class="radio-group">
+        <label><input type="radio" [(ngModel)]="by" value="name">{{getTranslate('Name')}}</label>
+        <label><input type="radio" [(ngModel)]="by" value="student_number">{{getTranslate('PersonalNum')}}</label>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="input-container">
+        <input type="text" [(ngModel)]="value" placeholder="{{getTranslate('Enter')}} {{getTranslate('SearchWord')}}">
+      </div>
+      <button class="serach-btn" (click)="serachStudentBy()">
+        <mat-icon>search</mat-icon> {{getTranslate('Search')}}
+      </button>
+    </div>
+    <div class="form-group">
+      <label>{{getTranslate('SelectGuest')}}</label>
+      <select [(ngModel)]="selectedId" (change)="onStudentChange(selectedId)">
+        <option *ngFor="let s of students" [value]="s.id"> Name: {{ s.name }} | Number: {{ s.student_number }}</option>
+      </select>
+    </div>
+    <div class="form-group" *ngIf="facilities.length > 0">
+      <p><strong>{{getTranslate('AvailableFacilities')}}</strong></p>
+      <div class="facilities-container">
+        <label class="select-all">
+          <input type="checkbox" [(ngModel)]="allSelected" (change)="toggleSelectAll()">
+          {{getTranslate('SelectAll')}}
+        </label>
+        <div class="facilities">
+          <div *ngFor="let f of facilities">
+            <label>
+              <input type="checkbox" [checked]="selectedFacilities.includes(f.id)" (change)="toggleFacility(f.id)">
+              {{ lang === 'ar' ? f.name_ar : f.name_en }}
+            </label>
+          </div>
         </div>
       </div>
     </div>
+    <div class="dialog-actions">
+      <button class="cancel-btn" (click)="cancelDialog()">
+        <i class="fas fa-times"></i> {{getTranslate('Cancel')}}
+      </button>
+      <button class="confirm-btn" (click)="addUserReservation()">
+        <i class="fas fa-check"></i> {{getTranslate('Confirm')}}
+      </button>
+    </div>
   </div>
-  <div>
-    <ngx-timepicker-field style="color: black;" [format]="24" [defaultTime]="'14:00'" #picker [(ngModel)]="startTime"
-      (ngModelChange)="onTimeChange()"></ngx-timepicker-field>
-
-    <ngx-timepicker-field style="color: black;" [format]="24" [defaultTime]="'14:00'" #picker [(ngModel)]="expirTime"
-      (ngModelChange)="onTimeChange()"></ngx-timepicker-field>
-  </div>
-</div>
-<div mat-dialog-actions>
-  <button (click)="cancelDialog()" mat-button style="color: white;">
-    <mat-icon>cancel</mat-icon> Cancel
-  </button>
-  <button (click)="addUserReservation()" mat-button color="warn" style="background-color: #087709bd; color: white;">
-    <mat-icon>check</mat-icon> Save
-  </button>
 </div>

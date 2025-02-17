@@ -1,39 +1,44 @@
-<div class="user-container">
-  <div class="header">
-    <h1>All Users</h1>
-    <div class="button-container">
-      <button (click)="openDialog(0,'','','',0, 'Add')" class=" add-button">
-        <mat-icon>add</mat-icon>
-        <span>Add</span>
-      </button>
-      <button class="back-button" routerLink="/mainPage">
-        <mat-icon>home</mat-icon>
-        <span>Back</span>
-      </button>
+<div class="user-page">
+  <div class="top-bar">
+    <button (click)="openDialog(0,'','','',0, 'Add')" class="add-button">
+      <mat-icon>add</mat-icon>
+      <span>{{getTranslate('Add')}}</span>
+    </button>
+    <div class="title-page">
+      <h1>{{getTranslate('AllUser')}}</h1>
     </div>
+    <button class="back-button" routerLink="/mainPage">
+      <mat-icon>home</mat-icon>
+      <span>{{getTranslate('Back')}}</span>
+    </button>
   </div>
-  <table class="user-table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Mobile</th>
-        <th>Email</th>
-        <th>User permission</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let admin of listAdmin">
-        <td>{{admin.name}}</td>
-        <td>{{admin.mobile}}</td>
-        <td>{{admin.email}}</td>
-        <td>{{isAdmain(admin.is_admin)}}</td>
-        <td>
-          <button (click)="openDialog(admin.id , admin.name ,admin.mobile,admin.email,admin.is_admin,'Update')"
-            class="action-button">Update</button>
-          <button (click)="openDeleteDialog(admin.id , 'admin')" class="delete-button">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div dir="auto" class="user-table-container">
+    <table class="user-table">
+      <thead>
+        <tr>
+          <th>{{getTranslate('Name')}}</th>
+          <th>{{getTranslate('Mobile')}}</th>
+          <th>{{getTranslate('Email')}}</th>
+          <th>{{getTranslate('UserPermission')}}</th>
+          <th>{{getTranslate('Actions')}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let admin of listAdmin">
+          <td>{{admin.name}}</td>
+          <td>{{admin.mobile}}</td>
+          <td>{{admin.email}}</td>
+          <td>{{isAdmain(admin.is_admin)}}</td>
+          <td>
+            <button
+              (click)="openDialog(admin.id , admin.name ,admin.mobile,admin.email,admin.is_admin,getTranslate('Update'))"
+              class="action-button">{{getTranslate('Update')}}</button>
+            <button (click)="openDeleteDialog(admin.id , 'admin')"
+              class="delete-button">{{getTranslate('Delete')}}</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+

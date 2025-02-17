@@ -1,161 +1,110 @@
-.student-container {
-  max-width: 900px;
-  margin: 0 auto;
-  margin-top: 20px;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  border-radius: 8px;
-  box-shadow: 0px 0px 11px 6px rgba(0, 0, 0, 0.1);
+@keyframes transitionIn {
+  from {
+    opacity: 0;
+    transform: rotateX(-10deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotateX(0);
+  }
 }
 
-.header {
+* {
+  box-sizing: border-box;
+  animation: transitionIn 0.75s;
+}
+
+.container-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #f7f9fc, #e3e7ee);
+  min-height: 100vh;
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+.title-page {
+  text-align: center;
+}
+
+.container-page::-webkit-scrollbar {
+  width: 8px;
+}
+
+.container-page::-webkit-scrollbar-thumb {
+  background-color: #0a1a4d9c;
+  border-radius: 10px;
+}
+
+.container-page::-webkit-scrollbar-thumb:hover {
+  background-color: #0a1a4ddc;
+  border-radius: 10px;
+}
+
+.container-page::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+.top-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  max-width: 90%;
+  background: #07113b;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
 }
 
-h1 {
-  font-size: 24px;
-  margin: 0;
-}
-
-.add-button {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.add-button:hover {
-  background-color: #45a049;
-}
-
-.student-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.student-table th,
-.student-table td {
-  padding: 12px;
+.page-title {
+  font-size: 20px;
+  font-weight: bold;
   text-align: center;
-  border-bottom: 1px solid #ddd;
+  flex: 1;
 }
 
-.student-table th {
-  background-color: #f2f2f2;
+.building-container,
+.floor-container,
+.room-container {
+  margin-top: 20px;
 }
 
-.action-button {
-  padding: 6px 12px;
-  background-color: #2196F3;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-right: 5px;
+.user-table-container {
+  width: 100%;
+  max-width: 90%;
+  border-radius: 8px;
 }
 
-.delete-button {
-  padding: 6px 12px;
-  background-color: #f34421;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-right: 5px;
-}
-
-.action-button:hover {
-  background-color: #1E88E5;
-}
-
-.student-form mat-form-field {
-  padding: 10px;
-}
-
-.back-button {
-  padding: 10px 20px;
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 100%;
-  cursor: pointer;
-  margin-left: 10px;
-}
-
-.back-button:hover {
-  background-color: #0056b3;
-}
-
-.button-container {
-  display: flex;
-  gap: 10px;
-}
-
-.add-button,
 .back-button {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
-  border-radius: 30%;
-  background-color: #4CAF50;
+  width: 45px;
+  height: 45px;
+  border-radius: 8px;
   color: white;
   border: none;
   cursor: pointer;
   font-size: 14px;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
 
 .back-button {
-  background-color: #007BFF;
-}
-
-.add-button:hover {
-  background-color: #45a049;
+  background-color: #9d9a9a;
 }
 
 .back-button:hover {
-  background-color: #0056b3;
-}
-
-.mat-icon {
-  font-size: 24px;
-  margin-bottom: 5px;
-}
-
-/* ==================================================== */
-
-.main-container {
-  padding: 20px;
-  margin: 20px;
-  /* background-color: rgba(207, 201, 201, 0.384); */
-}
-h1 {
-  padding-right: 25px;
-  padding-left: 25px;
-  font-weight: bold;
-}
-
-.building-container {
-  padding: 30px;
-}
-
-.floor-container {
-  padding: 30px;
-}
-
-.room-container {
-  padding: 30px;
-}
-
-[aria-label=accent] {
-  background-color: rgb(92, 95, 114);
-  font-weight: 700;
+  background-color: #3E5879;
+  box-shadow: 0px 4px 8px rgba(62, 88, 121, 0.3);
 }

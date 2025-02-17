@@ -1,8 +1,6 @@
 export class ApiLinks {
-  // public static MainUrl: string = "https://qu.ratco-solutions.com/api/"
-  // public static AdminUrl: string = ApiLinks.MainUrl + "admins/"
-  // public static StudentUrl: string = ApiLinks.MainUrl + "users/"
-  public static MainUrl: string = "http://127.0.0.1:8000/api/";
+  public static MainUrl: string = "https://aramco.ratco-solutions.com/api/";
+  // public static MainUrl: string = "http://127.0.0.1:8000/api/";
   public static getBuildingData: string = ApiLinks.MainUrl + "admins/getBuildingData";
   public static adminLogin: string = ApiLinks.MainUrl + "admins/login";
   public static addBuilding: string = ApiLinks.MainUrl + "admins/addBuilding"

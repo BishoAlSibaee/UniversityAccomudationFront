@@ -10,6 +10,7 @@ import { Student } from '../Student';
 import { UserService } from '../user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { College } from '../College';
+import { translates } from '../translates';
 
 @Component({
   selector: 'app-search-student',
@@ -26,7 +27,10 @@ export class SearchStudentComponent {
   selectedCollegeId: number = 0
   checkedCollege: boolean = false
 
-  constructor(private client: HttpClient, public dialog: MatDialog, private userService: UserService) { }
+  constructor(private client: HttpClient, public dialog: MatDialog, private userService: UserService) {
+    translates.create()
+
+  }
 
   ngOnInit() {
     this.userService.studentUpdated$.subscribe(() => {
@@ -149,6 +153,10 @@ export class SearchStudentComponent {
       duration: 6000,
       panelClass: ['custom-snackbar']
     });
+  }
+
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
   }
 
 }

@@ -1,150 +1,149 @@
 .search-container {
-  /* max-width: 1000px; */
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 10px;
+  max-width: 100%;
+  margin: auto;
+  background: white;
   padding: 20px;
-  font-family: Arial, sans-serif;
   border-radius: 8px;
-  background-color: #01053b;
-  box-shadow: 0px 0px 11px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+
 }
 
-.radio-container {
-  border-radius: 8px;
-  background-color: #8a9ba963;
-  padding: 2px;
-  margin-bottom: 10px;
-}
-
-.checkbox-container {
-  border-radius: 8px;
-  background-color: #8a9ba963;
-  padding: 2px;
-  margin-bottom: 15px;
-  margin-top: 5px;
-}
-
-.radio-group {
-  padding: 5px;
-}
-
-.search-container h4 {
-  color: white;
+h4 {
   font-weight: bold;
 }
 
-mat-radio-group {
+.checkbox-container,
+.radio-container {
+  margin-bottom: 15px;
+}
+
+.radio-container {
   display: flex;
-  flex-direction: row;
-  gap: 40px;
-  margin-bottom: 20px;
+  gap: 70px;
+
 }
 
-.mat-mdc-raised-button.mat-primary {
-  /* --mdc-protected-button-container-color: #267e7bfb;
-  --mdc-protected-button-label-text-color: #fff; */
-  width: 30%;
+.checkbox-container input[type="checkbox"],
+.radio-container input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #3E5879;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
 }
 
-.student-container {
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 20px;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  border-radius: 8px;
-  box-shadow: 0px 0px 11px 6px rgba(0, 0, 0, 0.1);
+.checkbox-container input[type="checkbox"]:hover,
+.radio-container input[type="radio"]:hover {
+  transform: scale(1.1);
 }
 
-.header {
+.checkbox-container input[type="checkbox"]:checked,
+.radio-container input[type="radio"]:checked {
+  transform: scale(1.2);
+}
+
+.form-row {
   display: flex;
-  justify-content: flex-start
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-group input,
+.form-group select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 13px;
+  transition: 0.3s ease-in-out;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.2);
+}
+
+.submit button {
+  width: 100%;
+  padding: 10px;
+  background-color: #3E5879;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  transition: all 0.3s ease-in-out;
+}
+
+.submit button:hover {
+  background-color: #2b405d;
+  box-shadow: 0px 4px 12px rgba(62, 88, 121, 0.4);
 }
 
 .student-table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 10px;
 }
 
 .student-table th,
 .student-table td {
-  padding: 12px;
+  padding: 10px;
   text-align: center;
   border-bottom: 1px solid #ddd;
 }
 
 .student-table th {
-  background-color: #f2f2f2;
+  background-color: #b0bec5;
+  color: black;
+}
+
+.action-button,
+.delete-button {
+  padding: 6px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .action-button {
-  padding: 6px 12px;
-  background-color: #2196F3;
+  background-color: #3E5879;
   color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
   margin-right: 5px;
-}
-
-.delete-button {
-  padding: 6px 12px;
-  background-color: #f34421;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-right: 5px;
+  margin-left: 5px;
 }
 
 .action-button:hover {
-  background-color: #1E88E5;
+  background-color: #213555;
+  box-shadow: 0px 4px 8px rgba(62, 88, 121, 0.3);
 }
 
-.student-form mat-form-field {
-  padding: 10px;
-}
-
-.back-button {
-  padding: 10px 20px;
-  background-color: #007BFF;
+.delete-button {
+  background-color: #9d9a9a;
   color: white;
-  border: none;
-  border-radius: 100%;
-  cursor: pointer;
-  margin-left: 10px;
 }
 
-.back-button:hover {
-  background-color: #0056b3;
-}
-
-.button-container {
-  display: flex;
-  gap: 10px;
-}
-
-.back-button {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  height: 60px;
-  border-radius: 30%;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s;
-}
-
-.back-button {
-  background-color: #007BFF;
-}
-
-::ng-deep .mat-mdc-select-panel {
-  background-color: #373f66 !important;
+.delete-button:hover {
+  background-color: #B89F8F;
+  box-shadow: 0px 4px 8px rgba(216, 196, 182, 0.3);
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { translates } from '../translates';
 
 @Component({
   selector: 'app-reservation-management',
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./reservation-management.component.css']
 })
 export class ReservationManagementComponent {
+  constructor() {
+    translates.create()
+  }
+
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
+  }
 
 }

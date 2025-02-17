@@ -8,12 +8,14 @@ import { LoadingDialogComponent } from '../loading-dialog/loading-dialog.compone
 import { Student } from '../Student';
 import { Reservation } from '../Reservation';
 import { Facilitie } from '../Facilitie';
+import { translates } from '../translates';
 
 @Component({
   selector: 'app-dialog-reservation',
   templateUrl: './dialog-reservation.component.html',
   styleUrls: ['./dialog-reservation.component.css']
 })
+
 export class DialogReservationComponent {
   private _snackBar = inject(MatSnackBar);
   by: string = '';
@@ -29,17 +31,21 @@ export class DialogReservationComponent {
   facilities: Facilitie[] = []
   selectedFacilities: number[] = [];
   allSelected: boolean = false
+  selectedId: number = 0;
+  lang: string = ""
 
   constructor(private client: HttpClient, public dialogRef: MatDialogRef<DialogReservationComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialog) {
-    if (data) {
-      console.log("roomId = " + data.roomId)
-      console.log("roomNumber = " + data.roomNumber)
-      console.log("building_id = " + data.building_id)
-      console.log("floor_id = " + data.floor_id)
-      console.log("suite_id = " + data.suite_id)
-      console.log("startDate = " + data.startDate)
-      console.log("endDate = " + data.endDate)
-    }
+    translates.create()
+    this.lang = AppComponent.language;
+    // if (data) {
+    //   console.log("roomId = " + data.roomId)
+    //   console.log("roomNumber = " + data.roomNumber)
+    //   console.log("building_id = " + data.building_id)
+    //   console.log("floor_id = " + data.floor_id)
+    //   console.log("suite_id = " + data.suite_id)
+    //   console.log("startDate = " + data.startDate)
+    //   console.log("endDate = " + data.endDate)
+    // }
     this.getFacilitieByRoom();
   }
 
@@ -47,13 +53,13 @@ export class DialogReservationComponent {
     if (this.by === "name") {
       const isNumber = /^[0-9]+$/.test(this.value);
       if (isNumber) {
-        this.openSnackBar("Invalid input: Name cannot contain numbers.", "Ok");
+        this.openSnackBar(this.getTranslate('OnlyName'), "Ok");
         return false;
       }
     } else if (this.by === "student_number") {
       const isText = /[a-zA-Z\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/.test(this.value);
       if (isText) {
-        this.openSnackBar("Invalid input: Only numbers are allowed.", "Ok");
+        this.openSnackBar(this.getTranslate('OnlyNumbers'), "Ok");
         return false;
       }
     }
@@ -62,10 +68,10 @@ export class DialogReservationComponent {
 
   serachStudentBy() {
     if (this.by === '') {
-      return this.openSnackBar("Select Search Type", "Ok");
+      return this.openSnackBar(this.getTranslate('SelectSearch'), "Ok");
     }
     if (this.value === '') {
-      return this.openSnackBar("Enter the search word", "Ok");
+      return this.openSnackBar(this.getTranslate('Enter') + " " + this.getTranslate('SearchWord'), "Ok");
     }
     if (!this.checkVaule()) {
       return;
@@ -157,7 +163,7 @@ export class DialogReservationComponent {
 
   addUserReservation() {
     if (this.selecteStudentName === '' || this.selecteStudentId === 0) {
-      return this.openSnackBar('Select Student', 'Ok')
+      return this.openSnackBar(this.getTranslate('SelectGuest'), 'Ok')
     }
     const newReservation = {
       id: 0,
@@ -206,9 +212,15 @@ export class DialogReservationComponent {
     });
   }
 
-  onStudentChange(s: Student) {
-    this.selecteStudentName = s.name;
-    this.selecteStudentId = s.id;
+  onStudentChange(id: number) {
+    const person = this.students.find(s => s.id == id);
+    if (person) {
+      this.selecteStudentName = person.name;
+      this.selecteStudentId = person.id;
+    }
   }
 
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
+  }
 }

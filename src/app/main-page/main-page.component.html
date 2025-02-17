@@ -28,10 +28,6 @@
           </p>
           <p style="padding-left: 5px; padding-right: 5px;"> {{ r.student_name }} </p>
         </div>
-        <!-- <p>
-          <mat-icon class="icon">person</mat-icon>
-          {{getTranslate('Name')}} : {{ r.student_name }}
-        </p> -->
         <div class="info-reservation">
           <p>
             <mat-icon class="icon">event</mat-icon>
@@ -46,10 +42,6 @@
           </p>
           <p style="padding-left: 5px; padding-right: 5px;">{{ r.expire_date }} </p>
         </div>
-        <!-- <p>
-          <mat-icon class="icon">schedule</mat-icon>
-          {{getTranslate('ExpireDate')}} : {{ r.expire_date }}
-        </p> -->
         <p>
           <mat-icon class="icon">domain</mat-icon>
           {{getTranslate('Facilities')}} : <span *ngIf="!r.facility_name"> {{getTranslate('NoFacilities')}}</span>
@@ -82,7 +74,7 @@
     <div class="main">
       <div class="top-bar">
         <app-header></app-header>
-        <img id="LOGO" src="./assets/yanbo.jpeg" style="width:70px; height: 70px;" alt="  ">
+        <img id="LOGO" src="./assets/Logo.webp" style="height: 100px;" alt="  ">
         <div class="btn-account-wrapper" (mouseenter)="showDropdown = true" (mouseleave)="showDropdown = false">
           <h5 class="btn-account">
             <span>{{ nameUser }}</span>
@@ -100,8 +92,8 @@
             <mat-icon>group</mat-icon>
             <span>{{getTranslate('UserMang')}}</span>
           </button>
-          <button (click)="goToPage('StudentManagement')" class="btn">
-            <mat-icon>school</mat-icon>
+          <button (click)="goToPage('GuestManagement')" class="btn">
+            <mat-icon>badge</mat-icon>
             <span>{{getTranslate('StudentMang')}}</span>
           </button>
           <button (click)="goToPage('Facilitie')" class="btn">

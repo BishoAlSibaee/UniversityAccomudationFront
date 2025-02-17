@@ -1,42 +1,50 @@
-<h1 mat-dialog-title>Add User</h1>
-<div mat-dialog-content class="dialog">
-  <mat-form-field color="accent" style="padding-left: 5px;">
-    <mat-label style="color: rgb(159, 158, 163);">Name</mat-label>
-    <input matInput [(ngModel)]="name" placeholder="Enter Name">
-  </mat-form-field>
-  <mat-form-field color="accent" style="padding-left: 5px;">
-    <mat-label style="color: rgb(159, 158, 163);">Mobile</mat-label>
-    <input matInput [(ngModel)]="mobile" placeholder="Enter Mobile">
-  </mat-form-field>
-  <div>
-    <mat-form-field color="accent" style="padding-left: 5px;">
-      <mat-label style="color: rgb(159, 158, 163);">Email</mat-label>
-      <input matInput [(ngModel)]="email" placeholder="Enter Email">
-    </mat-form-field>
-    <mat-form-field style="padding-left: 5px;">
-      <mat-label>Choose User permission</mat-label>
-      <mat-select placeholder="User permission" [(ngModel)]="isAdmin">
-        <mat-option [value]="1">User</mat-option>
-        <mat-option [value]="0">Admin</mat-option>
-      </mat-select>
-    </mat-form-field>
+<div [dir]="currentLang === 'ar' ? 'rtl' : 'ltr'" class="overlay">
+  <div class="dialog-box">
+    <h2><i class="fas fa-user-edit"></i> {{nameBtn}} {{getTranslate('User')}}</h2>
+    <div class="form-row">
+      <div class="form-group">
+        <label><i class="fas fa-user"></i> {{getTranslate('Name')}}</label>
+        <input type="text" [(ngModel)]="name" placeholder="{{getTranslate('Enter')}} {{getTranslate('Name')}}">
+      </div>
+      <div class="form-group">
+        <label><i class="fas fa-phone"></i> {{getTranslate('Mobile')}}</label>
+        <input type="text" [(ngModel)]="mobile" placeholder="{{getTranslate('Enter')}} {{getTranslate('Mobile')}}">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label><i class="fas fa-envelope"></i> {{getTranslate('Email')}}</label>
+        <input type="email" [(ngModel)]="email" placeholder="{{getTranslate('Enter')}} {{getTranslate('Email')}}">
+      </div>
+      <div class="form-group">
+        <label><i class="fas fa-user-shield"></i> {{getTranslate('UserPermission')}}</label>
+        <select [(ngModel)]="isAdmin">
+          <option [value]="1">{{getTranslate('User')}}</option>
+          <option [value]="0">{{getTranslate('Admin')}}</option>
+        </select>
+      </div>
+    </div>
+    <div *ngIf="isAdd()">
+      <div class="form-row">
+        <div class="form-group">
+          <label><i class="fas fa-lock"></i> {{getTranslate('Password')}}</label>
+          <input type="password" [(ngModel)]="password" placeholder="{{getTranslate('EnterPassword')}}">
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-lock"></i>
+            {{getTranslate('PasswordConfirmation')}}</label>
+          <input type="password" [(ngModel)]="password_confirmation"
+            placeholder="{{getTranslate('Enter')}} {{getTranslate('PasswordConfirmation')}}">
+        </div>
+      </div>
+    </div>
+    <div class="dialog-actions">
+      <button class="cancel-btn" (click)="onNoClick()">
+        <i class="fas fa-times"></i> {{getTranslate('Cancel')}}
+      </button>
+      <button class="confirm-btn" (click)="onClickOk()">
+        <i class="fas fa-check"></i> {{nameBtn}}
+      </button>
+    </div>
   </div>
-  <div *ngIf="isAdd()">
-    <mat-form-field color="accent" style="padding-left: 5px;">
-      <mat-label style="color: rgb(159, 158, 163);">Password</mat-label>
-      <input matInput [(ngModel)]="password" placeholder="Enter Password">
-    </mat-form-field>
-    <mat-form-field color="accent" style="padding-left: 5px;">
-      <mat-label style="color: rgb(159, 158, 163);">Password Confirmation</mat-label>
-      <input matInput [(ngModel)]="password_confirmation" placeholder="Enter Password Confirmation">
-    </mat-form-field>
-  </div>
-</div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()" style="color: white;">
-    <mat-icon>cancel</mat-icon> Cancel
-  </button>
-  <button mat-button color="warn" (click)="onClickOk()" style="background-color: #087709bd; color: white;">
-    <mat-icon>check</mat-icon> {{nameBtn}}
-  </button>
 </div>

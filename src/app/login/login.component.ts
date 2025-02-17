@@ -1,7 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiLinks } from '../ApiLinks';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { translates } from '../translates';
+import { LoadingDialogComponent } from '../loading-dialog/loading-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-login',
@@ -9,75 +13,65 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  message = ""
-  DarkColor = "#015095"
-  LightColor = "#3d2706"
-  user = ""
-  password = ""
+  private _snackBar = inject(MatSnackBar);
+  user: string = ""
+  password: string = ""
 
-  constructor(private router: Router, private client: HttpClient) { }
+  constructor(private router: Router, private client: HttpClient, public dialog: MatDialog) {
+    translates.create()
+  }
 
   ngOnInit() {
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
     localStorage.removeItem('userId');
-    console.log("token = " + localStorage.getItem('token'))
   }
 
   async logIn() {
-    this.message = "";
+    if (this.user === '' || this.password === '') {
+      return this.openSnackBar(this.getTranslate('Required'), "Ok");
+    }
+    const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
+
     let params = new FormData();
     params.append("email", this.user);
     params.append("password", this.password);
 
     let result = await (await fetch(ApiLinks.adminLogin, { method: 'POST', body: params })).json();
-    console.log(result);
 
     if (result.code == 1) {
-      console.log("login done");
       localStorage.setItem('token', result.token);
       localStorage.setItem('userName', result.name);
       localStorage.setItem('userId', result.id);
-
-      // await this.getAllRoomType();
-
       this.router.navigate(['mainPage']);
     } else {
-      console.log(result.error);
       if (typeof result.error == "object") {
         if (result.error.email != null) {
-          this.message = result.error.email;
+          dialogRef.close();
+          return this.openSnackBar(result.error.email, "Ok");
         }
         if (result.error.password != null) {
-          this.message = this.message + " " + result.error.password;
+          dialogRef.close();
+          return this.openSnackBar(result.error.password, "Ok");
         }
       }
       else {
-        this.message = result.error;
+        dialogRef.close();
+        return this.openSnackBar(result.error, "Ok");
       }
     }
+    dialogRef.close();
+
   }
 
-  // getAllRoomType() {
-  //   return new Promise<void>((resolve, reject) => {
-  //     const token = localStorage.getItem("token");
-  //     const h = new HttpHeaders({
-  //       Authorization: "Bearer " + token,
-  //     });
-  //     let options = { headers: h };
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
+  }
 
-  //     this.client.get<RoomType[]>(ApiLinks.getAllRoomType, options).subscribe({
-  //       next: (result) => {
-  //         AppComponent.roomType = result;
-  //         console.log(AppComponent.roomType);
-  //         resolve();
-  //       },
-  //       error: (error) => {
-  //         console.log("Error");
-  //         console.log(error);
-  //         reject(error);
-  //       },
-  //     });
-  //   });
-  // }
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 6000,
+      panelClass: ['custom-snackbar']
+    });
+  }
 }

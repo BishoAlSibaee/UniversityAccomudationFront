@@ -1,116 +1,110 @@
-<div dir="rtl" class="filter-container">
+<div class="search-container">
   <div class="filter-options">
-    <mat-form-field color="accent" appearance="outline" class="filter-field">
-      <mat-label>اختر المبنى</mat-label>
-      <mat-select [(value)]="selectedBuildingId" (selectionChange)="onBuildingChange($event.value)">
-        <mat-option *ngFor="let building of buildings" [value]="building.id">{{ building.name }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field color="accent" appearance="outline" class="filter-field">
-      <mat-label>Select Start Date</mat-label>
-      <input matInput [matDatepicker]="picker1" [(ngModel)]="startDate">
-      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-      <mat-datepicker #picker1 color="accent"></mat-datepicker>
-    </mat-form-field>
-
-    <mat-form-field color="accent" appearance="outline" class="filter-field">
-      <mat-label>Select End Date</mat-label>
-      <input matInput [matDatepicker]="picker2" [(ngModel)]="expirDate">
-      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-      <mat-datepicker #picker2 color="accent"></mat-datepicker>
-    </mat-form-field>
+    <div class="form-group">
+      <label>{{getTranslate('ChooseBuilding')}}</label>
+      <select [(ngModel)]="selectedBuildingId" (change)="onBuildingChange(selectedBuildingId)">
+        <option *ngFor="let building of buildings" [value]="building.id">{{ building.name }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>{{getTranslate('StartDate')}}</label>
+      <input type="date" [(ngModel)]="startDate">
+    </div>
+    <div class="form-group">
+      <label>{{getTranslate('ExpireDate')}}</label>
+      <input type="date" [(ngModel)]="expirDate">
+    </div>
   </div>
-
   <div class="radio-group">
     <!-- 1->empty | 2->available | 3->allEmpty | 4->allAvailable  -->
-    <mat-radio-group [(ngModel)]="selectedOption">
-      <mat-radio-button class="radio-option" value="1">غرفة فارغة</mat-radio-button>
-      <mat-radio-button class="radio-option" value="2">غرفة متاحة</mat-radio-button>
-      <mat-radio-button class="radio-option" value="3">جميع الغرف الفارغة</mat-radio-button>
-      <mat-radio-button class="radio-option" value="4">جميع الغرف المتاحة</mat-radio-button>
-    </mat-radio-group>
+    <div class="radio-container">
+      <label><input type="radio" [(ngModel)]="selectedOption" value="1">{{getTranslate('EmptyRoom')}}</label>
+      <!-- <label><input type="radio" [(ngModel)]="selectedOption" value="2">{{getTranslate('AvailableRoom')}}</label> -->
+      <label><input type="radio" [(ngModel)]="selectedOption" value="3">{{getTranslate('AllEmptyRoom')}}</label>
+      <!-- <label><input type="radio" [(ngModel)]="selectedOption" value="4">{{getTranslate('AllAvailableRoom')}}</label> -->
+    </div>
   </div>
-
   <div class="additional-options-container">
     <button mat-button class="toggle-options-btn" (click)="toggleOptions()">
-      خيارات إضافية
+      {{getTranslate('MoreOptions')}}
       <mat-icon>{{ showOptions ? 'expand_less' : 'expand_more' }}</mat-icon>
     </button>
     <div class="more-filter-options" *ngIf="showOptions" [@slideToggle]>
-      <mat-form-field color="accent" appearance="outline" class="filter-field">
-        <mat-label>اختر الدور</mat-label>
-        <mat-select [(value)]="selectedFloorId" (selectionChange)="onFloorChange($event.value)">
-          <mat-option [value]="'all'">All</mat-option>
-          <mat-option *ngFor="let floor of filteredFloors" [value]="floor.id">{{ floor.number }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field color="accent" appearance="outline" class="filter-field">
-        <mat-label>اختر سعة الغرفة</mat-label>
-        <mat-select [(value)]="selectedCapacity">
-          <mat-option [value]="'all'">All</mat-option>
-          <mat-option *ngFor="let capacity of capacities" [value]="capacity">{{ capacity }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field color="accent" appearance="outline" class="filter-field">
-        <mat-label>اختر نوع الغرفة</mat-label>
-        <mat-select [(value)]="selectedRoomTypeId" (selectionChange)="onRoomTypeChange($event.value)">
-          <mat-option [value]="'all'">All</mat-option>
-          <mat-option *ngFor="let roomType of roomTypes" [value]="roomType.id">{{ roomType.name_ar }}</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div class="form-group">
+        <label>{{getTranslate('ChooseFloor')}}</label>
+        <select [(ngModel)]="selectedFloorId" (change)="onFloorChange(selectedFloorId)">
+          <option value="all" selected>All</option>
+          <option *ngFor="let floor of filteredFloors" [value]="floor.id">{{ floor.number }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>{{getTranslate('capacity')}}</label>
+        <select [(ngModel)]="selectedCapacity">
+          <option value="all" selected>All</option>
+          <option *ngFor="let capacity of capacities" [value]="capacity">{{ capacity }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>{{getTranslate('RoomType')}}</label>
+        <select [(ngModel)]="selectedRoomTypeId" (change)="onRoomTypeChange(selectedRoomTypeId)">
+          <option value="all" selected>All</option>
+          <option *ngFor="let roomType of roomTypes" [value]="roomType.id"> {{ lang === 'ar' ? roomType.name_ar :
+            roomType.name_en }}
+          </option>
+        </select>
+      </div>
     </div>
   </div>
-
   <hr style="border: 1px solid #626486; width: 100%;">
-  <button mat-raised-button color="primary" (click)="checkReservation()">عرض النتائج</button>
+  <div class="submit">
+    <button (click)="checkReservation()">{{getTranslate('Confirm')}}</button>
+  </div>
 </div>
-<div dir="rtl" class="results-container">
+<!--Results-->
+<div class="results-container" *ngIf="availableRooms.length>0">
+  <h3><strong>{{getTranslate('AvailableRoom1')}}</strong></h3>
   <div class="room-numbers">
-    <button *ngFor="let r of availableRooms" class="room-number" (click)="selectRoom(r)"
+    <button *ngFor="let r of availableRooms" class="action-button" (click)="selectRoom(r)"
       [ngClass]="{'active-room': r.number === selectedRoomNumber}">
       {{ r.number }}
     </button>
   </div>
   <div class="room-details" *ngIf="selectedRoom">
     <div class="checkin-room">
-      <h3>غرفة رقم : {{ selectedRoom.number }}</h3>
-      <h3>سعه الغرفة : {{ selectedRoom.availableCapacity }}</h3>
-      <button mat-raised-button color="primary"
+      <h3><strong>{{getTranslate('RoomNum')}}</strong> : {{ selectedRoom.number }}</h3>
+      <h3><strong>{{getTranslate('capacity')}}</strong> : {{ selectedRoom.availableCapacity }}</h3>
+      <button class="confirm-btn"
         (click)="openReservationComponent(selectedRoom.id , selectedRoom.number , selectedRoom.building_id , selectedRoom.floor_id,  selectedRoom.suite_id , selectedRoom.availableCapacity , Start ,Expire )">
-        <mat-icon>add</mat-icon>
-        <span>اضافة طالب</span>
+        <mat-icon>add</mat-icon> {{getTranslate('AddStudent')}}
       </button>
     </div>
     <hr style="border: 1px solid #626486; width: 100%;">
-    <p>المستأجرين الحاليين</p>
+    <p><strong>{{getTranslate('CurrentTenants')}}</strong></p>
     <div class="occupants-container">
       <div *ngIf="selectedRoom.reservations && selectedRoom.reservations.length > 0">
         <div class="info">
           <div *ngFor="let res of selectedRoom.reservations" class="occupant-info">
             <p><strong>الاسم:</strong> {{ res.student_name }}</p>
-            <p><strong>تاريخ بداية الحجز:</strong> {{ res.start_date }}</p>
-            <p><strong>تاريخ نهاية الحجز:</strong> {{ res.expire_date }}</p>
+            <p><strong>{{getTranslate('StartReser')}} : </strong> {{ res.start_date }}</p>
+            <p><strong>{{getTranslate('StartReser')}} : </strong> {{ res.expire_date }}</p>
           </div>
         </div>
       </div>
       <div *ngIf="selectedRoom.reservations.length === 0">
-        <p>لا يوجد مستأجرين ضمن المدة المدخلة في هذه الغرفة.</p>
+        <p><strong>{{getTranslate('NoReservation')}}</strong></p>
       </div>
     </div>
     <div *ngIf="userReservations.length > 0">
       <hr style="border: 1px solid #626486; width: 100%;">
-      <p>المستأجرين المضافين</p>
+      <p><strong>{{getTranslate('AddedGuset')}}</strong></p>
     </div>
     <div *ngIf="userReservations.length > 0" class="info">
       <div *ngFor="let res of userReservations; let i = index" class="occupant-info">
-        <p><strong>الاسم:</strong> {{ res.student_name }}</p>
-        <p><strong>تاريخ بداية الحجز:</strong> {{ Start }}</p>
-        <p><strong>تاريخ نهاية الحجز:</strong> {{ Expire }}</p>
+        <p><strong>{{getTranslate('Name')}} : </strong> {{ res.student_name }}</p>
+        <p><strong> {{getTranslate('StartReser')}} : </strong> {{ Start }}</p>
+        <p><strong> {{getTranslate('StartReser')}} : </strong> {{ Expire }}</p>
         <div *ngIf="res.facility_ids.length>0">
-          <p><strong>المرافق المضافة</strong></p>
+          <p><strong>{{getTranslate('AddedFacilities')}}</strong></p>
           <div class="facilities">
             <div class="facilitie" *ngFor="let f of res.facility_ids">
               <p>{{getFacilitiesById(f)}}</p>
@@ -119,11 +113,13 @@
         </div>
         <button mat-button color="warn" (click)="deleteReservation(i)">
           <mat-icon>delete-button</mat-icon>
-          <span>حذف</span>
+          <span>{{getTranslate('Delete')}}</span>
         </button>
       </div>
     </div>
-    <button *ngIf="userReservations.length > 0" (click)="makeReservation()" mat-raised-button color="primary">تنفيذ
-      الحجز</button>
+    <div class="submit">
+      <button *ngIf="userReservations.length > 0"
+        (click)="makeReservation()">{{getTranslate('MakeReservation1')}}</button>
+    </div>
   </div>
 </div>

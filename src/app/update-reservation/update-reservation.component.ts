@@ -10,6 +10,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dial
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Room } from '../Room';
 import { Facilitie } from '../Facilitie';
+import { translates } from '../translates';
 
 @Component({
   selector: 'app-update-reservation',
@@ -50,8 +51,10 @@ export class UpdateReservationComponent {
   is_update_facility: number = 0;
   Start: any
   Expire: any
+  currentLang: string = ''
 
   constructor(private client: HttpClient, public dialogRef: MatDialogRef<UpdateReservationComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialog) {
+    translates.create()
     let facilityIds = JSON.parse(data.facility_ids);
     this.selectedFacilities.push(...facilityIds);
     this.getInfoRoom();
@@ -59,6 +62,7 @@ export class UpdateReservationComponent {
   }
 
   ngOnInit() {
+    this.currentLang =AppComponent.language ;
     this.listBuilding = AppComponent.buildings;
     this.selectedBuildingId = this.listBuilding[0].id;
     this.onBuildingChange(this.selectedBuildingId);
@@ -80,14 +84,12 @@ export class UpdateReservationComponent {
       this.Start = StartDate.getFullYear() + "-" + (StartDate.getMonth() + 1) + "-" + StartDate.getDate()
       this.Expire = ExpireDate.getFullYear() + "-" + (ExpireDate.getMonth() + 1) + "-" + ExpireDate.getDate()
     }
-    if (this.selectedFloorId !== 'all' && this.selectedFloorId != null) {
-      console.log("selectedFloorId = " + this.selectedFloorId.toString())
-    }
+
     if (this.selectedBuildingId === 0) {
-      return this.openSnackBar("All Required", "Ok");
+      return this.openSnackBar(this.getTranslate('Required'), "Ok");
     }
     if (this.selectedOption === 0) {
-      return this.openSnackBar("Select the type search ", "Ok");
+      return this.openSnackBar(this.getTranslate('SelectSearch'), "Ok");
     }
     const dialogRef = this.dialog.open(LoadingDialogComponent, { disableClose: true });
     let params = new FormData();
@@ -103,18 +105,14 @@ export class UpdateReservationComponent {
     let options = { headers: h }
     this.client.post<any>(ApiLinks.checkReservation, params, options).subscribe({
       next: (result) => {
-        console.log(result)
         if (result.code === 1) {
           this.availableRooms = result.AvailableRooms
           this.selectedRoomNumber = 0;
           this.availableRooms.sort((a, b) => { return a.number - b.number; });
-          console.log("result = " + result.AvailableRooms)
-          console.table(result.AvailableRooms)
         } else {
           return this.openSnackBar(result.error, "Ok");
         }
       }, error: (error) => {
-        console.log(error)
         return this.openSnackBar(error, "Ok");
       },
       complete: () => {
@@ -126,14 +124,14 @@ export class UpdateReservationComponent {
   updateReservation() {
     this.compareFacilities()
     if (this.is_update_facility === 0 && this.selectedRoomNumber === 0 && this.expirDate === '') {
-      return this.openSnackBar("Nothing has been ubdate.", "Ok");
+      return this.openSnackBar(this.getTranslate("NothingUpdate"), "Ok");
     }
     let params = new FormData();
     if (this.expirDate !== '') {
       let StartDate = new Date(this.startDate)
       let ExpireDate = new Date(this.expirDate)
       if (ExpireDate < StartDate) {
-        return this.openSnackBar("End date cannot be before the start date.", "Ok");
+        return this.openSnackBar(this.getTranslate('MsgDate'), "Ok");
       }
       this.Start = StartDate.getFullYear() + "-" + (StartDate.getMonth() + 1).toString().padStart(2, '0') + "-" + StartDate.getDate().toString().padStart(2, '0');
       this.Expire = ExpireDate.getFullYear() + "-" + (ExpireDate.getMonth() + 1).toString().padStart(2, '0') + "-" + ExpireDate.getDate().toString().padStart(2, '0');
@@ -160,15 +158,13 @@ export class UpdateReservationComponent {
     let options = { headers: h }
     this.client.post<any>(ApiLinks.updateReservation, params, options).subscribe({
       next: (result) => {
-        console.log(result)
         if (result.code === 1) {
           this.dialogRef.close(result.reservation)
-          return this.openSnackBar("Updated successfully", "Ok");
+          return this.openSnackBar(this.getTranslate('UpdateDone'), "Ok");
         } else {
           return this.openSnackBar(result.error, "Ok");
         }
       }, error: (error) => {
-        console.log(error)
         return this.openSnackBar(error, "Ok");
       },
       complete: () => {
@@ -184,8 +180,6 @@ export class UpdateReservationComponent {
     } else {
       this.selectedFacilities.push(id);
     }
-    console.log("selectedFacilities " + this.selectedFacilities);
-    console.log("length " + this.selectedFacilities.length);
   }
 
   compareFacilities() {
@@ -221,7 +215,6 @@ export class UpdateReservationComponent {
         }
       }
     }
-    console.log("Room not found");
   }
 
   getFacilitieByRoom() {
@@ -237,7 +230,6 @@ export class UpdateReservationComponent {
     let options = { headers: h };
     this.client.post<any>(ApiLinks.getFacilitieByRoom, params, options).subscribe({
       next: (result) => {
-        console.log(result);
         if (result.code === 1) {
           this.facilitie = result.facilities.map((f: Facilitie) => ({
             ...f,
@@ -248,7 +240,6 @@ export class UpdateReservationComponent {
         }
       },
       error: (error) => {
-        console.log(error);
         return this.openSnackBar(error, "Ok");
       },
       complete: () => {
@@ -258,7 +249,8 @@ export class UpdateReservationComponent {
   }
 
   onBuildingChange(buildingId: number | null) {
-    const selectedBuilding = this.listBuilding.find(b => b.id === buildingId);
+    console.log(buildingId)
+    const selectedBuilding = this.listBuilding.find(b => b.id == buildingId);
     if (selectedBuilding) {
       this.filteredFloors = selectedBuilding.floors || [];
       this.selectedFloorId = null;
@@ -290,6 +282,10 @@ export class UpdateReservationComponent {
 
   onCancel() {
     this.dialogRef.close()
+  }
+
+  getTranslate(id: string) {
+    return translates.getTranslate(id)
   }
 
   openSnackBar(message: string, action: string) {

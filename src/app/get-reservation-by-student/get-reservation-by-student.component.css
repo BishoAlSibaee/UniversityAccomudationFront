@@ -1,80 +1,149 @@
-.filter-container {
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #01053b;
-  width: 85%;
-  margin: 15px auto 0;
-}
 
-.filter-container p {
-  color: white;
-  font-weight: bold;
-}
-
-.filter-options {
-  display: flex;
-  gap: 15px;
-  /* flex-wrap: wrap; */
-}
-
-.more-filter-options {
-  display: flex;
-  gap: 15px;
-  /* flex-wrap: wrap; */
+.building-table {
+  width: 100%;
+  border-collapse: collapse;
   margin-top: 10px;
 }
 
-.filter-field {
-  width: 33.33%;
-}
-
-button {
-  align-self: flex-start;
-}
-
-.filter-field {
-  width: 100%;
-}
-
-.reservation-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.reservation-table th,
-.reservation-table td {
-  padding: 12px;
+.building-table th,
+.building-table td {
+  padding: 10px;
   text-align: center;
   border-bottom: 1px solid #ddd;
 }
 
-.reservation-table th {
-  background-color: #f2f2f2;
+.building-table th {
+  background-color: #b0bec5;
+  color: black;
 }
 
+.action-button,
 .delete-button {
   padding: 6px 12px;
-  background-color: #f34421;
-  color: white;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
-  margin-right: 5px;
-}
-
-.action-button:hover {
-  background-color: #1E88E5;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .action-button {
-  padding: 6px 12px;
-  background-color: #2196F3;
+  background-color: #3E5879;
+  color: white;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.action-button:hover {
+  background-color: #213555;
+  box-shadow: 0px 4px 8px rgba(62, 88, 121, 0.3);
+}
+
+.delete-button {
+  background-color: #9d9a9a;
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #B89F8F;
+  box-shadow: 0px 4px 8px rgba(216, 196, 182, 0.3);
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.search-container {
+  margin: 20px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+h4 {
+  font-weight: bold;
+}
+
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-group input,
+.form-group select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 13px;
+  transition: 0.3s ease-in-out;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.2);
+}
+
+.submit button {
+  width: 100%;
+  padding: 10px;
+  background-color: #3E5879;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-right: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  transition: all 0.3s ease-in-out;
+}
+
+.submit button:hover {
+  background-color: #2b405d;
+  box-shadow: 0px 4px 12px rgba(62, 88, 121, 0.4);
+}
+
+
+
+.radio-container {
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+.radio-container {
+  display: flex;
+  gap: 70px;
+
+}
+
+.radio-container input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #3E5879;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.radio-container input[type="radio"]:hover {
+  transform: scale(1.1);
+}
+
+.radio-container input[type="radio"]:checked {
+  transform: scale(1.2);
 }
