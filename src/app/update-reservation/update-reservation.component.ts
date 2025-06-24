@@ -62,12 +62,15 @@ export class UpdateReservationComponent {
   }
 
   ngOnInit() {
-    this.currentLang =AppComponent.language ;
+    this.currentLang = AppComponent.language;
     this.listBuilding = AppComponent.buildings;
     this.selectedBuildingId = this.listBuilding[0].id;
     this.onBuildingChange(this.selectedBuildingId);
     const startDate1 = new Date(this.data.start_date);
     this.startDate = startDate1.getFullYear() + '-' + (startDate1.getMonth() + 1).toString().padStart(2, '0') + '-' + startDate1.getDate().toString().padStart(2, '0');
+    const endDate1 = new Date(this.data.expire_date);
+    this.expirDate = endDate1.getFullYear() + '-' + (endDate1.getMonth() + 1).toString().padStart(2, '0') + '-' + endDate1.getDate().toString().padStart(2, '0');
+
   }
 
   checkReservation() {
@@ -84,7 +87,6 @@ export class UpdateReservationComponent {
       this.Start = StartDate.getFullYear() + "-" + (StartDate.getMonth() + 1) + "-" + StartDate.getDate()
       this.Expire = ExpireDate.getFullYear() + "-" + (ExpireDate.getMonth() + 1) + "-" + ExpireDate.getDate()
     }
-
     if (this.selectedBuildingId === 0) {
       return this.openSnackBar(this.getTranslate('Required'), "Ok");
     }
@@ -123,11 +125,11 @@ export class UpdateReservationComponent {
 
   updateReservation() {
     this.compareFacilities()
-    if (this.is_update_facility === 0 && this.selectedRoomNumber === 0 && this.expirDate === '') {
+    if (this.is_update_facility === 0 && this.selectedRoomNumber === 0 && this.expirDate === this.data.expire_date && this.startDate === this.data.start_date) {
       return this.openSnackBar(this.getTranslate("NothingUpdate"), "Ok");
     }
     let params = new FormData();
-    if (this.expirDate !== '') {
+    if (this.expirDate !== this.data.expire_date || this.startDate !== this.data.start_date) {
       let StartDate = new Date(this.startDate)
       let ExpireDate = new Date(this.expirDate)
       if (ExpireDate < StartDate) {
@@ -135,11 +137,9 @@ export class UpdateReservationComponent {
       }
       this.Start = StartDate.getFullYear() + "-" + (StartDate.getMonth() + 1).toString().padStart(2, '0') + "-" + StartDate.getDate().toString().padStart(2, '0');
       this.Expire = ExpireDate.getFullYear() + "-" + (ExpireDate.getMonth() + 1).toString().padStart(2, '0') + "-" + ExpireDate.getDate().toString().padStart(2, '0');
-      if (this.Expire !== this.data.expire_date) {
-        params.append("is_update_date", '1');
-        params.append("new_start_date", this.Start);
-        params.append("new_expire_date", this.Expire);
-      }
+      params.append("is_update_date", '1');
+      params.append("new_start_date", this.Start);
+      params.append("new_expire_date", this.Expire);
     }
     if (this.selectedRoomNumber !== 0) {
       params.append("is_update_room", '1');
@@ -162,14 +162,17 @@ export class UpdateReservationComponent {
           this.dialogRef.close(result.reservation)
           return this.openSnackBar(this.getTranslate('UpdateDone'), "Ok");
         } else {
+          console.log(result);
           return this.openSnackBar(result.error, "Ok");
         }
       }, error: (error) => {
+        console.log('error ' + error);
         return this.openSnackBar(error, "Ok");
       },
       complete: () => {
         dialogRef.close();
       }
+
     })
   }
 
@@ -294,4 +297,5 @@ export class UpdateReservationComponent {
       panelClass: ['custom-snackbar']
     });
   }
+
 }

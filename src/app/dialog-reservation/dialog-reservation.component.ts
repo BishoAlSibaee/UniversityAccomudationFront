@@ -37,15 +37,6 @@ export class DialogReservationComponent {
   constructor(private client: HttpClient, public dialogRef: MatDialogRef<DialogReservationComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialog) {
     translates.create()
     this.lang = AppComponent.language;
-    // if (data) {
-    //   console.log("roomId = " + data.roomId)
-    //   console.log("roomNumber = " + data.roomNumber)
-    //   console.log("building_id = " + data.building_id)
-    //   console.log("floor_id = " + data.floor_id)
-    //   console.log("suite_id = " + data.suite_id)
-    //   console.log("startDate = " + data.startDate)
-    //   console.log("endDate = " + data.endDate)
-    // }
     this.getFacilitieByRoom();
   }
 
@@ -86,7 +77,6 @@ export class DialogReservationComponent {
     let options = { headers: h }
     this.client.post<any>(ApiLinks.serachStudentBy, params, options).subscribe({
       next: (result) => {
-        console.log(result)
         if (result.code === 1) {
           AppComponent.students = result.user
           this.students = AppComponent.students
@@ -94,7 +84,6 @@ export class DialogReservationComponent {
           return this.openSnackBar(result.error, "Ok");
         }
       }, error: (error) => {
-        console.log(error)
         return this.openSnackBar(error, "Ok");
       },
       complete: () => {
@@ -115,12 +104,9 @@ export class DialogReservationComponent {
     let options = { headers: h }
     this.client.post<any>(ApiLinks.getFacilitieByRoom, params, options).subscribe({
       next: (result) => {
-        console.log(result)
         if (result.code === 1) {
           AppComponent.facilitie = result.facilities
           this.facilities = AppComponent.facilitie
-          console.log(this.facilities.length)
-          console.table(this.facilities)
         } else {
           return this.openSnackBar(result.error, "Ok");
         }
@@ -157,8 +143,6 @@ export class DialogReservationComponent {
     } else {
       this.selectedFacilities = [];
     }
-    console.table(this.selectedFacilities)
-    console.log(this.selectedFacilities)
   }
 
   addUserReservation() {
@@ -189,7 +173,6 @@ export class DialogReservationComponent {
       const start = new Date();
       start.setHours(startHours, startMinutes, 0, 0);
       this.startTimestamp = start.getTime().toString();
-      console.log("Start Time Timestamp:", this.startTimestamp);
     }
 
     if (this.expirTime) {
@@ -197,7 +180,6 @@ export class DialogReservationComponent {
       const expir = new Date();
       expir.setHours(expirHours, expirMinutes, 0, 0);
       this.expirTimestamp = expir.getTime().toString();
-      console.log("Expiry Time Timestamp:", this.expirTimestamp);
     }
   }
 

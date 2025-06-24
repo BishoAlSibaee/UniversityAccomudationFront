@@ -157,6 +157,7 @@ export class MakeReservationComponent {
     const params = { Reservations: this.userReservations };
     this.client.post<any>(ApiLinks.makeReservation, params, options).subscribe({
       next: (result) => {
+        console.log(result);
         if (result.code === 1) {
           this.openSnackBar(this.getTranslate('ReservationDone'), "Ok");
           this.clearDataAfterReservation();
@@ -165,6 +166,7 @@ export class MakeReservationComponent {
         }
       },
       error: (error) => {
+        console.log(error);
         this.openSnackBar("حدث خطأ أثناء محاولة الاتصال بالخادم.", "Ok");
       },
       complete: () => {

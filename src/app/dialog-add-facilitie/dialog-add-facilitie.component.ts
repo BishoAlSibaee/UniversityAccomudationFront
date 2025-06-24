@@ -77,9 +77,22 @@ export class DialogAddFacilitieComponent {
     let params = new FormData();
     params.append("name_ar", this.name_ar);
     params.append("name_en", this.name_en);
-    params.append("building_id", this.buildingId.toString());
-    params.append("floor_id", this.floorId.toString());
-    params.append("room_types_id", this.selectedRoomTypeId.toString());
+    if (this.buildingId === 0) {
+      params.append("building_id", '0');
+    } else {
+      params.append("building_id", this.buildingId.toString());
+    }
+    if (this.floorId === 0) {
+      params.append("floor_id", '0');
+    } else {
+      params.append("floor_id", this.floorId.toString());
+    }
+    if (this.selectedRoomTypeId === 0) {
+      params.append("room_types_id", '0');
+    }
+    else {
+      params.append("room_types_id", this.selectedRoomTypeId.toString());
+    }
     const token = localStorage.getItem("token")
     const h = new HttpHeaders({ Authorization: "Bearer " + token, });
     let options = { headers: h };

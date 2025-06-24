@@ -1,5 +1,5 @@
 export class ApiLinks {
-  public static MainUrl: string = "https://aramco.ratco-solutions.com/api/";
+  public static MainUrl: string = "https://flower-city.checkin-grms.com/api/";
   // public static MainUrl: string = "http://127.0.0.1:8000/api/";
   public static getBuildingData: string = ApiLinks.MainUrl + "admins/getBuildingData";
   public static adminLogin: string = ApiLinks.MainUrl + "admins/login";
@@ -38,4 +38,5 @@ export class ApiLinks {
   public static setReservationUnavailable: string = ApiLinks.MainUrl + "admins/setReservationUnavailable"
   public static updateReservation: string = ApiLinks.MainUrl + "admins/updateReservation"
   public static getReservationByRoom: string = ApiLinks.MainUrl + "admins/getReservationByRoom"
+  public static getRecordOpeningDoor: string = ApiLinks.MainUrl + "admins/getRecordOpeningDoor"
 }

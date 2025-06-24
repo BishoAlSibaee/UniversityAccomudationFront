@@ -63,6 +63,7 @@ import { GetReservationByDateComponent } from './get-reservation-by-date/get-res
 import { GetReservationByStudentComponent } from './get-reservation-by-student/get-reservation-by-student.component';
 import { UpdateReservationComponent } from './update-reservation/update-reservation.component';
 import { authGuard } from './auth.guard';
+import { DoorOpeningReportsComponent } from './door-opening-reports/door-opening-reports.component';
 
 @NgModule({
   declarations: [
@@ -99,6 +100,7 @@ import { authGuard } from './auth.guard';
     GetReservationByDateComponent,
     GetReservationByStudentComponent,
     UpdateReservationComponent,
+    DoorOpeningReportsComponent,
 
   ],
   imports: [

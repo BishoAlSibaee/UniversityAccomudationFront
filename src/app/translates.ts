@@ -27,7 +27,7 @@ export class translates {
     this.translates.push(new translate("Name", "الأسم", "Name"))
     this.translates.push(new translate("StartDate", "تاريخ البداية", "Start Date"))
     this.translates.push(new translate("ExpireDate", "تاريخ النهاية", "Expire Date"))
-    this.translates.push(new translate("Confirm", "تاكيد", "Confirm"))
+    this.translates.push(new translate("Confirm", "تأكيد", "Confirm"))
     this.translates.push(new translate("Cancel", "إلغاء", "Cancel"))
     this.translates.push(new translate("Update", "تعديل", "Update"))
     this.translates.push(new translate("Delete", "حذف", "Delete"))
@@ -140,6 +140,9 @@ export class translates {
     this.translates.push(new translate("AddNewSuite", "اضافة جناح جديد", "Add New Suite"))
     this.translates.push(new translate("UpdateSuite", "تعديل الجناح", "Update Suite"))
     this.translates.push(new translate("RoomInSuite", "الغرف في الجناح", "Room In Suite"))
+    this.translates.push(new translate("OpeningReports", "تقارير فتح الأبواب", "Door Opening Reports"))
+    this.translates.push(new translate("OpenTime", "وقت فتح الباب", "Door opening time"))
+    this.translates.push(new translate("NoRecord", "لا يوجد سجلات لهذه الغرفة", "No Record For This Room"))
     this.translates.push(new translate("RoomNum", "", ""))
     this.translates.push(new translate("RoomNum", "", ""))
   }

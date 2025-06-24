@@ -25,9 +25,6 @@ import { translates } from '../translates';
 
 export class MainPageComponent {
   private _snackBar = inject(MatSnackBar);
-  LightColor = "#3d2706"
-  studentsVisible
-  roomsVisible
   listBuilding: Building[] = []
   listFloor: Floor[] = []
   listSuite: Suite[] = []
@@ -52,8 +49,6 @@ export class MainPageComponent {
 
   constructor(private client: HttpClient, private router: Router, public dialog: MatDialog) {
     translates.create()
-    this.studentsVisible = true
-    this.roomsVisible = false
   }
 
   async ngOnInit() {
@@ -145,7 +140,6 @@ export class MainPageComponent {
   }
 
   onBuildingChange(selectedBuilding: Building) {
-    // this.buildingName = selectedBuilding.name
     this.listFloor = [];
     this.listSuite = [];
     if (selectedBuilding.floors && selectedBuilding.floors.length > 0) {
@@ -175,16 +169,6 @@ export class MainPageComponent {
         return a.number - b.number;
       });
     }
-  }
-
-  students() {
-    this.studentsVisible = true
-    this.roomsVisible = false
-  }
-
-  rooms() {
-    this.studentsVisible = false
-    this.roomsVisible = true
   }
 
   goToShowStudents() {
@@ -228,7 +212,6 @@ export class MainPageComponent {
           this.listReservation = [];
           AppComponent.reservations = result.reservations;
           this.listReservation = AppComponent.reservations;
-
           this.listReservation.forEach((reservation) => {
             let facilityIds: number[] = [];
             if (typeof reservation.facility_ids === "string") {
@@ -252,7 +235,6 @@ export class MainPageComponent {
                 }
               });
             }
-
           });
         } else {
           return this.openSnackBar(result.error, "Ok");
